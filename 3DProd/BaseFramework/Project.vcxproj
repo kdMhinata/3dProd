@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0F06FE08-688B-490A-AB0E-7A85CF6B8649}</ProjectGuid>
+    <RootNamespace>BaseFramework</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>.\;src;..\Library;..\Library\DirectXTK\Inc;..\Library\DirectXTex\DirectXTex;..\Library\tinygltf;..\Library\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <ForcedIncludeFiles>Pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4227</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/nodefaultlib:"LIBCMT"
+
+ %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalLibraryDirectories>..\Library\DirectXTK\Lib\$(Configuration);..\Library\DirectXTex\DirectXTex\Lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <FxCompile>
+      <ShaderType>
+      </ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
+      <HeaderFileOutput>%(RelativeDir)\%(Filename).inc</HeaderFileOutput>
+      <VariableName>compiledBuffer</VariableName>
+      <EnableDebuggingInformation>true</EnableDebuggingInformation>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>.\;src;..\Library;..\Library\DirectXTK\Inc;..\Library\DirectXTex\DirectXTex;..\Library\tinygltf;..\Library\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <ForcedIncludeFiles>Pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4227</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>..\Library\DirectXTK\Lib\$(Configuration);..\Library\DirectXTex\DirectXTex\Lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <FxCompile>
+      <ShaderType>
+      </ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>
+      </ObjectFileOutput>
+      <HeaderFileOutput>%(RelativeDir)\%(Filename).inc</HeaderFileOutput>
+      <VariableName>compiledBuffer</VariableName>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Library\strconv.h" />
+    <ClInclude Include="..\Library\tinygltf\json.hpp" />
+    <ClInclude Include="..\Library\tinygltf\stb_image.h" />
+    <ClInclude Include="..\Library\tinygltf\stb_image_write.h" />
+    <ClInclude Include="..\Library\tinygltf\tiny_gltf.h" />
+    <ClInclude Include="Src\Application\Application.h" />
+    <ClInclude Include="Src\Application\Game\Camera\FPSCamera.h" />
+    <ClInclude Include="Src\Application\Game\Camera\TPSCamera.h" />
+    <ClInclude Include="Src\Application\Game\GameObject\Enemy.h" />
+    <ClInclude Include="Src\Application\Game\GameObject\GameObject.h" />
+    <ClInclude Include="Src\Application\Game\GameObject\Player.h" />
+    <ClInclude Include="Src\Application\Game\GameObject\StageMap.h" />
+    <ClInclude Include="Src\Application\Game\GameSystem.h" />
+    <ClInclude Include="Src\Application\main.h" />
+    <ClInclude Include="Src\Application\Utility\ResourceFactory.h" />
+    <ClInclude Include="Src\System\Audio\KdAudio.h" />
+    <ClInclude Include="Src\System\Direct3D\KdCamera.h" />
+    <ClInclude Include="src\System\Direct3D\KdDirect3D.h" />
+    <ClInclude Include="Src\System\Direct3D\KdGLTFLoader.h" />
+    <ClInclude Include="src\System\Direct3D\KdBuffer.h" />
+    <ClInclude Include="src\System\Direct3D\KdMesh.h" />
+    <ClInclude Include="Src\System\Direct3D\KdModel.h" />
+    <ClInclude Include="Src\System\Direct3D\KdSquarePolygon.h" />
+    <ClInclude Include="src\System\Direct3D\KdTexture.h" />
+    <ClInclude Include="src\Pch.h" />
+    <ClInclude Include="Src\System\Direct3D\KdTrailPolygon.h" />
+    <ClInclude Include="Src\System\Math\KdAnimation.h" />
+    <ClInclude Include="Src\System\Math\KdCollision.h" />
+    <ClInclude Include="Src\System\Shader\EffectShader\KdEffectShader.h" />
+    <ClInclude Include="Src\System\Shader\KdShaderManager.h" />
+    <ClInclude Include="Src\System\Shader\SpriteShader\KdSpriteShader.h" />
+    <ClInclude Include="Src\System\Shader\StandardShader\KdStandardShader.h" />
+    <ClInclude Include="src\System\KdSystem.h" />
+    <ClInclude Include="src\System\Utility\KdUtility.h" />
+    <ClInclude Include="src\System\Window\KdWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\Application\Game\Camera\FPSCamera.cpp" />
+    <ClCompile Include="Src\Application\Game\Camera\TPSCamera.cpp" />
+    <ClCompile Include="Src\Application\Game\GameObject\Enemy.cpp" />
+    <ClCompile Include="Src\Application\Game\GameObject\GameObject.cpp" />
+    <ClCompile Include="Src\Application\Game\GameObject\Player.cpp" />
+    <ClCompile Include="Src\Application\Game\GameObject\StageMap.cpp" />
+    <ClCompile Include="Src\Application\Game\GameSystem.cpp" />
+    <ClCompile Include="Src\Application\main.cpp" />
+    <ClCompile Include="Src\Application\Utility\ResourceFactory.cpp" />
+    <ClCompile Include="Src\System\Audio\KdAudio.cpp" />
+    <ClCompile Include="Src\System\Direct3D\KdCamera.cpp" />
+    <ClCompile Include="src\System\Direct3D\KdDirect3D.cpp" />
+    <ClCompile Include="Src\System\Direct3D\KdGLTFLoader.cpp" />
+    <ClCompile Include="src\System\Direct3D\KdBuffer.cpp" />
+    <ClCompile Include="src\System\Direct3D\KdMesh.cpp" />
+    <ClCompile Include="Src\System\Direct3D\KdModel.cpp" />
+    <ClCompile Include="Src\System\Direct3D\KdSquarePolygon.cpp" />
+    <ClCompile Include="src\System\Direct3D\KdTexture.cpp" />
+    <ClCompile Include="src\Pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Src\System\Direct3D\KdTrailPolygon.cpp" />
+    <ClCompile Include="Src\System\Math\KdAnimation.cpp" />
+    <ClCompile Include="Src\System\Math\KdCollision.cpp" />
+    <ClCompile Include="Src\System\Shader\EffectShader\KdEffectShader.cpp" />
+    <ClCompile Include="Src\System\Shader\KdShaderManager.cpp" />
+    <ClCompile Include="Src\System\Shader\SpriteShader\KdSpriteShader.cpp" />
+    <ClCompile Include="Src\System\Shader\StandardShader\KdStandardShader.cpp" />
+    <ClCompile Include="Src\System\Utility\KdUtility.cpp" />
+    <ClCompile Include="src\System\Window\KdWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Src\System\Shader\EffectShader\inc_KdEffectShader.hlsli" />
+    <None Include="Src\System\Shader\inc_KdCommon.hlsli" />
+    <None Include="Src\System\Shader\SpriteShader\inc_KdSpriteShader.hlsli" />
+    <None Include="Src\System\Shader\StandardShader\inc_KdStandardShader.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Src\System\Shader\EffectShader\KdEffectShader_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\EffectShader\KdEffectShader_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\SpriteShader\KdSpriteShader_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\SpriteShader\KdSpriteShader_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\StandardShader\KdStandardShader_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\StandardShader\KdStandardShader_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\StandardShader\KdStandardShader_VS_Skin.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+    </FxCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
