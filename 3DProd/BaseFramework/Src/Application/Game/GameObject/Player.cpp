@@ -93,7 +93,7 @@ void Player::UpdateMove(Math::Vector3& dstMove)
 	if (m_spCamera)
 	{
 		// 進行方向をカメラ回転を加味して修正する
-		moveVec = moveVec.TransformNormal(moveVec, m_spCamera->GetRotationYMatrix());
+	//	moveVec = moveVec.TransformNormal(moveVec, m_spCamera->GetRotationYMatrix());
 	}
 
 	// 座標確定
