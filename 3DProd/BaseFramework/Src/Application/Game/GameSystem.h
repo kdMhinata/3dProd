@@ -28,9 +28,6 @@ private:
 
 	KdModelWork m_sky;	// スカイスフィア
 
-	KdModelWork m_cube;	// キューブ
-
-	DirectX::SimpleMath::Matrix m_cubeMat;	// キューブのワールド行列
 	DirectX::SimpleMath::Matrix m_skyMat;	// キューブのワールド行列
 
 	std::list<std::shared_ptr<GameObject>> m_spObjects;

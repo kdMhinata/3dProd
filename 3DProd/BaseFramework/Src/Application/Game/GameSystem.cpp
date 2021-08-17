@@ -11,11 +11,6 @@ void GameSystem::Init()
 {
 	m_sky.SetModel(m_resourceFactory.GetModelData("Data/Models/Sky/Sky.gltf"));
 
-	m_cube.SetModel(m_resourceFactory.GetModelData("Data/Models/Cube/Cube2.gltf"));
-
-	// キューブの座標行列
-	m_cubeMat = m_cubeMat.CreateTranslation({ 1.0f,0.0f,0.0f });
-
 	// スカイスフィア拡大行列
 	m_skyMat = m_skyMat.CreateScale(50.0f);
 
@@ -47,14 +42,6 @@ void GameSystem::Update()
 		// キャンセル時元の位置に戻す
 		SetCursorPos(FPSCamera::s_fixMousePos.x, FPSCamera::s_fixMousePos.y);
 	}
-
-	// キューブ回転行列
-	DirectX::SimpleMath::Matrix rot;
-	rot = rot.CreateRotationY(DirectX::XMConvertToRadians(1.0f));
-
-	m_cubeMat = rot * m_cubeMat;
-	m_cubeMat = m_cubeMat * rot;
-
 
 	// スカイスフィア回転
 	DirectX::SimpleMath::Matrix rotSky;
@@ -104,9 +91,6 @@ void GameSystem::Draw()
 	// 陰影をつける
 	SHADER->m_standardShader.SetToDevice();
 
-	SHADER->m_standardShader.DrawModel(m_cube,m_cubeMat);
-
-	
 	for (std::shared_ptr<GameObject>& spObject : m_spObjects)
 	{
 		spObject->Draw();
