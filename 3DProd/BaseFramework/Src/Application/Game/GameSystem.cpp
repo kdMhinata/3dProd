@@ -79,24 +79,45 @@ void GameSystem::Update()
 
 void GameSystem::Draw()
 {
+	// カメラの情報をシェーダーに渡す
 	if (m_spCamera)
 	{
 		m_spCamera->SetToShader();
 	}
 
-	SHADER->m_effectShader.SetToDevice();	// 描画前に必要
-
-	SHADER->m_effectShader.DrawModel(m_sky,m_skyMat);
-
-	// 陰影をつける
+	// ①不透明物の描画から
+   // 不透明物描画用シェーダーに切り替え
 	SHADER->m_standardShader.SetToDevice();
 
+	// ゲームオブジェクトの描画(範囲ベースfor文)
 	for (std::shared_ptr<GameObject>& spObject : m_spObjects)
 	{
 		spObject->Draw();
 	}
-}
+	// -------------------------------------------------------
+	// ②次に透明物の描画
+	SHADER->m_effectShader.SetToDevice();
 
+	// 拡大行列を適用する
+	SHADER->m_effectShader.DrawModel(m_sky, m_skyMat);
+	{
+		D3D.WorkDevContext()->OMSetDepthStencilState(SHADER->m_ds_ZEnable_ZWriteDisable, 0);
+
+		// カリングなし(両面描画)
+		D3D.WorkDevContext()->RSSetState(SHADER->m_rs_CullNone);
+		
+	
+		/*// ゲームオブジェクト(透明物)の描画
+		for (std::shared_ptr<GameObject>& spObject : m_spObjects)
+		{
+			spObject->DrawEffect();
+		}*/
+
+		D3D.WorkDevContext()->OMSetDepthStencilState(SHADER->m_ds_ZEnable_ZWriteEnable, 0);
+		// 裏面カリング(表面のみ描画)
+		D3D.WorkDevContext()->RSSetState(SHADER->m_rs_CullBack);
+	}
+}
 void GameSystem::Release()
 {
 	m_spObjects.clear();

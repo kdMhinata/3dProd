@@ -5,7 +5,6 @@ const POINT FPSCamera::s_fixMousePos = { 640,360 };
 void FPSCamera::Init()
 {
 	SetCursorPos(s_fixMousePos.x, s_fixMousePos.y);
-
 }
 
 void FPSCamera::Update()
@@ -31,9 +30,9 @@ void FPSCamera::Update()
 const Math::Matrix FPSCamera::GetRotationMatrix()
 {
 	return Math::Matrix::CreateFromYawPitchRoll(
-		DirectX::XMConvertToRadians(m_degAng.y),
-		DirectX::XMConvertToRadians(m_degAng.x),
-		DirectX::XMConvertToRadians(m_degAng.z)
+		DirectX::XMConvertToRadians(0),
+		DirectX::XMConvertToRadians(45),
+		DirectX::XMConvertToRadians(0)
 	);
 }
 

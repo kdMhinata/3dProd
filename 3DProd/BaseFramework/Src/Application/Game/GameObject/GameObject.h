@@ -51,7 +51,7 @@ public:
 
 	virtual void Init(){}
 	virtual void Update(){}
-	void Draw();
+	virtual void Draw();
 
 	bool IsAlive() { return m_isAlive; }
 

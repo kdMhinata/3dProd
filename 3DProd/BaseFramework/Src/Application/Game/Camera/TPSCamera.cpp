@@ -12,7 +12,7 @@ void TPSCamera::SetCameraMatrix(const Math::Matrix& mtrans)
 
 	// カメラ回転
 	Math::Matrix rotation;
-	//rotation = GetRotationMatrix(); //カメラの回転消すために消し
+	rotation = GetRotationMatrix(); //カメラの回転消すために消し
 
 	// ①注視点から5m離す　②注視点を中心に回転 ③3m上に上げる ④world座標
 	KdCamera::SetCameraMatrix(localPos * rotation * localGazePos * mtrans);
