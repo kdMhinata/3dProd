@@ -3,7 +3,7 @@
 
 void Enemy::Init()
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/WoodRobot.gltf"));
+	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/Woodrobot/Woodrobot.gltf"));
 	
 	m_radius = 0.5f;
 }

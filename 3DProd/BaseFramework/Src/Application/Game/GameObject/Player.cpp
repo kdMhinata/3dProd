@@ -14,7 +14,7 @@ Player::~Player()
 
 void Player::Init()
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/Robot.gltf"));
+	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/chara.gltf"));
 
 	m_spCamera = std::make_shared<TPSCamera>();
 

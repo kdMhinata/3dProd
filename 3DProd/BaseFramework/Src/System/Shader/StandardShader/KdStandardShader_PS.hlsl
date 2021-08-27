@@ -130,5 +130,5 @@ float4 main(VSOutput In) : SV_Target0
 	//------------------------------------------
 	// 出力
 	//------------------------------------------
-	return float4(color, baseColor.a);
+	return float4(color, 1);// baseColor.a);
 }
