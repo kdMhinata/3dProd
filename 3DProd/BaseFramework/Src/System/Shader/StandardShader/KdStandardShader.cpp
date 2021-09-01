@@ -205,13 +205,33 @@ void KdStandardShader::DrawModel(const KdModelWork& rModel, const Math::Matrix& 
 
 	const std::shared_ptr<KdModelData>& data = rModel.GetData();
 
+	auto& workNodes = rModel.GetNodes();
+
 	// モデルがないときはスキップ
 	if (data == nullptr) { return; }
+
+	// スキンメッシュモデルの場合：ボーン情報を書き込み
+	if (data->IsSkinMesh())
+	{
+		// ノード内からボーン情報を取得
+		auto& dataNodes = data->GetOriginalNodes();
+
+		for (auto&& nodeIdx : data->GetBoneNodeIndices())
+		{
+			if (nodeIdx >= KdStandardShader::maxBoneBufferSize) { assert(0 && "転送できるボーンの上限数を超えました"); return; }
+
+			auto& dataNode = dataNodes[nodeIdx];
+			auto& workNode = workNodes[nodeIdx];
+
+			// ボーン情報からGPUに渡す行列の計算
+			SHADER->m_standardShader.BoneCB().Work().mBones[dataNode.m_boneIndex] = dataNode.m_boneInverseWorldMatrix * workNode.m_worldTransform;
+		}
+	}
 
 	// 全メッシュノードを描画
 	for (auto& nodeIdx : data->GetMeshNodeIndices())
 	{
-		auto& rWorkNode = rModel.GetNodes()[nodeIdx];
+		auto& rWorkNode = workNodes[nodeIdx];
 
 		const std::shared_ptr<KdMesh>& spMesh = rModel.GetMesh(nodeIdx);
 

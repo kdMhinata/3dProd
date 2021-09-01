@@ -150,7 +150,7 @@ void Application::Execute()
 
 		GameSystem::GetInstance().Update();
 
-		DirectX::SimpleMath::Color col(0.0f, 0.0f, 1.0f, 1.0f);
+		DirectX::SimpleMath::Color col(0.0f, 0.0f, 0.0f, 0.0f);
 
 		D3D.WorkDevContext()->ClearRenderTargetView(D3D.WorkBackBuffer()->WorkRTView(),col); //書き込めるテクスチャをクリア
 

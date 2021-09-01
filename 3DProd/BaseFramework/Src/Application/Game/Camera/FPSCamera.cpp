@@ -31,7 +31,7 @@ const Math::Matrix FPSCamera::GetRotationMatrix()
 {
 	return Math::Matrix::CreateFromYawPitchRoll(
 		DirectX::XMConvertToRadians(0),
-		DirectX::XMConvertToRadians(45),
+		DirectX::XMConvertToRadians(55),
 		DirectX::XMConvertToRadians(0)
 	);
 }

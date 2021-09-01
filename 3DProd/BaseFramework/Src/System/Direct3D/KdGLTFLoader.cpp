@@ -52,9 +52,16 @@ public:
 	// Float取得
 	float GetValue_Float(int index)
 	{
-		assert(m_accessor->componentType == TINYGLTF_PARAMETER_TYPE_FLOAT && "型が違う");
+		if (m_accessor->componentType == TINYGLTF_PARAMETER_TYPE_BYTE)                    return Get<char>(index) / (float)SCHAR_MAX;
+		else if (m_accessor->componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_BYTE)    return Get<BYTE>(index) / (float)UCHAR_MAX;
+		else if (m_accessor->componentType == TINYGLTF_PARAMETER_TYPE_SHORT)            return Get<short>(index) / (float)SHRT_MAX;
+		else if (m_accessor->componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_SHORT)   return Get<unsigned short>(index) / (float)USHRT_MAX;
+		else if (m_accessor->componentType == TINYGLTF_PARAMETER_TYPE_INT)              return Get<int>(index) / (float)INT_MAX;
+		else if (m_accessor->componentType == TINYGLTF_PARAMETER_TYPE_UNSIGNED_INT)     return Get<unsigned int>(index) / (float)UINT_MAX;
+		else if (m_accessor->componentType == TINYGLTF_PARAMETER_TYPE_FLOAT)            return Get<float>(index);
 
-		return Get<float>(index);
+		assert(0 && "対応していない型");
+		return 0;
 	}
 
 	// 整数取得
@@ -554,56 +561,60 @@ std::shared_ptr<KdGLTFModel> KdLoadGLTFModel(const std::string& path)
 					}
 				}
 
-				// Skin INDEX
-				if (srcPrimitive.attributes.count("JOINTS_0") > 0)
+				// スキンメッシュ情報が無ければ現状不要なので無視
+				if (model.skins.size() > 0)
 				{
-					destNode->Mesh.IsSkinMesh = true;
-
-					GLTFBufferGetter jointGetter(&model, srcPrimitive.attributes["JOINTS_0"]);
-
-					for (UINT vi = 0; vi < destPrimitive->Vertices.size(); vi++)
+					// Skin INDEX
+					if (srcPrimitive.attributes.count("JOINTS_0") > 0)
 					{
-						// ※IndexはボーンリストのIndexになる(ノード全体ではない)
-						auto& skinIndex = destPrimitive->Vertices[vi].SkinIndexList;
+						destNode->Mesh.IsSkinMesh = true;
 
-						skinIndex[0] = (short)jointGetter.GetValue_Int(vi * 4 + 0);
-						skinIndex[1] = (short)jointGetter.GetValue_Int(vi * 4 + 1);
-						skinIndex[2] = (short)jointGetter.GetValue_Int(vi * 4 + 2);
-						skinIndex[3] = (short)jointGetter.GetValue_Int(vi * 4 + 3);
+						GLTFBufferGetter jointGetter(&model, srcPrimitive.attributes["JOINTS_0"]);
+
+						for (UINT vi = 0; vi < destPrimitive->Vertices.size(); vi++)
+						{
+							// ※IndexはボーンリストのIndexになる(ノード全体ではない)
+							auto& skinIndex = destPrimitive->Vertices[vi].SkinIndexList;
+
+							skinIndex[0] = (short)jointGetter.GetValue_Int(vi * 4 + 0);
+							skinIndex[1] = (short)jointGetter.GetValue_Int(vi * 4 + 1);
+							skinIndex[2] = (short)jointGetter.GetValue_Int(vi * 4 + 2);
+							skinIndex[3] = (short)jointGetter.GetValue_Int(vi * 4 + 3);
+						}
 					}
-				}
 
-				// Skin WEIGHT
-				if (srcPrimitive.attributes.count("WEIGHTS_0") > 0)
-				{
-					destNode->Mesh.IsSkinMesh = true;
-
-					GLTFBufferGetter weightGetter(&model, srcPrimitive.attributes["WEIGHTS_0"]);
-
-					for (UINT vi = 0; vi < destPrimitive->Vertices.size(); vi++)
+					// Skin WEIGHT
+					if (srcPrimitive.attributes.count("WEIGHTS_0") > 0)
 					{
-						auto& skinWei = destPrimitive->Vertices[vi].SkinWeightList;
+						destNode->Mesh.IsSkinMesh = true;
 
-						skinWei[0] = weightGetter.GetValue_UNORM(vi * 4 + 0);
-						skinWei[1] = weightGetter.GetValue_UNORM(vi * 4 + 1);
-						skinWei[2] = weightGetter.GetValue_UNORM(vi * 4 + 2);
-						skinWei[3] = weightGetter.GetValue_UNORM(vi * 4 + 3);
+						GLTFBufferGetter weightGetter(&model, srcPrimitive.attributes["WEIGHTS_0"]);
 
-						if (skinWei[0] == 0)skinWei[0] = 1.0f;
-
-						// ウェイト正規化
-						int cnt = 0;
-						for (UINT x = 0; x < 4; x++)
+						for (UINT vi = 0; vi < destPrimitive->Vertices.size(); vi++)
 						{
-							if (skinWei[x] == 0.0f)break;
-							cnt++;
+							auto& skinWei = destPrimitive->Vertices[vi].SkinWeightList;
+
+							skinWei[0] = weightGetter.GetValue_UNORM(vi * 4 + 0);
+							skinWei[1] = weightGetter.GetValue_UNORM(vi * 4 + 1);
+							skinWei[2] = weightGetter.GetValue_UNORM(vi * 4 + 2);
+							skinWei[3] = weightGetter.GetValue_UNORM(vi * 4 + 3);
+
+							if (skinWei[0] == 0)skinWei[0] = 1.0f;
+
+							// ウェイト正規化
+							int cnt = 0;
+							for (UINT x = 0; x < 4; x++)
+							{
+								if (skinWei[x] == 0.0f)break;
+								cnt++;
+							}
+							float totalW = 0;
+							for (int x = 0; x < cnt - 1; x++)
+							{
+								totalW += skinWei[x];
+							}
+							skinWei[cnt - 1] = 1.0f - totalW;
 						}
-						float totalW = 0;
-						for (int x = 0; x < cnt - 1; x++)
-						{
-							totalW += skinWei[x];
-						}
-						skinWei[cnt - 1] = 1.0f - totalW;
 					}
 				}
 			}

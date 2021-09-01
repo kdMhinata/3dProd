@@ -197,6 +197,15 @@ void KdModelData::Release()
 	m_meshNodeIndices.clear();
 }
 
+bool KdModelData::IsSkinMesh()
+{
+	for (auto& node : m_originalNodes)
+	{
+		if (node.m_isSkinMesh) { return true; }
+	}
+
+	return false;
+}
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////
 // 
@@ -279,20 +288,6 @@ void KdModelWork::CalcNodeMatrices()
 	for (auto&& nodeIdx : m_spModel->GetRootNodeIndices())
 	{
 		recCalcNodeMatrices(nodeIdx);
-	}
-
-	for (auto&& nodeIdx : m_spModel->GetBoneNodeIndices())
-	{
-		if (nodeIdx >= KdStandardShader::maxBoneBufferSize) { assert(0 && "転送できるボーンの上限数を超えました"); return; }
-
-		// ノード内からボーン情報を取得
-		auto& data = m_spModel->GetOriginalNodes()[nodeIdx];
-		auto& work = m_coppiedNodes[nodeIdx];
-
-		work.m_worldTransform._41 += 0.01f;
-
-		// ボーン情報からGPUに渡す行列の計算
-		SHADER->m_standardShader.BoneCB().Work().mBones[data.m_boneIndex] = data.m_boneInverseWorldMatrix * work.m_worldTransform;
 	}
 }
 

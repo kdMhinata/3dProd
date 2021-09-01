@@ -27,6 +27,6 @@ private:
 
 	std::weak_ptr<const GameObject> m_wpTarget;
 
-	float m_stopDist = 5.0f;
+	float m_stopDist = 1.01f;
 
 };

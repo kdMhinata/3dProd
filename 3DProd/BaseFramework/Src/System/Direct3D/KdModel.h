@@ -67,6 +67,8 @@ public:
 	const std::vector<int>& GetBoneNodeIndices() const { return m_boneNodeIndices; }
 	const std::vector<int>& GetMeshNodeIndices() const { return m_meshNodeIndices; }
 
+	bool IsSkinMesh();
+
 private:
 	// 解放
 	void Release();

@@ -3,7 +3,7 @@
 
 void Enemy::Init()
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/Woodrobot/Woodrobot.gltf"));
+	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/enemy/slime.gltf"));
 	
 	m_radius = 0.5f;
 }
@@ -50,7 +50,7 @@ void Enemy::UpdateMove()
 	Math::Vector3 moveVec = m_mWorld.Backward();
 	moveVec.Normalize();
 	
-	const float moveSpd = 0.05f;
+	const float moveSpd = 0.03f;
 	moveVec *= moveSpd;
 
 	m_worldPos += moveVec;

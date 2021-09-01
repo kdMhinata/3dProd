@@ -9,7 +9,7 @@
 
 void GameSystem::Init()
 {
-	m_sky.SetModel(m_resourceFactory.GetModelData("Data/Models/Sky/Sky.gltf"));
+//	m_sky.SetModel(m_resourceFactory.GetModelData("Data/Models/Sky/Sky.gltf"));
 
 	// スカイスフィア拡大行列
 	m_skyMat = m_skyMat.CreateScale(50.0f);
