@@ -55,6 +55,9 @@ void Player::Update()
 	// 当たり判定更新
 	UpdateCollition();
 
+	//攻撃
+	DoAttack();
+
 	// 行列の更新(最終的な座標を確定してから)
 	UpdateMatrix();
 
@@ -161,6 +164,21 @@ void Player::UpdateMatrix()
 	rotation = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_worldRot.y));
 
 	m_mWorld =rotation * trans;
+}
+
+void Player::DoAttack()
+{	
+	if (GetAsyncKeyState(VK_SPACE))
+	{
+		if (!m_canAttack) { return; }
+
+		std::shared_ptr<Attack>pAttack = std::make_shared<Attack>();
+
+		pAttack->Init();
+
+		const std::list<std::shared_ptr<GameObject>>& object =
+			GameSystem::GetInstance().GetObjects();
+	}
 }
 
 // 当たり判定の更新

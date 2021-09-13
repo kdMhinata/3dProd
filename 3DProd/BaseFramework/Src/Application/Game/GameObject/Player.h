@@ -26,6 +26,7 @@ private:
 	void UpdateMove(Math::Vector3& dstMove);
 	void UpdateRotate(const Math::Vector3& srcMove);
 	void UpdateMatrix();
+	void UpdateAttack();
 
 	void UpdateCollition();		// “–‚½‚è”»’è‚ÌXV
 
@@ -35,6 +36,7 @@ private:
 	std::shared_ptr<TPSCamera>		m_spCamera;
 	
 	bool m_canShot = true;
+	bool m_canAttack = true;
 
 	KdAnimator m_animator;
 
