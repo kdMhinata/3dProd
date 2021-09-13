@@ -6,6 +6,8 @@ void Enemy::Init()
 	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/enemy/slime.gltf"));
 	
 	m_radius = 0.5f;
+
+	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Walk"));
 }
 
 void Enemy::Update()
@@ -23,6 +25,9 @@ void Enemy::Update()
 	);
 
 	m_mWorld = rotation * trans;
+
+	m_animator.AdvanceTime(m_modelWork.WorkNodes());
+	m_modelWork.CalcNodeMatrices();
 }
 
 void Enemy::Release()
@@ -54,6 +59,7 @@ void Enemy::UpdateMove()
 	moveVec *= moveSpd;
 
 	m_worldPos += moveVec;
+
 }
 
 void Enemy::UpdateRotate()

@@ -25,6 +25,8 @@ private:
 	Math::Vector3	m_worldPos;
 	Math::Vector3	m_worldRot;
 
+	KdAnimator m_animator;
+
 	std::weak_ptr<const GameObject> m_wpTarget;
 
 	float m_stopDist = 1.01f;

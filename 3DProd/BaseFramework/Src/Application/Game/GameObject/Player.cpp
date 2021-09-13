@@ -14,7 +14,7 @@ Player::~Player()
 
 void Player::Init()
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/chara.gltf"));
+	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/run2.7.4.gltf"));
 
 	m_spCamera = std::make_shared<TPSCamera>();
 
@@ -37,6 +37,8 @@ void Player::Init()
 	m_spCamera->SetRotationSpeed(0.25);
 
 	m_radius = 0.5f;
+
+	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Run"));
 }
 
 // 更新処理
@@ -66,6 +68,9 @@ void Player::Update()
 		// プレイヤーの絶対行列のセット
 		m_spCamera->SetCameraMatrix(trans);
 	}
+
+	m_animator.AdvanceTime(m_modelWork.WorkNodes());
+	m_modelWork.CalcNodeMatrices();
 }
 
 void Player::Release()
@@ -155,7 +160,7 @@ void Player::UpdateMatrix()
 	Math::Matrix rotation;
 	rotation = Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(m_worldRot.y));
 
-	m_mWorld = rotation * trans;
+	m_mWorld =rotation * trans;
 }
 
 // 当たり判定の更新

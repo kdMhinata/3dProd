@@ -35,5 +35,8 @@ private:
 	std::shared_ptr<TPSCamera>		m_spCamera;
 	
 	bool m_canShot = true;
+
+	KdAnimator m_animator;
+
 };
 
