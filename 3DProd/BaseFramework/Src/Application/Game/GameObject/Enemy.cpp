@@ -12,6 +12,7 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+	if (!m_isAlive) { return; }
 	UpdateRotate();
 	UpdateMove();
 
@@ -28,6 +29,11 @@ void Enemy::Update()
 
 	m_animator.AdvanceTime(m_modelWork.WorkNodes());
 	m_modelWork.CalcNodeMatrices();
+	
+	if (m_hp <= 0)
+	{
+		m_isAlive = false;
+	}
 }
 
 void Enemy::Release()

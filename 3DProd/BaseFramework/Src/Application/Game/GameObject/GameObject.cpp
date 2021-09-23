@@ -47,3 +47,21 @@ bool GameObject::CheckCollisionBump(const RayInfo& info, BumpResult& result)
 
 	return result.m_isHit;
 }
+
+bool GameObject::CheckCollisionDamage(const SphereInfo& info)
+{
+	Math::Vector3 betweenVec = info.m_pos - m_mWorld.Translation();
+
+	// 2点間の距離
+	float distanceSqr = betweenVec.LengthSquared();
+
+	// 当たり判定の半径合計
+	float hitRadius = m_radius + info.m_radius;
+
+	bool result;
+	// 判定の結果
+	result = (distanceSqr <= (hitRadius * hitRadius));
+
+	return result;
+}
+

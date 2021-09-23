@@ -2,6 +2,7 @@
 //#include"../Camera/FPSCamera.h"
 #include"../Camera/TPSCamera.h"
 #include"../GameSystem.h"
+#include "Enemy.h"
 
 Player::Player()
 {
@@ -170,14 +171,18 @@ void Player::DoAttack()
 {	
 	if (GetAsyncKeyState(VK_SPACE))
 	{
-		if (!m_canAttack) { return; }
+		for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
+		{
+			if (spObj->GetClassID() != GameObject::eEnemy) { continue; }
 
-		std::shared_ptr<Attack>pAttack = std::make_shared<Attack>();
+			SphereInfo info(GetPos(), m_radius);
 
-		pAttack->Init();
-
-		const std::list<std::shared_ptr<GameObject>>& object =
-			GameSystem::GetInstance().GetObjects();
+			// ‘Šè‚Ì”»’èŠÖ”‚ğ—˜—p‚·‚é
+			if (CheckCollisionDamage(info))
+			{
+				
+			}
+		}
 	}
 }
 

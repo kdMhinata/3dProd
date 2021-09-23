@@ -26,7 +26,7 @@ private:
 	void UpdateMove(Math::Vector3& dstMove);
 	void UpdateRotate(const Math::Vector3& srcMove);
 	void UpdateMatrix();
-	void UpdateAttack();
+	void DoAttack();
 
 	void UpdateCollition();		// “–‚½‚è”»’è‚ÌXV
 

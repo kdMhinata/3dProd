@@ -12,6 +12,8 @@ public:
 	void Update() override;
 
 	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
+	void SetHp(int hp) { m_hp = hp; };
+	int GetHp() { return m_hp; };
 
 	classID GetClassID() const override{ return eEnemy; }
 
@@ -30,5 +32,7 @@ private:
 	std::weak_ptr<const GameObject> m_wpTarget;
 
 	float m_stopDist = 1.01f;
+	int m_hp=100;
+	bool m_isAlive = true;
 
 };
