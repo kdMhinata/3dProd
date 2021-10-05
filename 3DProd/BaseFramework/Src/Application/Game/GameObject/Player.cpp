@@ -3,7 +3,6 @@
 #include"../Camera/TPSCamera.h"
 #include"../GameSystem.h"
 #include "Enemy.h"
-
 Player::Player()
 {
 }
@@ -15,9 +14,11 @@ Player::~Player()
 
 void Player::Init()
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/run2.7.4.gltf"));
+	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/chara.gltf"));
 
 	m_spCamera = std::make_shared<TPSCamera>();
+
+	m_enemy = std::make_shared<Enemy>();
 
 	GameSystem::GetInstance().SetCamera(m_spCamera);
 
@@ -39,25 +40,24 @@ void Player::Init()
 
 	m_radius = 0.5f;
 
-	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Run"));
+	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
+
+
+	m_spActionState = std::make_shared<ActionWait>();
 }
 
 // 更新処理
 void Player::Update()
 {
-	Math::Vector3 vMove;
+	UpdateInput();
 
-	// 移動の更新処理
-	UpdateMove(vMove);
-
-	// 回転の更新処理
-	UpdateRotate(vMove);
+	if (m_spActionState)
+	{
+		m_spActionState->Update(*this);
+	}
 
 	// 当たり判定更新
 	UpdateCollition();
-
-	//攻撃
-	DoAttack();
 
 	// 行列の更新(最終的な座標を確定してから)
 	UpdateMatrix();
@@ -73,7 +73,23 @@ void Player::Update()
 		m_spCamera->SetCameraMatrix(trans);
 	}
 
-	m_animator.AdvanceTime(m_modelWork.WorkNodes());
+	// ラムダ式
+	auto onEvent = [this](const json11::Json& event)
+	{
+		std::string eventName = event["EventName"].string_value();
+		if (eventName == "PlaySound")
+		{
+
+		}
+		else if (eventName == "Cancel")
+		{
+
+		}
+	};
+
+	m_animator.AdvanceTime(m_modelWork.WorkNodes(), 1.0f, onEvent);
+
+
 	m_modelWork.CalcNodeMatrices();
 }
 
@@ -90,10 +106,8 @@ void Player::UpdateMove(Math::Vector3& dstMove)
 
 	Math::Vector3 moveVec;
 
-	if (GetAsyncKeyState('W') & 0x8000) { moveVec.z += 1.0f; }	// 前移動
-	if (GetAsyncKeyState('S') & 0x8000) { moveVec.z -= 1.0f; }	// 後ろ移動
-	if (GetAsyncKeyState('A') & 0x8000) { moveVec.x -= 1.0f; }	// 左移動
-	if (GetAsyncKeyState('D') & 0x8000) { moveVec.x += 1.0f; }	// 右移動
+	moveVec.x = m_axisL.x;
+	moveVec.z = m_axisL.y;
 
 	// 斜め移動による加速を補正
 	moveVec.Normalize();
@@ -169,21 +183,32 @@ void Player::UpdateMatrix()
 
 void Player::DoAttack()
 {	
-	if (GetAsyncKeyState(VK_SPACE))
-	{
 		for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
 		{
 			if (spObj->GetClassID() != GameObject::eEnemy) { continue; }
 
-			SphereInfo info(GetPos(), m_radius);
+			Math::Vector3 attackPos = GetPos();
+			attackPos += (m_mWorld.Backward() * 0.5);
+
+			SphereInfo info(attackPos, m_radius+0.05f);
+
+			BumpResult result;
 
 			// 相手の判定関数を利用する
-			if (CheckCollisionDamage(info))
+			if (spObj->CheckCollisionBump(info, result))
 			{
-				
+				auto chara = std::dynamic_pointer_cast<Character>(spObj);
+
+				if (chara==nullptr) { continue; }
+				DamageArg arg;
+				arg.damage = 10;
+				chara->NotifyDamage(arg);
+
+				if (arg.ret_IsHit)
+				{
+				}
 			}
 		}
-	}
 }
 
 // 当たり判定の更新
@@ -204,4 +229,82 @@ void Player::UpdateCollition()
 		}
 	}
 }
+
+void Player::ActionWait::Update(Player& owner)
+{
+	//移動キーが押された？
+	
+
+	//ジャンプキー押された？
+
+
+	if (!owner.CheckWait())
+	{
+		owner.ChangeMove();
+		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Run"));
+	}
+
+	if (GetAsyncKeyState(VK_SPACE))
+	{
+		owner.ChangeAttack();
+		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"));
+	}
+}
+
+
+void Player::ActionMove::Update(Player& owner)
+{
+	if (owner.CheckWait())
+	{
+		owner.ChangeWait();
+
+		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Idle"));
+
+		return;
+	}
+	
+	if (GetAsyncKeyState(VK_SPACE))
+	{
+		owner.ChangeAttack();
+		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"));
+	}
+
+	Math::Vector3 vMove;
+
+	// 移動の更新処理
+	owner.UpdateMove(vMove);
+
+	// 回転の更新処理
+	owner.UpdateRotate(vMove);
+
+
+}
+
+
+
+void Player::ActionAttack::Update(Player& owner)
+{
+	//攻撃可能で無かった時はIdle状態に戻す
+	if (!owner.m_canAttack)
+		owner.ChangeWait();
+
+	if()
+	
+
+	
+	//攻撃の処理
+	owner.DoAttack();
+}
+
+void Player::UpdateInput()
+{
+	m_axisL = Math::Vector2::Zero;
+
+	if (GetAsyncKeyState('W')) { m_axisL.y += 1.0f; }	// 前移動
+	if (GetAsyncKeyState('S')) { m_axisL.y -= 1.0f; }	// 後ろ移動
+	if (GetAsyncKeyState('A')) { m_axisL.x -= 1.0f; }	// 左移動
+	if (GetAsyncKeyState('D')) { m_axisL.x += 1.0f; }	// 右移動
+	
+}
+
 

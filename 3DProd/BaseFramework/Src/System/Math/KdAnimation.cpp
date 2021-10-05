@@ -155,7 +155,7 @@ void KdAnimationData::Node::Interpolate(Math::Matrix& rDst, float time)
 	}
 }
 
-void KdAnimator::AdvanceTime(std::vector<KdModelWork::Node>& rNodes, float speed)
+void KdAnimator::AdvanceTime(std::vector<KdModelWork::Node>& rNodes, float speed, std::function<void(const json11::Json&)> onEvent)
 {
 	if (!m_spAnimation) { return; }
 
@@ -175,6 +175,19 @@ void KdAnimator::AdvanceTime(std::vector<KdModelWork::Node>& rNodes, float speed
 
 	// アニメーションのフレームを進める
 	m_time += speed;
+
+	// スクリプチェック
+	if (m_spAnimation->m_script.is_null() == false)
+	{
+		for (auto&& event : m_spAnimation->m_script.array_items())
+		{
+			int time = event["Time"].int_value();
+			if (time == m_time)// 妖怪量
+			{
+				if(onEvent != nullptr) onEvent(event);
+			}
+		}
+	}
 
 	// アニメーションデータの最後のフレームを超えたら
 	if (m_time >= m_spAnimation->m_maxLength)

@@ -24,6 +24,9 @@ struct KdAnimationData
 	// アニメの長さ
 	float			m_maxLength = 0;
 
+	// スクリプトデータ
+	json11::Json	m_script;
+
 	// １ノードのアニメーションデータ
 	struct Node
 	{
@@ -42,11 +45,15 @@ struct KdAnimationData
 
 	// 全ノード用アニメーションデータ
 	std::vector<Node>	m_nodes;
+
+
 };
 
 class KdAnimator
 {
 public:
+
+	float GetTime() const { return m_time; }
 
 	inline void SetAnimation(const std::shared_ptr<KdAnimationData>& rData, bool isLoop = true)
 	{
@@ -66,7 +73,8 @@ public:
 	}
 
 	// アニメーションの更新
-	void AdvanceTime( std::vector<KdModelWork::Node>& rNodes, float speed = 1.0f);
+	void AdvanceTime( std::vector<KdModelWork::Node>& rNodes, float speed = 1.0f, std::function<void(const json11::Json&)> onEvent = nullptr);
+
 
 private:
 

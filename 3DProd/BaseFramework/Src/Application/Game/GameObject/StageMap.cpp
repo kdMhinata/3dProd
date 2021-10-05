@@ -2,7 +2,7 @@
 
 void StageMap::Init()
 {
-	m_wallModel.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon.gltf"));
+	m_wallModel.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/DungeonStage.gltf"));
 
 	//m_floorModel.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Floor/floor.gltf"));
 }

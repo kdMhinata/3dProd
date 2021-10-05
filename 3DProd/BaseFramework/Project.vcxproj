@@ -149,6 +149,7 @@
     <ClInclude Include="Src\Application\Application.h" />
     <ClInclude Include="Src\Application\Game\Camera\FPSCamera.h" />
     <ClInclude Include="Src\Application\Game\Camera\TPSCamera.h" />
+    <ClInclude Include="Src\Application\Game\GameObject\Character.h" />
     <ClInclude Include="Src\Application\Game\GameObject\Enemy.h" />
     <ClInclude Include="Src\Application\Game\GameObject\GameObject.h" />
     <ClInclude Include="Src\Application\Game\GameObject\Player.h" />
@@ -180,6 +181,7 @@
   <ItemGroup>
     <ClCompile Include="Src\Application\Game\Camera\FPSCamera.cpp" />
     <ClCompile Include="Src\Application\Game\Camera\TPSCamera.cpp" />
+    <ClCompile Include="Src\Application\Game\GameObject\Character.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Enemy.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\GameObject.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Player.cpp" />

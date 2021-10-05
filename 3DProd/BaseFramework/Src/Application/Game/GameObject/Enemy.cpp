@@ -12,9 +12,11 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
-	if (!m_isAlive) { return; }
-	UpdateRotate();
-	UpdateMove();
+	if (m_isAlive)
+	{
+		UpdateRotate();
+		UpdateMove();
+	}
 
 	// ワールド行列生成
 	Math::Matrix trans = Math::Matrix::CreateTranslation(m_worldPos);
@@ -34,6 +36,12 @@ void Enemy::Update()
 	{
 		m_isAlive = false;
 	}
+}
+
+void Enemy::NotifyDamage(DamageArg& arg)
+{
+	m_hp -= arg.damage;
+	arg.ret_IsHit = true;
 }
 
 void Enemy::Release()

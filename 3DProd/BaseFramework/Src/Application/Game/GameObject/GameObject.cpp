@@ -48,7 +48,7 @@ bool GameObject::CheckCollisionBump(const RayInfo& info, BumpResult& result)
 	return result.m_isHit;
 }
 
-bool GameObject::CheckCollisionDamage(const SphereInfo& info)
+bool GameObject::CheckCollisionDamage(const SphereInfo& info, BumpResult& result)
 {
 	Math::Vector3 betweenVec = info.m_pos - m_mWorld.Translation();
 
@@ -58,10 +58,20 @@ bool GameObject::CheckCollisionDamage(const SphereInfo& info)
 	// 当たり判定の半径合計
 	float hitRadius = m_radius + info.m_radius;
 
-	bool result;
 	// 判定の結果
-	result = (distanceSqr <= (hitRadius * hitRadius));
+	result.m_isHit = (distanceSqr <= (hitRadius * hitRadius));
 
-	return result;
+	if (result.m_isHit)
+	{
+		// 押し戻し
+		result.m_pushVec = betweenVec;
+		result.m_pushVec.Normalize();
+
+		float distance = std::sqrt(distanceSqr);
+
+		// 押し戻すベクトル×押し戻す値
+		result.m_pushVec *= hitRadius - distance;
+	}
+	return result.m_isHit;
 }
 

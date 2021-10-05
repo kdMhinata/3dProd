@@ -1,8 +1,9 @@
 ﻿#pragma once
 
 #include"GameObject.h"
+#include"Character.h"
 
-class Enemy : public GameObject
+class Enemy : public Character
 {
 public: 
 	Enemy(){}
@@ -12,8 +13,9 @@ public:
 	void Update() override;
 
 	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
-	void SetHp(int hp) { m_hp = hp; };
-	int GetHp() { return m_hp; };
+	int GetHp(){ return m_hp; };
+
+	virtual void NotifyDamage(DamageArg& arg) override;
 
 	classID GetClassID() const override{ return eEnemy; }
 
@@ -32,7 +34,7 @@ private:
 	std::weak_ptr<const GameObject> m_wpTarget;
 
 	float m_stopDist = 1.01f;
-	int m_hp=100;
+	int m_hp=30;
 	bool m_isAlive = true;
 
 };

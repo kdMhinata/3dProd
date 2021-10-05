@@ -64,7 +64,7 @@ public:
 	// オブジェクト同士の衝突判定
 	bool CheckCollisionBump(const RayInfo& info, BumpResult& result);
 
-	bool CheckCollisionDamage(const SphereInfo& info);
+	bool CheckCollisionDamage(const SphereInfo& info, BumpResult& result);
 
 // 継承したもののみ触れる 
 protected:
