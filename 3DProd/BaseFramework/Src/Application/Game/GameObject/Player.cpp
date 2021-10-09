@@ -73,24 +73,31 @@ void Player::Update()
 		m_spCamera->SetCameraMatrix(trans);
 	}
 
+	/*
 	// ƒ‰ƒ€ƒ_®
 	auto onEvent = [this](const json11::Json& event)
 	{
-		std::string eventName = event["EventName"].string_value();
-		if (eventName == "PlaySound")
-		{
-
-		}
-		else if (eventName == "Cancel")
-		{
-
-		}
 	};
-
-	m_animator.AdvanceTime(m_modelWork.WorkNodes(), 1.0f, onEvent);
-
+	*/
+	
+	m_animator.AdvanceTime(m_modelWork.WorkNodes(), 1.0f, 
+		std::bind(&Player::ScriptProc, this, std::placeholders::_1)
+	);
 
 	m_modelWork.CalcNodeMatrices();
+}
+
+void Player::ScriptProc(const json11::Json& event)
+{
+	std::string eventName = event["EventName"].string_value();
+	if (eventName == "PlaySound")
+	{
+		event["SoundName"];
+	}
+	else if (eventName == "Cancel")
+	{
+
+	}
 }
 
 void Player::Release()
@@ -287,10 +294,6 @@ void Player::ActionAttack::Update(Player& owner)
 	//UŒ‚‰Â”\‚Å–³‚©‚Á‚½‚ÍIdleó‘Ô‚É–ß‚·
 	if (!owner.m_canAttack)
 		owner.ChangeWait();
-
-	if()
-	
-
 	
 	//UŒ‚‚Ìˆ—
 	owner.DoAttack();

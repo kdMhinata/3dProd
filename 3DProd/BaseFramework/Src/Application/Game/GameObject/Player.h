@@ -24,6 +24,8 @@ public:
 	classID GetClassID() const override { return ePlayer; }
 
 private:
+	void ScriptProc(const json11::Json& event);
+
 	void Release();		// ‰ð•ú
 
 	void UpdateMove(Math::Vector3& dstMove);

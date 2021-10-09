@@ -141,6 +141,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Library\json11KdCustom\json11.hpp" />
     <ClInclude Include="..\Library\strconv.h" />
     <ClInclude Include="..\Library\tinygltf\json.hpp" />
     <ClInclude Include="..\Library\tinygltf\stb_image.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="src\System\Window\KdWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Library\json11KdCustom\json11.cpp" />
     <ClCompile Include="Src\Application\Game\Camera\FPSCamera.cpp" />
     <ClCompile Include="Src\Application\Game\Camera\TPSCamera.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Character.cpp" />

@@ -72,6 +72,25 @@ inline std::string KdGetDirFromPath(const std::string &path)
 	return (pos == std::string::npos) ? std::string() : path.substr(0, pos + 1);
 }
 
+// JSON読み込み
+inline json11::Json KdLoadJSONFile(const std::string& filename)
+{
+	// JSONファイルを開く
+	std::ifstream ifs(filename);
+	if (!ifs)return nullptr;
+
+	// 文字列として全読みおk
+	std::string strJson((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
+
+	// 文字列のJSONを解析(パース)する
+	std::string err;
+	json11::Json jsonObj = json11::Json::parse(strJson, err);
+	if (err.size() > 0)return nullptr;
+
+	return jsonObj;
+}
+
+
 //===========================================
 //
 // 文字列関係

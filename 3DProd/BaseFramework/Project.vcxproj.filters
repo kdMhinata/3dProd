@@ -55,6 +55,9 @@
     <Filter Include="Src\Application\Utility">
       <UniqueIdentifier>{086f7d0f-f160-4c40-a3fc-c6e357c1e19d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\json11">
+      <UniqueIdentifier>{40c9ac60-1a69-4e3f-984a-462a10cec834}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -165,6 +168,9 @@
     <ClInclude Include="Src\Application\Game\GameObject\Character.h">
       <Filter>Src\Application\Game\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Library\json11KdCustom\json11.hpp">
+      <Filter>Library\json11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -253,6 +259,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Game\GameObject\Character.cpp">
       <Filter>Src\Application\Game\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\json11KdCustom\json11.cpp">
+      <Filter>Library\json11</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

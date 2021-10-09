@@ -174,6 +174,7 @@ void KdAnimator::AdvanceTime(std::vector<KdModelWork::Node>& rNodes, float speed
 	}
 
 	// アニメーションのフレームを進める
+	m_prevTime = m_time;
 	m_time += speed;
 
 	// スクリプチェック
@@ -182,7 +183,7 @@ void KdAnimator::AdvanceTime(std::vector<KdModelWork::Node>& rNodes, float speed
 		for (auto&& event : m_spAnimation->m_script.array_items())
 		{
 			int time = event["Time"].int_value();
-			if (time == m_time)// 妖怪量
+			if (time <= m_time && time > m_prevTime)// 妖怪量
 			{
 				if(onEvent != nullptr) onEvent(event);
 			}
@@ -196,10 +197,12 @@ void KdAnimator::AdvanceTime(std::vector<KdModelWork::Node>& rNodes, float speed
 		{
 			// アニメーションの最初に戻る（ループさせる
 			m_time = 0.0f;
+			m_prevTime = 0.0f;
 		}
 		else
 		{
 			m_time = m_spAnimation->m_maxLength;
+			m_prevTime = m_spAnimation->m_maxLength;
 		}
 	}
 }

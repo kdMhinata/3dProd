@@ -80,6 +80,7 @@ private:
 
 	std::shared_ptr<KdAnimationData>	m_spAnimation = nullptr;	// 再生するアニメーションデータ
 
+	float m_prevTime = 0.0f;
 	float m_time = 0.0f;
 
 	bool m_isLoop = false;

@@ -1,0 +1,40 @@
+{
+	"Animations": [
+		{
+			"AnimName": "Run",
+			"Data": [
+				{
+					"EventName": "PlaySound",
+					"Time": 2,
+					"SoundName": "Slash.wav"
+				}
+			]
+		},
+		{
+			"AnimName": "Attack1",
+			"Data": [
+				{
+					"EventName": "PlaySound",
+					"Time": 15,
+					"SoundName": "Slash.wav"
+				},
+				{
+					"EventName": "Cancel",
+					"Time": 20,
+					"AnimName": "Attack2"
+				}
+			]
+		},
+
+		{
+			"AnimName": "Attack2",
+			"Data": [
+				{
+					"EventName": "PlaySound",
+					"Time": 10,
+					"SoundName": "Slash2.wav"
+				}
+			]
+		}
+	]
+}

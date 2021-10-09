@@ -30,24 +30,25 @@ bool KdModelData::Load(const std::string& filename)
 
 	// model.gltf -> model.gltf.animscript
 	std::string animJsonFile = filename + ".animscript";
-	json11::Json animScript = LoadJson(animJsonFile);
-
-	for (auto&& anim : animScript["Animations"].array_items())
+	json11::Json animScript = KdLoadJSONFile(animJsonFile);
+	if (animScript.is_object() == true)
 	{
-		std::string animName = anim["AnimName"].string_value();
-
-		// 検索
-		auto found = std::find(m_spAnimations.begin(), m_spAnimations.end(),
-			[&animName](const std::shared_ptr<KdAnimationData>& anim)
-			{
-				return anim->m_name == animName;
-			});
-		if (found != m_spAnimations.end())
+		for (auto&& anim : animScript["Animations"].array_items())
 		{
-			(*found)->m_script = anim["Data"];
+			std::string animName = anim["AnimName"].string_value();
+
+			// 検索
+			auto found = std::find_if(m_spAnimations.begin(), m_spAnimations.end(),
+				[&animName](const std::shared_ptr<KdAnimationData>& anim)
+				{
+					return anim->m_name == animName;
+				});
+			if (found != m_spAnimations.end())
+			{
+				(*found)->m_script = anim["Data"];
+			}
 		}
 	}
-
 
 
 	return true;
