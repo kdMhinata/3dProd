@@ -11,7 +11,7 @@ class Player : public Character
 {
 public:
 	Player();
-	virtual ~Player() override;
+	virtual ~Player() override { Release(); };
 
 	void Init() override;
 	void Update() override;
@@ -22,6 +22,12 @@ public:
 	const Math::Vector3 GetPos() const override{ return m_worldPos; }
 
 	classID GetClassID() const override { return ePlayer; }
+
+	// 
+	void SetInput(const std::shared_ptr<BaseInput>& input)
+	{
+		m_input = input;
+	}
 
 private:
 	void ScriptProc(const json11::Json& event);
@@ -36,7 +42,7 @@ private:
 	void UpdateCollition();		// 当たり判定の更新
 
 	void UpdateInput();
-	Math::Vector2 m_axisL;
+//	Math::Vector2 m_axisL;
 
 	Math::Vector3	m_worldPos;		// ワールド行列を作るための座標
 	Math::Vector3	m_worldRot;		// ワールド行列を作るための回転
@@ -44,13 +50,16 @@ private:
 	std::shared_ptr<TPSCamera>		m_spCamera;
 	std::shared_ptr<Enemy>			m_enemy;
 	
-	bool m_canShot = true;
+	std::shared_ptr<BaseInput>		m_input;
+
 	bool m_canAttack = true;
-	int atkCnt = 31;
+	bool m_atkComboFlg = false;
+
+	std::string m_atkCancelAnimName = "";
 
 	bool CheckWait()
 	{
-		if (m_axisL.LengthSquared() <= 0)
+		if (m_input->GetAxisL().LengthSquared() <= 0)
 			return true; 
 		return false;
 	}
@@ -71,10 +80,26 @@ private:
 	void ChangeMove()
 	{
 		m_spActionState = std::make_shared<ActionMove>();
+		m_spActionState->Entry(*this);
 	};
 	void ChangeAttack()
 	{
 		m_spActionState = std::make_shared<ActionAttack>();
+	}
+	void ChangeDodge()
+	{
+		m_spActionState = std::make_shared<ActionDodge>();
+	}
+
+
+	template<class Type>
+	void ChangeAction()
+	{
+		m_spActionState->Exit(*this);
+
+		m_spActionState = std::make_shared<Type>();
+
+		m_spActionState->Entry(*this);
 	}
 
 	class BaseAction
@@ -88,21 +113,28 @@ private:
 	class ActionWait : public BaseAction
 	{
 	public:
-		
+		void Entry(Player& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Idle")); };
 		void Update(Player& owner) override;
 	};
 
 	class ActionMove : public BaseAction
 	{
 	public:
-		void Entry(Player& owner)
-		{
-			owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Run"));
-		}
+		void Entry(Player& owner){owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Run"));}
 		void Update(Player& owner) override;
 	};
 
 	class ActionAttack : public BaseAction
+	{
+	public:
+		void Entry(Player& owner)
+		{
+			owner.m_atkComboFlg = false;
+		}
+		void Update(Player& owner) override;
+	};
+
+	class ActionDodge : public BaseAction
 	{
 	public:
 		void Update(Player& owner) override;
@@ -112,6 +144,9 @@ private:
 
 
 	KdAnimator m_animator;
+
+	//オーディオ管理クラス
+	KdAudioManager m_audioManager;
 
 };
 

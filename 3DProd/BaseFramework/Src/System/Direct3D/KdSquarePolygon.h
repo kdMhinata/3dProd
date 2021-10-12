@@ -10,7 +10,7 @@ public:
 	void Init(float w, float h, const Math::Vector4& _color);
 
 	// 描画
-	void Draw(int setTextureNo);
+	void Draw(int setTextureNo) const;
 
 	// 画像をセット
 	inline void SetTexture(const std::shared_ptr<KdTexture>& tex)
@@ -35,6 +35,10 @@ public:
 
 	// アニメーションの再生が終わった？
 	bool IsAnimationEnd();
+
+	// アニメーションのコマ数を取得
+	int GetAnimationSize() const { return(m_animSplitX * m_animSplitY); }
+
 
 private:
 

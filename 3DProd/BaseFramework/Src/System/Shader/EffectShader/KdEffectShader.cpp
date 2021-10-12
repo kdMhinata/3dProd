@@ -103,6 +103,18 @@ void KdEffectShader::DrawModel(const KdModelWork& rModel, const Math::Matrix& mW
 	}
 }
 
+void KdEffectShader::DrawSquarePolygon(const KdSquarePolygon& rSquarePolygon, const Math::Matrix& mWorld, int textureIndex)
+{
+	D3D.WorkDevContext()->IASetInputLayout(m_inputLayout);
+
+	m_cb1_Material.Work().BaseColor = kWhiteColor;
+
+	SetWorldMatrix(mWorld);
+	WriteToCB();
+
+	rSquarePolygon.Draw(textureIndex);
+}
+
 bool KdEffectShader::Init()
 {
 	//-------------------------------------

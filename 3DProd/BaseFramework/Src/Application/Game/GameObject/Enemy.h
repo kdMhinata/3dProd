@@ -3,6 +3,29 @@
 #include"GameObject.h"
 #include"Character.h"
 
+class EnemyAIInput : public BaseInput
+{
+public:
+	virtual void Update() override
+	{
+		if (1)
+		{
+			m_axisL.x = 1;
+		}
+
+		// 周囲を判定
+		if (1)
+		{
+//			m_target = player;
+		}
+
+		// ステートベースAI
+	}
+
+private:
+	std::weak_ptr<GameObject> m_target;
+};
+
 class Enemy : public Character
 {
 public: 
@@ -11,6 +34,7 @@ public:
 
 	void Init() override;
 	void Update() override;
+	virtual bool IsAlive() override { return m_isAlive; }
 
 	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
 	int GetHp(){ return m_hp; };
@@ -20,6 +44,8 @@ public:
 	classID GetClassID() const override{ return eEnemy; }
 
 private:
+
+	void ScriptProc(const json11::Json& event);
 
 	void Release();
 
@@ -31,10 +57,85 @@ private:
 
 	KdAnimator m_animator;
 
+	KdAudioManager m_audioManager;
+
 	std::weak_ptr<const GameObject> m_wpTarget;
 
 	float m_stopDist = 1.01f;
 	int m_hp=30;
 	bool m_isAlive = true;
+	bool m_canAttack = true;
+
+
+
+	bool CheckWait()
+	{
+		
+	}
+
+	bool CheckAttack()
+	{
+		if (m_canAttack)
+			return true;
+		return false;
+	}
+
+	void ChangeWait()
+	{
+		m_spActionState->Exit(*this);
+		m_spActionState = std::make_shared<ActionWait>();
+		m_spActionState->Entry(*this);
+	};
+	void ChangeMove()
+	{
+		m_spActionState = std::make_shared<ActionMove>();
+		m_spActionState->Entry(*this);
+	};
+	void ChangeAttack()
+	{
+		m_spActionState = std::make_shared<ActionAttack>();
+	}
+	void ChangeElimination()
+	{
+		m_spActionState = std::make_shared<ActionElimination>();
+		m_spActionState->Entry(*this);
+	}
+	
+	class BaseAction
+	{
+	public:
+		virtual void Entry(Enemy& owner) {};
+		virtual void Update(Enemy& owner) = 0;
+		virtual void Exit(Enemy& owner) {};
+	};
+
+	class ActionWait : public BaseAction
+	{
+	public:
+		void Entry(Enemy& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Idle")); };
+		void Update(Enemy& owner) override;
+	};
+
+	class ActionMove : public BaseAction
+	{
+	public:
+		void Entry(Enemy& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Run")); }
+		void Update(Enemy& owner) override;
+	};
+
+	class ActionAttack : public BaseAction
+	{
+	public:
+		void Update(Enemy& owner) override;
+	};
+
+	class ActionElimination :public BaseAction
+	{
+	public:
+		void Entry(Enemy& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Die"), false); }
+		void Update(Enemy& owner) override;
+	};
+
+	std::shared_ptr<BaseAction> m_spActionState = nullptr;
 
 };

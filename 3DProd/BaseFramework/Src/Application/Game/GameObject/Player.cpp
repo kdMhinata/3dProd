@@ -3,13 +3,10 @@
 #include"../Camera/TPSCamera.h"
 #include"../GameSystem.h"
 #include "Enemy.h"
+#include "Effect2D.h"
+
 Player::Player()
 {
-}
-
-Player::~Player()
-{
-	Release();
 }
 
 void Player::Init()
@@ -18,8 +15,6 @@ void Player::Init()
 
 	m_spCamera = std::make_shared<TPSCamera>();
 
-	m_enemy = std::make_shared<Enemy>();
-
 	GameSystem::GetInstance().SetCamera(m_spCamera);
 
 	m_spCamera->Init();
@@ -27,7 +22,7 @@ void Player::Init()
 	m_spCamera->SetProjectionMatrix(60.0f, 3000.0f);	// 視野角の設定（左右に60度＝120度）,最大描画距離(短いほど判定が正確になる)
 
 	// カメラの注視点から5m離れる
-	m_spCamera->SetLocalPos(Math::Vector3(0.0f, 0.0f, -5.0f));
+	m_spCamera->SetLocalPos(Math::Vector3(0.0f, 0.0f, -10.0f));
 
 	// キャラクターから注視点へのローカル座標を上に3m上げる
 	m_spCamera->SetLocalGazePos(Math::Vector3(0.0f, 3.0f, 0.0f));
@@ -44,12 +39,20 @@ void Player::Init()
 
 
 	m_spActionState = std::make_shared<ActionWait>();
+
+	//AudioEngin初期化
+	DirectX::AUDIO_ENGINE_FLAGS eflags =
+		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
+	m_audioManager.Init();
+
 }
 
 // 更新処理
 void Player::Update()
 {
-	UpdateInput();
+//	UpdateInput();
+
+	m_input->Update();
 
 	if (m_spActionState)
 	{
@@ -85,23 +88,54 @@ void Player::Update()
 	);
 
 	m_modelWork.CalcNodeMatrices();
+
+	//サウンド関連の更新
+	{
+		Math::Matrix listenerMat;
+
+		if (m_spCamera)
+		{
+			listenerMat = m_spCamera->GetCameraMatrix();
+		}
+		m_audioManager.Update(listenerMat.Translation(), listenerMat.Backward());
+	}
 }
 
 void Player::ScriptProc(const json11::Json& event)
 {
 	std::string eventName = event["EventName"].string_value();
+
 	if (eventName == "PlaySound")
 	{
-		event["SoundName"];
+		const std::string& soundFile = event["SoundName"].string_value();
+		m_audioManager.Play(soundFile);
 	}
-	else if (eventName == "Cancel")
+	else if (eventName == "DoAttack")
 	{
+		DoAttack();
+	}
+	else if (eventName == "ConToAtk2")
+	{
+//		m_atkComboFlg = false;
 
+		if (m_atkComboFlg)
+		{
+			m_atkCancelAnimName = event["AnimName"].string_value();
+		}
+	}
+	else if (eventName == "invincible")
+	{
+		//無敵処理　後で書く
+	}
+	else if (eventName == "End")
+	{
+		ChangeWait();
 	}
 }
 
 void Player::Release()
 {
+	m_audioManager.StopAllSound();
 	m_spCamera.reset();
 }
 
@@ -109,12 +143,12 @@ void Player::Release()
 void Player::UpdateMove(Math::Vector3& dstMove)
 {
 	// キャラの移動処理
-	float moveSpd = 0.05f;
+	float moveSpd = 0.1f;
 
 	Math::Vector3 moveVec;
 
-	moveVec.x = m_axisL.x;
-	moveVec.z = m_axisL.y;
+	moveVec.x = m_input->GetAxisL().x;
+	moveVec.z = m_input->GetAxisL().y;
 
 	// 斜め移動による加速を補正
 	moveVec.Normalize();
@@ -171,7 +205,7 @@ void Player::UpdateRotate(const Math::Vector3& srcMove)
 	}
 
 	// 回転量代入
-	rotateAng = std::clamp(rotateAng, -8.0f, 8.0f);
+	rotateAng = std::clamp(rotateAng, -20.0f, 20.0f);
 	
 	m_worldRot.y += rotateAng;
 }
@@ -213,6 +247,18 @@ void Player::DoAttack()
 
 				if (arg.ret_IsHit)
 				{
+					//ヒット時行う処理
+					//爆発
+					std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
+
+					Math::Vector3 effectPos = (attackPos+=(m_mWorld.Up()*0.5));
+
+					spEffect->Init();
+					spEffect->SetAnimation(5, 5);
+					spEffect->SetPos(effectPos);
+					spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/Explosion.png"));
+
+					GameInstance.AddObject(spEffect);
 				}
 			}
 		}
@@ -239,41 +285,43 @@ void Player::UpdateCollition()
 
 void Player::ActionWait::Update(Player& owner)
 {
-	//移動キーが押された？
-	
-
-	//ジャンプキー押された？
-
-
 	if (!owner.CheckWait())
 	{
 		owner.ChangeMove();
-		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Run"));
 	}
 
-	if (GetAsyncKeyState(VK_SPACE))
+	if (owner.m_input->IsPressButton(0, false))
 	{
-		owner.ChangeAttack();
+//		owner.ChangeAttack();
+		owner.ChangeAction<Player::ActionAttack>();
 		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"));
 	}
-}
 
+	if (GetAsyncKeyState(VK_SHIFT))
+	{
+		owner.ChangeAction<Player::ActionDodge>();
+//		owner.ChangeDodge();
+		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Dodge"));
+	}
+}
 
 void Player::ActionMove::Update(Player& owner)
 {
 	if (owner.CheckWait())
 	{
-		owner.ChangeWait();
-
-		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Idle"));
-
-		return;
+		owner.ChangeAction<Player::ActionWait>();
 	}
 	
-	if (GetAsyncKeyState(VK_SPACE))
+	if (owner.m_input->IsPressButton(0, false))
 	{
-		owner.ChangeAttack();
+		owner.ChangeAction<Player::ActionAttack>();
 		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"));
+	}
+
+	if (GetAsyncKeyState(VK_SHIFT))
+	{
+		owner.ChangeAction<Player::ActionDodge>();
+		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Dodge"));
 	}
 
 	Math::Vector3 vMove;
@@ -287,27 +335,44 @@ void Player::ActionMove::Update(Player& owner)
 
 }
 
-
-
 void Player::ActionAttack::Update(Player& owner)
 {
-	//攻撃可能で無かった時はIdle状態に戻す
-	if (!owner.m_canAttack)
-		owner.ChangeWait();
-	
-	//攻撃の処理
-	owner.DoAttack();
+
+	if (owner.m_input->IsPressButton(0, false))
+	{
+		owner.m_atkComboFlg = true;
+	}
+
+	if (owner.m_atkCancelAnimName.size() > 0)
+	{
+		owner.ChangeAttack();
+		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation(owner.m_atkCancelAnimName));
+		owner.m_atkCancelAnimName = "";
+	}
+}
+
+void Player::ActionDodge::Update(Player& owner)
+{
+	//ここ向いてる方向に回避したい処理書きたい
+	Math::Vector3 dodgeVec = owner.m_mWorld.Backward();
+
+	dodgeVec.Normalize();
+	dodgeVec *= 0.3f;
+
+	owner.m_worldPos.x += dodgeVec.x;
+	owner.m_worldPos.z += dodgeVec.z;
 }
 
 void Player::UpdateInput()
 {
+	/*
 	m_axisL = Math::Vector2::Zero;
 
 	if (GetAsyncKeyState('W')) { m_axisL.y += 1.0f; }	// 前移動
 	if (GetAsyncKeyState('S')) { m_axisL.y -= 1.0f; }	// 後ろ移動
 	if (GetAsyncKeyState('A')) { m_axisL.x -= 1.0f; }	// 左移動
 	if (GetAsyncKeyState('D')) { m_axisL.x += 1.0f; }	// 右移動
-	
+	*/
 }
 
 

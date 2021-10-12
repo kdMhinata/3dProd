@@ -36,6 +36,37 @@ const std::shared_ptr<KdModelData> ResourceFactory::GetModelData(const std::stri
 	return nullptr;
 }
 
+const std::shared_ptr<KdTexture> ResourceFactory::GetTexture(const std::string& fileName)
+{
+	// リスト内のキーで検索
+	//std::unordered_map<std::string,std::shared_ptr<KdModelData>>::iterator
+		//foundItr = m_modelMap.find(fileName);
+	auto foundItr = m_textureMap.find(fileName);
+	// もしリストの中にある
+	if (foundItr != m_textureMap.end())
+	{
+		// 見つけたデータを返す
+		return (*foundItr).second;	// second…2つ目の要素(モデルデータ)を返す
+	}
+
+	// もしリスト内にない場合
+	std::shared_ptr<KdTexture> newTexture = std::make_shared<KdTexture>();
+
+	// モデルを新規で読み込む
+	if (newTexture->Load(fileName))
+	{
+		m_textureMap[fileName] = newTexture;
+		return newTexture;
+	}
+
+	// 読み込みが失敗
+	std::string errorMsg = "ResourceFactory::GetTexture()  Failed" + fileName;
+
+	assert(0 && errorMsg.c_str());
+
+	return nullptr;
+}
+
 void ResourceFactory::Release()
 {
 	m_modelMap.clear();

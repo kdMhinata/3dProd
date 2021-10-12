@@ -201,8 +201,8 @@ void KdAnimator::AdvanceTime(std::vector<KdModelWork::Node>& rNodes, float speed
 		}
 		else
 		{
-			m_time = m_spAnimation->m_maxLength;
-			m_prevTime = m_spAnimation->m_maxLength;
+//			m_time = m_spAnimation->m_maxLength;
+//			m_prevTime = m_spAnimation->m_maxLength;
 		}
 	}
 }

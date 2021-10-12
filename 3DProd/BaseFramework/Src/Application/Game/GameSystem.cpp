@@ -21,6 +21,7 @@ void GameSystem::Init()
 
 	std::shared_ptr<Player> spPlayer = std::make_shared<Player>();	// プレイヤーのインスタンス化
 	spPlayer->Init();
+	spPlayer->SetInput(std::make_shared<PlayerInput>());
 	AddObject(spPlayer);
 
 	std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
@@ -107,17 +108,23 @@ void GameSystem::Draw()
 		D3D.WorkDevContext()->RSSetState(SHADER->m_rs_CullNone);
 		
 	
-		/*// ゲームオブジェクト(透明物)の描画
+		// ゲームオブジェクト(透明物)の描画
 		for (std::shared_ptr<GameObject>& spObject : m_spObjects)
 		{
 			spObject->DrawEffect();
-		}*/
+		}
 
 		D3D.WorkDevContext()->OMSetDepthStencilState(SHADER->m_ds_ZEnable_ZWriteEnable, 0);
 		// 裏面カリング(表面のみ描画)
 		D3D.WorkDevContext()->RSSetState(SHADER->m_rs_CullBack);
 	}
 }
+
+const std::shared_ptr<KdCamera> GameSystem::GetCamera() const
+{
+	return m_spCamera;
+}
+
 void GameSystem::Release()
 {
 	m_spObjects.clear();

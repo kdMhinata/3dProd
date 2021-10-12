@@ -1,0 +1,13 @@
+{
+	"Animations": [
+		{
+			"AnimName": "Die",
+			"Data": [
+				{
+					"EventName": "Elim",
+					"Time": 300
+				}
+			]
+		}
+	]
+}

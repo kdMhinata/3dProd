@@ -71,6 +71,9 @@ public:
 	// モデル描画
 	void DrawModel(const KdModelWork& rModel, const Math::Matrix& mWorld = Math::Matrix::Identity);
 
+	//四角ポリゴン描画
+	void DrawSquarePolygon(const KdSquarePolygon& rSquarePolygon, const Math::Matrix& mWorld = Math::Matrix::Identity, int textureIndex = 0);
+
 	//================================================
 	// 
 	//================================================

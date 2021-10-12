@@ -7,15 +7,21 @@ void Enemy::Init()
 	
 	m_radius = 0.5f;
 
-	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Walk"));
+	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Run"));
+
+	m_spActionState = std::make_shared<ActionMove>();
+
+	//AudioEngin初期化
+	DirectX::AUDIO_ENGINE_FLAGS eflags =
+		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
+	m_audioManager.Init();
 }
 
 void Enemy::Update()
 {
-	if (m_isAlive)
+	if (m_spActionState)
 	{
-		UpdateRotate();
-		UpdateMove();
+		m_spActionState->Update(*this);
 	}
 
 	// ワールド行列生成
@@ -31,10 +37,22 @@ void Enemy::Update()
 
 	m_animator.AdvanceTime(m_modelWork.WorkNodes());
 	m_modelWork.CalcNodeMatrices();
-	
-	if (m_hp <= 0)
+
+	m_animator.AdvanceTime(m_modelWork.WorkNodes(), 1.0f,
+		std::bind(&Enemy::ScriptProc, this, std::placeholders::_1)
+	);
+
+	m_modelWork.CalcNodeMatrices();
+
+	//サウンド関連の更新
 	{
-		m_isAlive = false;
+		Math::Matrix listenerMat;
+
+		//if (m_spCamera)
+		//{
+		//	listenerMat = m_spCamera->GetCameraMatrix();
+		//}
+		m_audioManager.Update(listenerMat.Translation(), listenerMat.Backward());
 	}
 }
 
@@ -44,10 +62,27 @@ void Enemy::NotifyDamage(DamageArg& arg)
 	arg.ret_IsHit = true;
 }
 
+void Enemy::ScriptProc(const json11::Json& event)
+{
+	std::string eventName = event["EventName"].string_value();
+
+	if (eventName == "PlaySound")
+	{
+		const std::string& soundFile = event["SoundName"].string_value();
+		m_audioManager.Play(soundFile);
+	}
+	else if (eventName == "Elim")
+	{
+		m_isAlive = false;
+	}
+}
+
 void Enemy::Release()
 {
 	// 取得したm_pTargetの中身をを解放
 	SetTarget(nullptr);
+
+	m_audioManager.StopAllSound();
 }
 
 void Enemy::UpdateMove()
@@ -113,9 +148,35 @@ void Enemy::UpdateRotate()
 	}
 
 	// 一フレーム当たりの回転量の制御
-	float rotSpd = 2.0f;	// ここの角度によって振り向き速度が変わる
+	float rotSpd = 10.0f;	// ここの角度によって振り向き速度が変わる
 	float rotateAng = std::clamp(betweenAng, -rotSpd, rotSpd);
 
 	// 角度更新
 	m_worldRot.y += rotateAng;
+}
+
+void Enemy::ActionWait::Update(Enemy& owner)
+{
+	owner.ChangeMove();
+}
+
+void Enemy::ActionMove::Update(Enemy& owner)
+{
+	if (owner.m_hp <= 0)
+	{
+		owner.ChangeElimination();
+	}
+		// 回転の更新処理
+		owner.UpdateRotate();
+		// 移動の更新処理
+		owner.UpdateMove();
+	
+}
+
+void Enemy::ActionAttack::Update(Enemy& owner)
+{
+}
+
+void Enemy::ActionElimination ::Update(Enemy& owner)
+{
 }

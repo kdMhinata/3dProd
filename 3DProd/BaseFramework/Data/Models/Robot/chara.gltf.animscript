@@ -5,9 +5,15 @@
 			"Data": [
 				{
 					"EventName": "PlaySound",
-					"Time": 2,
-					"SoundName": "Slash.wav"
+					"Time": 5,
+					"SoundName": "Data/Audio/SE/Walk2.wav"
+				},
+				{
+					"EventName": "PlaySound",
+					"Time": 20,
+					"SoundName": "Data/Audio/SE/Walk1.wav"
 				}
+
 			]
 		},
 		{
@@ -15,13 +21,22 @@
 			"Data": [
 				{
 					"EventName": "PlaySound",
-					"Time": 15,
-					"SoundName": "Slash.wav"
+					"Time": 18,
+					"SoundName": "Data/Audio/SE/Slash1.wav"
 				},
 				{
-					"EventName": "Cancel",
-					"Time": 20,
+
+					"EventName": "DoAttack",
+					"Time": 18
+				},
+				{
+					"EventName": "ConToAtk2",
+					"Time": 21,
 					"AnimName": "Attack2"
+				},
+				{
+					"EventName": "End",
+					"Time": 31
 				}
 			]
 		},
@@ -31,8 +46,36 @@
 			"Data": [
 				{
 					"EventName": "PlaySound",
-					"Time": 10,
-					"SoundName": "Slash2.wav"
+					"Time": 17,
+					"SoundName": "Data/Audio/SE/Slash2.wav"
+				},
+				{
+
+					"EventName": "DoAttack",
+					"Time": 17
+				},
+				{
+					"EventName": "End",
+					"Time": 29
+				}
+			]
+		},
+		{
+			"AnimName": "Dodge",
+			"Data": [
+				{
+					"EventName": "PlaySound",
+					"Time": 1,
+					"SoundName": "Data/Audio/SE/Dodge.wav"
+				},
+				{
+
+					"EventName": "Invincible",
+					"Time": 1
+				},
+				{
+					"EventName": "End",
+					"Time": 13
 				}
 			]
 		}

@@ -19,7 +19,7 @@ void KdSquarePolygon::Init(float w, float h, const Math::Vector4& _color)
 	m_vertex[3].UV = { 1, 0 };
 }
 
-void KdSquarePolygon::Draw(int setTextureNo)
+void KdSquarePolygon::Draw(int setTextureNo) const
 {
 	// テクスチャセット
 	if (m_texture)

@@ -52,8 +52,12 @@ public:
 	virtual void Init(){}
 	virtual void Update(){}
 	virtual void Draw();
+	virtual void DrawEffect() {}
+	virtual void Draw2D() {}
 
-	bool IsAlive() { return m_isAlive; }
+	virtual bool IsAlive() { return m_isAlive; }
+
+	virtual void SetPos(const Math::Vector3& pos){m_mWorld.Translation(pos);}
 
 	virtual const Math::Vector3 GetPos() const { return m_mWorld.Translation(); }
 

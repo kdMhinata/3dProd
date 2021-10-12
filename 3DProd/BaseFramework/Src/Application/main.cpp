@@ -80,9 +80,6 @@ void Application::Release()
 	// Direct3D解放
 	D3D.Release();
 
-	// オーディオ解放
-	KD_AUDIO.Release();
-
 	// ウィンドウ削除
 	m_window.Release();
 }

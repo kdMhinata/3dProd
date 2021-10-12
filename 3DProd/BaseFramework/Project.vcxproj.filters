@@ -171,6 +171,9 @@
     <ClInclude Include="..\Library\json11KdCustom\json11.hpp">
       <Filter>Library\json11</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Game\GameObject\Effect2D.h">
+      <Filter>Src\Application\Game\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -262,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="..\Library\json11KdCustom\json11.cpp">
       <Filter>Library\json11</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Game\GameObject\Effect2D.cpp">
+      <Filter>Src\Application\Game\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
