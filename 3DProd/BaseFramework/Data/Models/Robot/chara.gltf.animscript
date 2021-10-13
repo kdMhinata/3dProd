@@ -25,6 +25,11 @@
 					"SoundName": "Data/Audio/SE/Slash1.wav"
 				},
 				{
+					"EventName": "AttackEffect",
+					"Time": 1,
+					"EffectName": "Data/Textures/Slash.png"
+				},
+				{
 
 					"EventName": "DoAttack",
 					"Time": 18
@@ -48,6 +53,11 @@
 					"EventName": "PlaySound",
 					"Time": 17,
 					"SoundName": "Data/Audio/SE/Slash2.wav"
+				},
+				{
+					"EventName": "AttackEffect",
+					"Time": 1,
+					"EffectName": "Data/Textures/Slash.png"
 				},
 				{
 

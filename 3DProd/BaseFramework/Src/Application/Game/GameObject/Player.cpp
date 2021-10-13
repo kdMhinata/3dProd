@@ -131,6 +131,21 @@ void Player::ScriptProc(const json11::Json& event)
 	{
 		ChangeWait();
 	}
+	else if (eventName == "AttackEffect")
+	{
+		const std::string& EffectFile = event["EffectName"].string_value();
+		//”š”­
+		std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
+		Math::Vector3 effectPos = GetPos();
+		effectPos += (m_mWorld.Up() * 0.5);
+
+		spEffect->Init();
+		spEffect->SetAnimation(4, 3,0.25f);
+		spEffect->SetPos(effectPos);
+		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile),5,5);
+
+		GameInstance.AddObject(spEffect);
+	}
 }
 
 void Player::Release()
