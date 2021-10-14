@@ -10,6 +10,7 @@ public:
 	BaseInput()
 	{
 		m_buttons.fill(0);
+		m_buttons.fill(1);
 	}
 
 	// キー情報を更新
@@ -50,6 +51,14 @@ public:
 		else
 		{
 			m_buttons[0] = 0;
+		}
+		if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+		{
+			m_buttons[1]++;
+		}
+		else
+		{
+			m_buttons[1] = 0;
 		}
 	}
 

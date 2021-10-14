@@ -143,12 +143,12 @@ void Player::ScriptProc(const json11::Json& event)
 		//”š”­
 		std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
 		Math::Vector3 effectPos = GetPos();
-		effectPos += (m_mWorld.Up() * 0.5);
+		effectPos += (m_mWorld.Up() * 1);
 
 		spEffect->Init();
-		spEffect->SetAnimation(4, 3,0.25f);
+		spEffect->SetAnimation(4, 3,1.00f);
 		spEffect->SetPos(effectPos);
-		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile),5,5);
+		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile),4,4);
 
 		GameInstance.AddObject(spEffect);
 	}
@@ -318,11 +318,9 @@ void Player::ActionWait::Update(Player& owner)
 		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"));
 	}
 
-	if (GetAsyncKeyState(VK_SHIFT))
+	if (owner.m_input->IsPressButton(1, false))
 	{
-		owner.ChangeAction<Player::ActionDodge>();
-//		owner.ChangeDodge();
-		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Dodge"));
+		owner.ChangeDodge();
 	}
 }
 
@@ -339,10 +337,9 @@ void Player::ActionMove::Update(Player& owner)
 		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"));
 	}
 
-	if (GetAsyncKeyState(VK_SHIFT))
+	if (owner.m_input->IsPressButton(1, false))
 	{
-		owner.ChangeAction<Player::ActionDodge>();
-		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Dodge"));
+		owner.ChangeDodge();
 	}
 
 	Math::Vector3 vMove;
@@ -369,6 +366,10 @@ void Player::ActionAttack::Update(Player& owner)
 		owner.ChangeAttack();
 		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation(owner.m_atkCancelAnimName));
 		owner.m_atkCancelAnimName = "";
+	}
+	if (owner.m_input->IsPressButton(1, false))
+	{
+		owner.ChangeDodge();
 	}
 }
 

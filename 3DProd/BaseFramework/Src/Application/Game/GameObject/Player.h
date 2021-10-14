@@ -94,6 +94,7 @@ private:
 	void ChangeDodge()
 	{
 		m_spActionState = std::make_shared<ActionDodge>();
+		m_spActionState->Entry(*this);
 	}
 
 
@@ -142,6 +143,7 @@ private:
 	class ActionDodge : public BaseAction
 	{
 	public:
+		void Entry(Player& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Dodge")); }
 		void Update(Player& owner) override;
 	};
 
