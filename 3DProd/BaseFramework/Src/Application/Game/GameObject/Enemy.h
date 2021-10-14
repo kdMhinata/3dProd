@@ -52,6 +52,8 @@ private:
 	void UpdateMove();
 	void UpdateRotate();
 
+	void DoAttack();
+
 	Math::Vector3	m_worldPos;
 	Math::Vector3	m_worldRot;
 
@@ -62,9 +64,10 @@ private:
 	std::weak_ptr<const GameObject> m_wpTarget;
 
 	float m_stopDist = 1.01f;
-	int m_hp=30;
+	int m_hp=50;
 	bool m_isAlive = true;
 	bool m_canAttack = true;
+	bool m_attackFlg = false;
 
 
 
@@ -75,7 +78,7 @@ private:
 
 	bool CheckAttack()
 	{
-		if (m_canAttack)
+		if (m_attackFlg)
 			return true;
 		return false;
 	}
@@ -94,6 +97,7 @@ private:
 	void ChangeAttack()
 	{
 		m_spActionState = std::make_shared<ActionAttack>();
+		m_spActionState->Entry(*this);
 	}
 	void ChangeElimination()
 	{
@@ -126,7 +130,9 @@ private:
 	class ActionAttack : public BaseAction
 	{
 	public:
+		void Entry(Enemy& owner) {owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack"),false);}
 		void Update(Enemy& owner) override;
+		void Exit(Enemy& owner) { owner.m_canAttack = true; owner.m_attackFlg = false; }
 	};
 
 	class ActionElimination :public BaseAction

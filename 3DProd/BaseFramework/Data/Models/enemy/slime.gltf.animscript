@@ -8,6 +8,19 @@
 					"Time": 300
 				}
 			]
+		},
+		{
+			"AnimName": "Attack",
+			"Data": [
+				{
+					"EventName": "DoAttack",
+					"Time": 16
+				},
+				{
+					"EventName": "End",
+					"Time": 120
+				}
+			]
 		}
 	]
 }

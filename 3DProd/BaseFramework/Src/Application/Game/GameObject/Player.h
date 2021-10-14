@@ -16,6 +16,10 @@ public:
 	void Init() override;
 	void Update() override;
 
+	int GetHp() { return m_hp; };
+
+	virtual void NotifyDamage(DamageArg& arg) override;
+
 	const std::shared_ptr<const TPSCamera> GetCamera() const { return m_spCamera; }	// 参照用
 	std::shared_ptr<TPSCamera> WorkCamera() { return m_spCamera; }				// 変更用
 
@@ -52,6 +56,7 @@ private:
 	
 	std::shared_ptr<BaseInput>		m_input;
 
+	int m_hp = 50;
 	bool m_canAttack = true;
 	bool m_atkComboFlg = false;
 

@@ -101,6 +101,12 @@ void Player::Update()
 	}
 }
 
+void Player::NotifyDamage(DamageArg& arg)
+{
+	m_hp -= arg.damage;
+	arg.ret_IsHit = true;
+}
+
 void Player::ScriptProc(const json11::Json& event)
 {
 	std::string eventName = event["EventName"].string_value();

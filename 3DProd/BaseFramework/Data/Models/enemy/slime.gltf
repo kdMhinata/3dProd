@@ -2097,6 +2097,7 @@
     ],
     "materials" : [
         {
+            "alphaMode" : "BLEND",
             "doubleSided" : true,
             "name" : "lambert1",
             "pbrMetallicRoughness" : {

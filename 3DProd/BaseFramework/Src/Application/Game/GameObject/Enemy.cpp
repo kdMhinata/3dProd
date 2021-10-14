@@ -1,5 +1,6 @@
 ﻿#include"Enemy.h"
 #include"Player.h"
+#include "Effect2D.h"
 
 void Enemy::Init()
 {
@@ -10,6 +11,8 @@ void Enemy::Init()
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Run"));
 
 	m_spActionState = std::make_shared<ActionMove>();
+
+	m_worldPos = { 0.0,0.0,5.0 };
 
 	//AudioEngin初期化
 	DirectX::AUDIO_ENGINE_FLAGS eflags =
@@ -71,9 +74,17 @@ void Enemy::ScriptProc(const json11::Json& event)
 		const std::string& soundFile = event["SoundName"].string_value();
 		m_audioManager.Play(soundFile);
 	}
+	else if (eventName == "DoAttack")
+	{
+		DoAttack();
+	}
 	else if (eventName == "Elim")
 	{
 		m_isAlive = false;
+	}
+	else if (eventName == "End")
+	{
+		ChangeWait();
 	}
 }
 
@@ -98,8 +109,11 @@ void Enemy::UpdateMove()
 	// ターゲットとの距離
 	float targetDistSqr = targetDir.LengthSquared();
 
+	//攻撃処理(仮)
+	float attackRange= 2.00f;
+	if (targetDistSqr < attackRange * attackRange && m_canAttack) { m_attackFlg = true; m_canAttack = false; }
 	if (targetDistSqr < m_stopDist * m_stopDist) { return; }
-
+	
 	// エネミーの向いてる方向ベクトル
 	Math::Vector3 moveVec = m_mWorld.Backward();
 	moveVec.Normalize();
@@ -155,6 +169,48 @@ void Enemy::UpdateRotate()
 	m_worldRot.y += rotateAng;
 }
 
+void Enemy::DoAttack()
+{
+	for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
+	{
+		if (spObj->GetClassID() != GameObject::ePlayer) { continue; }
+
+		Math::Vector3 attackPos = GetPos();
+		attackPos += (m_mWorld.Backward() * 1);
+
+		SphereInfo info(attackPos, m_radius + 0.05f);
+
+		BumpResult result;
+
+		// 相手の判定関数を利用する
+		if (spObj->CheckCollisionBump(info, result))
+		{
+			auto chara = std::dynamic_pointer_cast<Character>(spObj);
+
+			if (chara == nullptr) { continue; }
+			DamageArg arg;
+			arg.damage = 10;
+			chara->NotifyDamage(arg);
+
+			if (arg.ret_IsHit)
+			{
+				//ヒット時行う処理
+				//爆発
+				std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
+
+				Math::Vector3 effectPos = (attackPos += (m_mWorld.Up() * 0.5));
+
+				spEffect->Init();
+				spEffect->SetAnimation(5, 5);
+				spEffect->SetPos(effectPos);
+				spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/Explosion.png"));
+
+				GameInstance.AddObject(spEffect);
+			}
+		}
+	}
+}
+
 void Enemy::ActionWait::Update(Enemy& owner)
 {
 	owner.ChangeMove();
@@ -162,6 +218,11 @@ void Enemy::ActionWait::Update(Enemy& owner)
 
 void Enemy::ActionMove::Update(Enemy& owner)
 {
+	if (owner.m_attackFlg)
+	{
+		owner.ChangeAttack();
+	}
+
 	if (owner.m_hp <= 0)
 	{
 		owner.ChangeElimination();
@@ -175,6 +236,7 @@ void Enemy::ActionMove::Update(Enemy& owner)
 
 void Enemy::ActionAttack::Update(Enemy& owner)
 {
+
 }
 
 void Enemy::ActionElimination ::Update(Enemy& owner)
