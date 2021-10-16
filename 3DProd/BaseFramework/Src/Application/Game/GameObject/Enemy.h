@@ -68,6 +68,7 @@ private:
 	bool m_isAlive = true;
 	bool m_canAttack = true;
 	bool m_attackFlg = false;
+	int m_canAttackCnt = 30;
 
 
 
@@ -104,6 +105,11 @@ private:
 		m_spActionState = std::make_shared<ActionElimination>();
 		m_spActionState->Entry(*this);
 	}
+	void ChangeGetHit()
+	{
+		m_spActionState = std::make_shared<ActionGetHit>();
+		m_spActionState->Entry(*this);
+	}
 	
 	class BaseAction
 	{
@@ -132,7 +138,7 @@ private:
 	public:
 		void Entry(Enemy& owner) {owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack"),false);}
 		void Update(Enemy& owner) override;
-		void Exit(Enemy& owner) { owner.m_canAttack = true; owner.m_attackFlg = false; }
+		void Exit(Enemy& owner) { owner.m_canAttackCnt = 100; owner.m_attackFlg = false; }
 	};
 
 	class ActionElimination :public BaseAction
@@ -140,6 +146,14 @@ private:
 	public:
 		void Entry(Enemy& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Die"), false); }
 		void Update(Enemy& owner) override;
+	};
+
+	class ActionGetHit : public BaseAction
+	{
+	public:
+		void Entry(Enemy& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("GetHit"), false);}
+		void Update(Enemy& owner) override;
+		void Exit(Enemy& owner) { owner.m_canAttackCnt = 50; owner.m_attackFlg = false; }
 	};
 
 	std::shared_ptr<BaseAction> m_spActionState = nullptr;

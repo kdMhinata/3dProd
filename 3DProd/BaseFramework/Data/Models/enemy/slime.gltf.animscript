@@ -26,8 +26,13 @@
 			"AnimName": "GetHit",
 			"Data": [
 				{
+					"EventName": "PlaySound",
+					"Time": 2,
+					"SoundName": "Data/Audio/SE/hit1.wav"
+				},
+				{
 					"EventName": "End",
-					"Time": 26
+					"Time": 52
 				}
 			]
 		}

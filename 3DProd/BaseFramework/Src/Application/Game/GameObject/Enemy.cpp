@@ -50,11 +50,6 @@ void Enemy::Update()
 	//サウンド関連の更新
 	{
 		Math::Matrix listenerMat;
-
-		//if (m_spCamera)
-		//{
-		//	listenerMat = m_spCamera->GetCameraMatrix();
-		//}
 		m_audioManager.Update(listenerMat.Translation(), listenerMat.Backward());
 	}
 }
@@ -66,8 +61,7 @@ void Enemy::NotifyDamage(DamageArg& arg)
 
 	if (arg.ret_IsHit)
 	{
-		m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("GetHit"));
-		m_audioManager.Play("Data/Audio/SE/hit1.wav");
+		ChangeGetHit();
 	}
 }
 
@@ -117,6 +111,9 @@ void Enemy::UpdateMove()
 
 	//攻撃処理(仮)
 	float attackRange= 2.00f;
+	m_canAttackCnt--;
+	if (m_canAttackCnt <= 0) { m_canAttack = true; }
+
 	if (targetDistSqr < attackRange * attackRange && m_canAttack) { m_attackFlg = true; m_canAttack = false; }
 	if (targetDistSqr < m_stopDist * m_stopDist) { return; }
 	
@@ -247,4 +244,18 @@ void Enemy::ActionAttack::Update(Enemy& owner)
 
 void Enemy::ActionElimination ::Update(Enemy& owner)
 {
+}
+
+void Enemy::ActionGetHit::Update(Enemy& owner)
+{
+	std::shared_ptr<const GameObject> spTarget = owner.m_wpTarget.lock();
+	Math::Vector3 targetDir = spTarget->GetPos() - owner.m_worldPos;
+	Math::Vector3 knockBackVec = owner.m_mWorld.Forward();
+
+	knockBackVec.Normalize();
+	knockBackVec *= 0.1f;
+
+	//要修正　ただ後ろにノックバックするだけ
+	owner.m_worldPos.x += knockBackVec.x;
+	owner.m_worldPos.z += knockBackVec.z;
 }

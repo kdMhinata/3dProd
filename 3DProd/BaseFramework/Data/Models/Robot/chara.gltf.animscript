@@ -56,7 +56,7 @@
 				},
 				{
 					"EventName": "AttackEffect",
-					"Time": 5,
+					"Time": 4,
 					"EffectName": "Data/Textures/Slash2.png"
 				},
 				{
