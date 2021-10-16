@@ -37,7 +37,7 @@ public:
 	virtual bool IsAlive() override { return m_isAlive; }
 
 	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
-	int GetHp(){ return m_hp; };
+	int GetHp()override { return m_hp; };
 
 	virtual void NotifyDamage(DamageArg& arg) override;
 

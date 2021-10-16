@@ -17,7 +17,7 @@ public:
 	void Update() override;
 	void Draw() override;
 
-	int GetHp() { return m_hp; };
+	int GetHp()override { return m_hp; };
 
 	virtual void NotifyDamage(DamageArg& arg) override;
 

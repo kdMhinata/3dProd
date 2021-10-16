@@ -298,13 +298,14 @@ void Player::DoAttack()
 				auto chara = std::dynamic_pointer_cast<Character>(spObj);
 
 				if (chara==nullptr) { continue; }
+				if (chara->GetHp()<=0) { continue; }
 				DamageArg arg;
 				arg.damage = 10;
 				chara->NotifyDamage(arg);
 
 				if (arg.ret_IsHit)
 				{
-					m_hitStop = 5;
+					m_hitStop = 3;
 
 					//ƒqƒbƒgŽžs‚¤ˆ—
 					//”š”­
@@ -313,10 +314,10 @@ void Player::DoAttack()
 					Math::Vector3 effectPos = (attackPos+=(m_mWorld.Up()*0.5));
 
 					spEffect->Init();
-					spEffect->SetAnimation(5, 5);
+					spEffect->SetAnimation(4, 5,3.0f);
 					spEffect->SetPos(effectPos);
-					spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/Explosion.png"));
-
+					spEffect->SetLifeSpan(1000);
+					spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/SlashH1.png"),5,5);
 					GameInstance.AddObject(spEffect);
 				}
 			}

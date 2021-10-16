@@ -63,6 +63,12 @@ void Enemy::NotifyDamage(DamageArg& arg)
 {
 	m_hp -= arg.damage;
 	arg.ret_IsHit = true;
+
+	if (arg.ret_IsHit)
+	{
+		m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("GetHit"));
+		m_audioManager.Play("Data/Audio/SE/hit1.wav");
+	}
 }
 
 void Enemy::ScriptProc(const json11::Json& event)
