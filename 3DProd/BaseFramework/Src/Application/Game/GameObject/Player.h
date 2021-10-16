@@ -15,6 +15,7 @@ public:
 
 	void Init() override;
 	void Update() override;
+	void Draw() override;
 
 	int GetHp() { return m_hp; };
 
@@ -61,6 +62,8 @@ private:
 	bool m_atkComboFlg = false;
 
 	std::string m_atkCancelAnimName = "";
+
+	KdModelWork		m_swordmodelWork;
 
 	bool CheckWait()
 	{

@@ -39,7 +39,7 @@ void KdSquarePolygon::SetAnimationPos(float no)
 {
 	// マス座標
 	int x = (int)no % m_animSplitX;
-	int y = (int)no / m_animSplitY;
+	int y = (int)no / m_animSplitX;
 	// １マスの幅と高さ
 	float w = 1.0f / m_animSplitX;
 	float h = 1.0f / m_animSplitY;

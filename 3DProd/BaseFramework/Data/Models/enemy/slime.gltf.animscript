@@ -21,6 +21,15 @@
 					"Time": 120
 				}
 			]
+		},
+		{
+			"AnimName": "GetHit",
+			"Data": [
+				{
+					"EventName": "End",
+					"Time": 26
+				}
+			]
 		}
 	]
 }

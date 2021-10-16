@@ -2,6 +2,8 @@
 
 #include "GameObject.h"
 
+class Character;
+
 class Effect2D :public GameObject
 {
 public:
@@ -18,7 +20,15 @@ public:
 
 	void SetAnimation(int splitX, int splitY, float speed = 1.0f, bool isLoop = false);
 
+	void SetBillboard(bool enablebillboard) { m_isBillboard = enablebillboard; }
+
 	void SetLifeSpan(int lifeSpan) { m_lifeSpan = lifeSpan; }
+
+	// ‚¿å‚ğƒZƒbƒg
+	void SetOwner(const std::shared_ptr<Character>& ownerChara)
+	{
+		m_ownerChara = ownerChara;
+	}
 
 private:
 
@@ -29,4 +39,8 @@ private:
 	bool  m_isLoop = false;
 
 	int m_lifeSpan = -1;
+
+	std::weak_ptr<Character> m_ownerChara;
+
+	bool m_isBillboard=false;
 };

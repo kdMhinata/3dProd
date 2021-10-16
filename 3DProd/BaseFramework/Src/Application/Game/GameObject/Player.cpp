@@ -45,6 +45,7 @@ void Player::Init()
 		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
 	m_audioManager.Init();
 
+	m_swordmodelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Weapon/sword.gltf"));
 }
 
 // 更新処理
@@ -54,13 +55,28 @@ void Player::Update()
 
 	m_input->Update();
 
-	if (m_spActionState)
+	// 通常
+	if (m_hitStop <= 0)
 	{
-		m_spActionState->Update(*this);
-	}
+		// 行動処理
+		if (m_spActionState)
+		{
+			m_spActionState->Update(*this);
+		}
 
-	// 当たり判定更新
-	UpdateCollition();
+		// 当たり判定更新
+		UpdateCollition();
+
+		// アニメーションの進行
+		m_animator.AdvanceTime(m_modelWork.WorkNodes(), 1.0f,
+			std::bind(&Player::ScriptProc, this, std::placeholders::_1)
+		);
+	}
+	// ヒットストップ中
+	else
+	{
+		m_hitStop--;
+	}
 
 	// 行列の更新(最終的な座標を確定してから)
 	UpdateMatrix();
@@ -83,9 +99,6 @@ void Player::Update()
 	};
 	*/
 	
-	m_animator.AdvanceTime(m_modelWork.WorkNodes(), 1.0f, 
-		std::bind(&Player::ScriptProc, this, std::placeholders::_1)
-	);
 
 	m_modelWork.CalcNodeMatrices();
 
@@ -99,6 +112,18 @@ void Player::Update()
 		}
 		m_audioManager.Update(listenerMat.Translation(), listenerMat.Backward());
 	}
+}
+
+void Player::Draw()
+{
+	Character::Draw();
+	/*
+	auto node = m_modelWork.FindNode("Bip001 Head");
+	if (node)
+	{
+		auto w = node->m_worldTransform * m_mWorld;
+		SHADER->m_standardShader.DrawModel(m_swordmodelWork, w);
+	}*/
 }
 
 void Player::NotifyDamage(DamageArg& arg)
@@ -145,10 +170,21 @@ void Player::ScriptProc(const json11::Json& event)
 		Math::Vector3 effectPos = GetPos();
 		effectPos += (m_mWorld.Up() * 1);
 
+		Math::Matrix m = m_mWorld;
+		m.Translation(m.Translation() + m.Up() * 1);
+
+		m = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90)) * m;
+
 		spEffect->Init();
-		spEffect->SetAnimation(4, 3,1.00f);
-		spEffect->SetPos(effectPos);
+		spEffect->SetAnimation(4, 3,1.0f);
+//		spEffect->SetPos(effectPos);
+		spEffect->SetMatrix(m);
+		spEffect->SetLifeSpan(1000);
 		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile),4,4);
+
+		auto p = shared_from_this();
+
+		spEffect->SetOwner(GetSptr(this));
 
 		GameInstance.AddObject(spEffect);
 	}
@@ -268,6 +304,8 @@ void Player::DoAttack()
 
 				if (arg.ret_IsHit)
 				{
+					m_hitStop = 5;
+
 					//ヒット時行う処理
 					//爆発
 					std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();

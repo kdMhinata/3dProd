@@ -28,6 +28,11 @@ void GameSystem::Init()
 	spEnemy->Init();
 	AddObject(spEnemy);
 	spEnemy->SetTarget(spPlayer);
+
+	//予め呼んでおきたい重いデータ等絶対使うデータ等
+	GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
+	GameResourceFactory.GetTexture("Data/Textures/Slash2.png");
+	GameResourceFactory.GetModelData("Data/Models/StageMap/DungeonStage.gltf");
 }
 
 void GameSystem::Update()

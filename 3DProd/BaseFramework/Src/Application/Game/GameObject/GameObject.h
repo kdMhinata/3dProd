@@ -34,7 +34,7 @@ struct BumpResult
 	Math::Vector3 m_pushVec;
 };
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 
@@ -61,6 +61,8 @@ public:
 
 	virtual const Math::Vector3 GetPos() const { return m_mWorld.Translation(); }
 
+	virtual void SetMatrix(const Math::Matrix& m) { m_mWorld = m; }
+
 	virtual classID GetClassID() const { return eBase; }
 
 	// 押し戻しの衝突判定
@@ -72,6 +74,13 @@ public:
 
 // 継承したもののみ触れる 
 protected:
+
+	template<class T>
+	std::shared_ptr<T> GetSptr(T* pThis)
+	{
+		return std::static_pointer_cast<T>(shared_from_this());
+	}
+
 
 	KdModelWork		m_modelWork;
 	Math::Matrix	m_mWorld;

@@ -27,12 +27,12 @@
 				{
 					"EventName": "AttackEffect",
 					"Time": 1,
-					"EffectName": "Data/Textures/Slash.png"
+					"EffectName": "Data/Textures/Slash1.png"
 				},
 				{
 
 					"EventName": "DoAttack",
-					"Time": 18
+					"Time": 5
 				},
 				{
 					"EventName": "ConToAtk2",
@@ -56,13 +56,13 @@
 				},
 				{
 					"EventName": "AttackEffect",
-					"Time": 1,
-					"EffectName": "Data/Textures/Slash.png"
+					"Time": 5,
+					"EffectName": "Data/Textures/Slash2.png"
 				},
 				{
 
 					"EventName": "DoAttack",
-					"Time": 17
+					"Time": 5
 				},
 				{
 					"EventName": "End",

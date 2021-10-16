@@ -12,4 +12,7 @@ class Character : public GameObject
 {
 public:
 	virtual void NotifyDamage(DamageArg& arg) {}
+
+	int m_hitStop = 0;
+
 };
