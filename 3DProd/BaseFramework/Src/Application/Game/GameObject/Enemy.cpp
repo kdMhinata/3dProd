@@ -1,6 +1,7 @@
 ﻿#include"Enemy.h"
 #include"Player.h"
 #include "Effect2D.h"
+#include"../Camera/TPSCamera.h"
 
 void Enemy::Init()
 {
@@ -15,10 +16,21 @@ void Enemy::Init()
 
 	m_worldPos = { 0.0,0.0,5.0 };
 
+
+	m_spCamera = std::make_shared<TPSCamera>();
+
+	GameSystem::GetInstance().SetCamera(m_spCamera);
+
+	m_spCamera->Init();
+
+
 	//AudioEngin初期化
 	DirectX::AUDIO_ENGINE_FLAGS eflags =
 		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
 	m_audioManager.Init();
+
+	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/ehpbar.png");
+	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/ehpframe.png");
 }
 
 void Enemy::Update()
@@ -64,6 +76,21 @@ void Enemy::NotifyDamage(DamageArg& arg)
 	{
 		ChangeGetHit();
 	}
+}
+
+void Enemy::Draw2D()
+{
+	if (!m_hpBarTex || !m_hpFrameTex) { return; }
+	Math::Vector3 _pos = Math::Vector3::Zero;
+	m_spCamera->ConvertWorldToScreenDetail(GetPos(), _pos);
+	Math::Rectangle barrec = { 0,0,454,38 };
+	Math::Rectangle framerec = { 0,0,703,187 };
+	Math::Color col = kWhiteColor;
+	float hpmax = 200;
+	float hpcalc = (m_hp / hpmax);
+	SHADER->m_spriteShader.SetMatrix(Math::Matrix::Identity);
+	SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), -432, 253, 454 * hpcalc, 38, &barrec, &col, { 0.0,0.5 });
+	SHADER->m_spriteShader.DrawTex(m_hpFrameTex.get(), -270, 250, 703, 187, &framerec, &col, { 0.5,0.5 });
 }
 
 void Enemy::ScriptProc(const json11::Json& event)
@@ -278,7 +305,7 @@ void Enemy::ActionGetHit::Update(Enemy& owner)
 	Math::Vector3 knockBackVec = owner.m_mWorld.Forward();
 
 	knockBackVec.Normalize();
-	knockBackVec *= 0.1f;
+	knockBackVec *= 0.02f;
 
 	owner.m_worldPos.x += knockBackVec.x;
 	owner.m_worldPos.z += knockBackVec.z;

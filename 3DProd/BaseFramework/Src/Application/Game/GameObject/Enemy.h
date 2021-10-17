@@ -26,6 +26,8 @@ private:
 	std::weak_ptr<GameObject> m_target;
 };
 
+class TPSCamera;
+
 class Enemy : public Character
 {
 public: 
@@ -34,6 +36,7 @@ public:
 
 	void Init() override;
 	void Update() override;
+	void Draw2D()override;
 	virtual bool IsAlive() override { return m_isAlive; }
 
 	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
@@ -60,6 +63,8 @@ private:
 	KdAnimator m_animator;
 
 	KdAudioManager m_audioManager;
+
+	std::shared_ptr<TPSCamera>		m_spCamera;
 
 	std::weak_ptr<const GameObject> m_wpTarget;
 

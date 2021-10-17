@@ -18,4 +18,6 @@ public:
 	int m_hitStop = 0;
 	int m_hp;
 
+	std::shared_ptr<KdTexture> m_hpBarTex;
+	std::shared_ptr<KdTexture> m_hpFrameTex;
 };

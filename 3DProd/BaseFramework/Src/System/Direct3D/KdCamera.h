@@ -26,6 +26,12 @@ public:
 	// カメラ行列・ビュー行列
 	virtual void SetCameraMatrix(const DirectX::SimpleMath::Matrix& mCam);
 
+	//ワールド座標(3D座標)をスクリーン座標(2D座標)に変換する
+	void ConvertWorldToScreenDetail(const Math::Vector3& pos, Math::Vector3& result);
+
+	//スクリーン座標をワールド座標に変換する
+	void ConvertScreenToWorldDetail(const Math::Vector2& pos, Math::Vector3& result);
+
 	// カメラ情報(ビュー・射影行列など)をシェーダへセット
 	void SetToShader();
 

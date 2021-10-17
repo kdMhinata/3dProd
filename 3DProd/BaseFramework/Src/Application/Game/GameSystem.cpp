@@ -122,6 +122,18 @@ void GameSystem::Draw()
 			spObject->DrawEffect();
 		}
 
+
+		SHADER->m_spriteShader.Begin();
+
+		//2D系描画はこの範囲内で行う
+
+		for (std::shared_ptr<GameObject>& spObject : m_spObjects)
+		{
+			spObject->Draw2D();
+		}
+
+		SHADER->m_spriteShader.End();
+
 		D3D.WorkDevContext()->OMSetDepthStencilState(SHADER->m_ds_ZEnable_ZWriteEnable, 0);
 		// 裏面カリング(表面のみ描画)
 		D3D.WorkDevContext()->RSSetState(SHADER->m_rs_CullBack);

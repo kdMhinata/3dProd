@@ -7,6 +7,8 @@ class Enemy;
 
 class TPSCamera;
 
+class Effect2D;
+
 class Player : public Character
 {
 public:
@@ -16,6 +18,8 @@ public:
 	void Init() override;
 	void Update() override;
 	void Draw() override;
+	void Draw2D()override;
+	void DrawEffect()override;
 
 	int GetHp()override { return m_hp; };
 
@@ -56,11 +60,11 @@ private:
 	static const float s_limitOfStepHeight;
 
 	std::shared_ptr<TPSCamera>		m_spCamera;
+	std::shared_ptr<Effect2D> m_spShadow = nullptr;
 	std::shared_ptr<Enemy>			m_enemy;
 	
 	std::shared_ptr<BaseInput>		m_input;
 
-	int m_hp = 50;
 	bool m_canAttack = true;
 	bool m_atkComboFlg = false;
 	float m_gravity = 0.0f;
@@ -156,7 +160,6 @@ private:
 
 
 	KdAnimator m_animator;
-
 	//オーディオ管理クラス
 	KdAudioManager m_audioManager;
 

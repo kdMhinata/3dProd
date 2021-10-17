@@ -24,6 +24,9 @@ public:
 
 	void SetLifeSpan(int lifeSpan) { m_lifeSpan = lifeSpan; }
 
+
+	const KdSquarePolygon GetPolyData() const { return m_poly; }
+
 	// ‚¿å‚ğƒZƒbƒg
 	void SetOwner(const std::shared_ptr<Character>& ownerChara)
 	{

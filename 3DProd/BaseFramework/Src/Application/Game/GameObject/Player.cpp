@@ -40,6 +40,8 @@ void Player::Init()
 
 	m_worldPos.y = 3.00f;
 
+	m_hp = 200;
+
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
 
 
@@ -49,6 +51,14 @@ void Player::Init()
 	DirectX::AUDIO_ENGINE_FLAGS eflags =
 		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
 	m_audioManager.Init();
+
+	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/bar.png");
+	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
+
+	m_spShadow = std::make_shared<Effect2D>();
+	m_spShadow->Init();
+	m_spShadow->SetPos(GetPos());
+	m_spShadow->SetTexture(GameResourceFactory.GetTexture("Data/Textures/shadow.png"));
 }
 
 // XVˆ—
@@ -130,6 +140,37 @@ void Player::Draw()
 		auto w = node->m_worldTransform * m_mWorld;
 		SHADER->m_standardShader.DrawModel(m_swordmodelWork, w);
 	}*/
+}
+
+void Player::Draw2D()
+{
+	if (!m_hpBarTex||!m_hpFrameTex) { return; }
+	Math::Vector3 _pos = Math::Vector3::Zero;
+	m_spCamera->ConvertWorldToScreenDetail(GetPos(), _pos);
+		Math::Rectangle barrec = { 0,0,454,38 };
+		Math::Rectangle framerec = { 0,0,703,187 };
+		Math::Color col= kWhiteColor;
+		float hpmax = 200;
+		float hpcalc = (m_hp / hpmax);
+		SHADER->m_spriteShader.SetMatrix(Math::Matrix::Identity);
+		SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), -432, 253 , 454*hpcalc, 38,&barrec, &col, { 0.0,0.5 });
+		SHADER->m_spriteShader.DrawTex(m_hpFrameTex.get(), -270, 250, 703, 187, &framerec, &col,{0.5,0.5});
+}
+
+void Player::DrawEffect()
+{
+	if (!m_spShadow) { return; }
+
+	Math::Matrix mDraw;
+
+	Math::Vector3 scale = Math::Vector3::One;
+	mDraw = Math::Matrix::CreateScale(scale);
+
+	mDraw *= Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(90));
+
+	mDraw.Translation(GetPos());
+
+	SHADER->m_effectShader.DrawSquarePolygon(m_spShadow->GetPolyData(), mDraw);
 }
 
 void Player::NotifyDamage(DamageArg& arg)
@@ -318,7 +359,7 @@ void Player::DoAttack()
 					//”š”­
 					std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
 
-					Math::Vector3 effectPos = (attackPos+=(m_mWorld.Up()*0.5));
+					Math::Vector3 effectPos = (attackPos += (m_mWorld.Up() * 0.5)+=(m_mWorld.Backward()*0.5));
 
 					spEffect->Init();
 					spEffect->SetAnimation(4, 5,3.0f);
