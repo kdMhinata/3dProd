@@ -37,6 +37,7 @@ public:
 	virtual bool IsAlive() override { return m_isAlive; }
 
 	void SetPos(const Math::Vector3& pos) override { m_mWorld.Translation(pos); }
+	void SetWPos(const Math::Vector3 pos) { m_worldPos.x += pos.x; m_worldPos.z += pos.z; }
 
 	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
 	int GetHp()override { return m_hp; };
@@ -53,7 +54,7 @@ private:
 
 	void UpdateMove();
 	void UpdateRotate();
-
+	void UpdateSearch();
 	void DoAttack();
 
 	Math::Vector3	m_worldPos;
@@ -70,6 +71,7 @@ private:
 	bool m_canAttack = true;
 	bool m_attackFlg = false;
 	int m_canAttackCnt = 30;
+	bool m_findTargetFlg = false;
 
 
 

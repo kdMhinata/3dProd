@@ -9,9 +9,9 @@ void Enemy::Init()
 	m_bumpSphereInfo.m_pos.y = 0.45f;
 	m_bumpSphereInfo.m_radius = 0.3f;
 
-	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Run"));
+	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
 
-	m_spActionState = std::make_shared<ActionMove>();
+	m_spActionState = std::make_shared<ActionWait>();
 
 	m_worldPos = { 0.0,0.0,5.0 };
 
@@ -29,6 +29,8 @@ void Enemy::Update()
 	{
 		m_spActionState->Update(*this);
 	}
+
+	UpdateSearch();
 
 	// ワールド行列生成
 	Math::Matrix trans = Math::Matrix::CreateTranslation(m_worldPos);
@@ -131,6 +133,25 @@ void Enemy::UpdateMove()
 
 }
 
+void Enemy::UpdateSearch()
+{
+	// 見ている先が解放されているか
+	if (m_wpTarget.expired()) { return; }
+
+	std::shared_ptr<const GameObject> spTarget = m_wpTarget.lock();
+
+	// プレイヤーに向かう方向ベクトル
+	Math::Vector3 targetDir = spTarget->GetPos() - m_worldPos;
+
+	// ターゲットとの距離
+	float targetDistSqr = targetDir.LengthSquared();
+
+	//攻撃処理(仮)
+	float findRange = 8.00f;
+	if (targetDistSqr < findRange * findRange) { m_findTargetFlg = true; }
+	else { m_findTargetFlg = false; }
+}
+
 void Enemy::UpdateRotate()
 {
 	// 見ている先が解放されているか
@@ -220,7 +241,10 @@ void Enemy::DoAttack()
 
 void Enemy::ActionWait::Update(Enemy& owner)
 {
-	owner.ChangeMove();
+	if (owner.m_findTargetFlg)
+	{
+		owner.ChangeMove();
+	}
 }
 
 void Enemy::ActionMove::Update(Enemy& owner)

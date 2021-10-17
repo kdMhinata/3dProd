@@ -26,11 +26,11 @@ void GameSystem::Init()
 
 	Math::Vector3 pos = {0.0,0.0,5.0};
 	EnemyInstance(spPlayer,pos);
-	Math::Vector3 pos2 = { 0.0,0.0,8.0 };
+	Math::Vector3 pos2 = { 10.0,0.0,30.0 };
 	EnemyInstance(spPlayer, pos2);
-	Math::Vector3 pos3 = { 0.0,0.0,9.0 };
+	Math::Vector3 pos3 = { 0.0,0.0,30.0 };
 	EnemyInstance(spPlayer, pos3);
-	Math::Vector3 pos4 = { 0.0,0.0,4.0 };
+	Math::Vector3 pos4 = { -10.0,0.0,30.0 };
 	EnemyInstance(spPlayer, pos4);
 
 	//予め呼んでおきたい重いデータ等絶対使うデータ等
@@ -154,7 +154,7 @@ void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target,Math::Vector3&
 	std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
 	spEnemy->Init();
 	AddObject(spEnemy);
-	spEnemy->SetPos(pos);
+	spEnemy->SetWPos(pos);
 	spEnemy->SetTarget(target);
 }
 
