@@ -5,7 +5,7 @@
 			"Data": [
 				{
 					"EventName": "Elim",
-					"Time": 300
+					"Time": 230
 				}
 			]
 		},
@@ -14,7 +14,7 @@
 			"Data": [
 				{
 					"EventName": "DoAttack",
-					"Time": 16
+					"Time": 34
 				},
 				{
 					"EventName": "End",

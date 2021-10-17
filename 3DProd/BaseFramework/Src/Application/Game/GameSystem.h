@@ -86,6 +86,8 @@ public:
 
 	const std::shared_ptr<KdCamera> GetCamera() const;
 
+	void EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos);
+
 private:
 	void Release();		// 解放
 

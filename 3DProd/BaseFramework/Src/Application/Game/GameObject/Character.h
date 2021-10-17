@@ -17,6 +17,7 @@ public:
 
 	int m_hitStop = 0;
 	int m_hp;
+	bool invincibleFlg = false;
 
 	std::shared_ptr<KdTexture> m_hpBarTex;
 	std::shared_ptr<KdTexture> m_hpFrameTex;

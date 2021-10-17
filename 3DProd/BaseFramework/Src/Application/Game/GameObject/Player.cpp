@@ -175,8 +175,15 @@ void Player::DrawEffect()
 
 void Player::NotifyDamage(DamageArg& arg)
 {
-	m_hp -= arg.damage;
-	arg.ret_IsHit = true;
+	if (!invincibleFlg)
+	{
+		m_hp -= arg.damage;
+		arg.ret_IsHit = true;
+	}
+	else
+	{
+		arg.ret_IsHit = false;
+	}
 }
 
 void Player::ScriptProc(const json11::Json& event)
@@ -200,10 +207,6 @@ void Player::ScriptProc(const json11::Json& event)
 		{
 			m_atkCancelAnimName = event["AnimName"].string_value();
 		}
-	}
-	else if (eventName == "invincible")
-	{
-		//ñ≥ìGèàóùÅ@å„Ç≈èëÇ≠
 	}
 	else if (eventName == "End")
 	{

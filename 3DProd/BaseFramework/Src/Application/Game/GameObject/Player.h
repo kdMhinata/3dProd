@@ -152,8 +152,12 @@ private:
 	class ActionDodge : public BaseAction
 	{
 	public:
-		void Entry(Player& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Dodge"),false); }
+		void Entry(Player& owner) {
+			owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Dodge"), false);
+			owner.invincibleFlg = true;
+		}
 		void Update(Player& owner) override;
+		void Exit(Player& owner) { owner.invincibleFlg = false; }
 	};
 
 	std::shared_ptr<BaseAction> m_spActionState = nullptr;

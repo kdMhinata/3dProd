@@ -24,10 +24,14 @@ void GameSystem::Init()
 	spPlayer->SetInput(std::make_shared<PlayerInput>());
 	AddObject(spPlayer);
 
-	std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
-	spEnemy->Init();
-	AddObject(spEnemy);
-	spEnemy->SetTarget(spPlayer);
+	Math::Vector3 pos = {0.0,0.0,5.0};
+	EnemyInstance(spPlayer,pos);
+	Math::Vector3 pos2 = { 0.0,0.0,8.0 };
+	EnemyInstance(spPlayer, pos2);
+	Math::Vector3 pos3 = { 0.0,0.0,9.0 };
+	EnemyInstance(spPlayer, pos3);
+	Math::Vector3 pos4 = { 0.0,0.0,4.0 };
+	EnemyInstance(spPlayer, pos4);
 
 	//予め呼んでおきたい重いデータ等絶対使うデータ等
 	GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
@@ -143,6 +147,15 @@ void GameSystem::Draw()
 const std::shared_ptr<KdCamera> GameSystem::GetCamera() const
 {
 	return m_spCamera;
+}
+
+void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target,Math::Vector3& pos)
+{
+	std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
+	spEnemy->Init();
+	AddObject(spEnemy);
+	spEnemy->SetPos(pos);
+	spEnemy->SetTarget(target);
 }
 
 void GameSystem::Release()
