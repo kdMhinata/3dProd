@@ -6,6 +6,7 @@ struct DamageArg
 {
 	int damage = 0;
 	bool ret_IsHit = true;
+	Math::Vector3 attackPos = { 0,0,0 };
 };
 
 class Character : public GameObject

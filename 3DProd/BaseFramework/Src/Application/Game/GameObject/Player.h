@@ -146,7 +146,7 @@ private:
 	class ActionDodge : public BaseAction
 	{
 	public:
-		void Entry(Player& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Dodge")); }
+		void Entry(Player& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Dodge"),false); }
 		void Update(Player& owner) override;
 	};
 

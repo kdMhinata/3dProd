@@ -193,6 +193,7 @@ void Enemy::DoAttack()
 			if (chara == nullptr) { continue; }
 			DamageArg arg;
 			arg.damage = 10;
+			arg.attackPos = attackPos;
 			chara->NotifyDamage(arg);
 
 			if (arg.ret_IsHit)
@@ -249,13 +250,35 @@ void Enemy::ActionElimination ::Update(Enemy& owner)
 void Enemy::ActionGetHit::Update(Enemy& owner)
 {
 	std::shared_ptr<const GameObject> spTarget = owner.m_wpTarget.lock();
+
+	// キャラの正面方向ベクトル：出発地
+	Math::Vector3 nowDir = owner.m_mWorld.Backward();
+
+	// ノックバック時向く方向のベクトル：攻撃座標
 	Math::Vector3 targetDir = spTarget->GetPos() - owner.m_worldPos;
+
+	nowDir.Normalize();
+	targetDir.Normalize();
+
+	// それぞれのDegree角度を求める
+	float nowAng = atan2(nowDir.x, nowDir.z);
+	nowAng = DirectX::XMConvertToDegrees(nowAng);
+
+	float targetAng = atan2(targetDir.x, targetDir.z);
+	targetAng = DirectX::XMConvertToDegrees(targetAng);
+
+	// ２つの間の角度を求める
+	float rotateAng = targetAng - nowAng;
+
+	// 回転量代入
+	rotateAng = std::clamp(rotateAng, -20.0f, 20.0f);
+	owner.m_worldRot.y += rotateAng;
+
 	Math::Vector3 knockBackVec = owner.m_mWorld.Forward();
 
 	knockBackVec.Normalize();
 	knockBackVec *= 0.1f;
 
-	//要修正　ただ後ろにノックバックするだけ
 	owner.m_worldPos.x += knockBackVec.x;
 	owner.m_worldPos.z += knockBackVec.z;
 }

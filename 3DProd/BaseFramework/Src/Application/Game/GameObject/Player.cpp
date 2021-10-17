@@ -301,6 +301,7 @@ void Player::DoAttack()
 				if (chara->GetHp()<=0) { continue; }
 				DamageArg arg;
 				arg.damage = 10;
+				arg.attackPos = attackPos;
 				chara->NotifyDamage(arg);
 
 				if (arg.ret_IsHit)
@@ -354,7 +355,7 @@ void Player::ActionWait::Update(Player& owner)
 	{
 //		owner.ChangeAttack();
 		owner.ChangeAction<Player::ActionAttack>();
-		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"));
+		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"), false);
 	}
 
 	if (owner.m_input->IsPressButton(1, false))
@@ -373,7 +374,7 @@ void Player::ActionMove::Update(Player& owner)
 	if (owner.m_input->IsPressButton(0, false))
 	{
 		owner.ChangeAction<Player::ActionAttack>();
-		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"));
+		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"), false);
 	}
 
 	if (owner.m_input->IsPressButton(1, false))
@@ -403,7 +404,7 @@ void Player::ActionAttack::Update(Player& owner)
 	if (owner.m_atkCancelAnimName.size() > 0)
 	{
 		owner.ChangeAttack();
-		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation(owner.m_atkCancelAnimName));
+		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation(owner.m_atkCancelAnimName), false);
 		owner.m_atkCancelAnimName = "";
 	}
 	if (owner.m_input->IsPressButton(1, false))
