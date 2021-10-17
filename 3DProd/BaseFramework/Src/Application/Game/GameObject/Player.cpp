@@ -9,6 +9,8 @@ Player::Player()
 {
 }
 
+const float Player::s_limitOfStepHeight = 0.1f;
+
 void Player::Init()
 {
 	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/chara.gltf"));
@@ -33,7 +35,10 @@ void Player::Init()
 	// カメラの移動スピード
 	m_spCamera->SetRotationSpeed(0.25);
 
-	m_radius = 0.5f;
+	m_bumpSphereInfo.m_pos.y =0.65f;
+	m_bumpSphereInfo.m_radius = 0.4f;
+
+	m_worldPos.y = 3.00f;
 
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
 
@@ -44,14 +49,15 @@ void Player::Init()
 	DirectX::AUDIO_ENGINE_FLAGS eflags =
 		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
 	m_audioManager.Init();
-
-	m_swordmodelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Weapon/sword.gltf"));
 }
 
 // 更新処理
 void Player::Update()
 {
 //	UpdateInput();
+
+	m_gravity += 0.02f;
+	m_prevPos = GetPos();
 
 	m_input->Update();
 
@@ -98,7 +104,7 @@ void Player::Update()
 	{
 	};
 	*/
-	
+	m_worldPos.y -= m_gravity;
 
 	m_modelWork.CalcNodeMatrices();
 
@@ -288,7 +294,7 @@ void Player::DoAttack()
 			Math::Vector3 attackPos = GetPos();
 			attackPos += (m_mWorld.Backward() * 0.5);
 
-			SphereInfo info(attackPos, m_radius+0.05f);
+			SphereInfo info(attackPos,m_bumpSphereInfo.m_radius+1.0f);
 
 			BumpResult result;
 
@@ -332,7 +338,7 @@ void Player::UpdateCollition()
 	{
 		if (spObj->GetClassID() != GameObject::eEnemy) { continue; }
 
-		SphereInfo info(GetPos(),m_radius);
+		SphereInfo info(GetPos()+m_bumpSphereInfo.m_pos, m_bumpSphereInfo.m_radius);
 
 		BumpResult result;
 
@@ -342,6 +348,38 @@ void Player::UpdateCollition()
 			m_worldPos += result.m_pushVec;
 		}
 	}
+
+	for (const std::shared_ptr<GameObject>& spStageObj : GameSystem::GetInstance().GetObjects())
+	{
+		if (spStageObj->GetClassID() != GameObject::eStage) { continue; }
+
+		BumpResult result;
+
+		//壁判定
+		SphereInfo sphereInfo(GetPos() + m_bumpSphereInfo.m_pos, m_bumpSphereInfo.m_radius);
+
+		if (spStageObj->CheckCollisionBump(sphereInfo,result))
+		{
+			m_worldPos += result.m_pushVec;
+			
+		}
+
+		//地面判定
+		Math::Vector3 rayPos = m_prevPos;
+		//　歩いて移動できる地面の限界の段差
+		rayPos.y += s_limitOfStepHeight;
+
+		RayInfo rayInfo(rayPos, Math::Vector3(0.0f, -1.0f, 0.0f),m_gravity+s_limitOfStepHeight);
+
+		spStageObj->CheckCollisionBump(rayInfo, result);
+
+		if (result.m_isHit)
+		{
+			m_worldPos += result.m_pushVec;
+			m_gravity = 0.0f;
+		}
+	}
+
 }
 
 void Player::ActionWait::Update(Player& owner)

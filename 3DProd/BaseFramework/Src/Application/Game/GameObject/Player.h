@@ -51,6 +51,9 @@ private:
 
 	Math::Vector3	m_worldPos;		// ワールド行列を作るための座標
 	Math::Vector3	m_worldRot;		// ワールド行列を作るための回転
+	Math::Vector3   m_prevPos;
+
+	static const float s_limitOfStepHeight;
 
 	std::shared_ptr<TPSCamera>		m_spCamera;
 	std::shared_ptr<Enemy>			m_enemy;
@@ -60,10 +63,9 @@ private:
 	int m_hp = 50;
 	bool m_canAttack = true;
 	bool m_atkComboFlg = false;
+	float m_gravity = 0.0f;
 
 	std::string m_atkCancelAnimName = "";
-
-	KdModelWork		m_swordmodelWork;
 
 	bool CheckWait()
 	{

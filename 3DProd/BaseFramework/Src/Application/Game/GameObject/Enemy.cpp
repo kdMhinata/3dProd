@@ -6,7 +6,8 @@ void Enemy::Init()
 {
 	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/enemy/slime.gltf"));
 	
-	m_radius = 0.5f;
+	m_bumpSphereInfo.m_pos.y = 0.5f;
+	m_bumpSphereInfo.m_radius = 0.5f;
 
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Run"));
 
@@ -181,7 +182,7 @@ void Enemy::DoAttack()
 		Math::Vector3 attackPos = GetPos();
 		attackPos += (m_mWorld.Backward() * 1);
 
-		SphereInfo info(attackPos, m_radius + 0.05f);
+		SphereInfo info(attackPos, m_bumpSphereInfo.m_radius+ 0.05f);
 
 		BumpResult result;
 

@@ -9,15 +9,10 @@ public:
 	~StageMap() { Release(); }
 
 	void Init() override;
-	void Draw() override;
+	bool CheckCollisionBump(const SphereInfo& info, BumpResult& result)override;
 
 	classID GetClassID() const override { return eStage; }
 
 private:
 	void Release();		// ‰ð•ú
-
-	KdModelWork		m_wallModel;
-	KdModelWork		m_floorModel;
-
-
 };
