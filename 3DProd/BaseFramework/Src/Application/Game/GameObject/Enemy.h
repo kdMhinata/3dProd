@@ -38,6 +38,8 @@ public:
 
 	void SetPos(const Math::Vector3& pos) override { m_mWorld.Translation(pos); }
 	void SetWPos(const Math::Vector3 pos) { m_worldPos.x += pos.x; m_worldPos.z += pos.z; }
+	void SetMData(std::string filename) { m_modelWork.SetModel(GameResourceFactory.GetModelData(filename)); };
+	void SetHP(int hp) { m_hp = hp; };
 
 	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
 	int GetHp()override { return m_hp; };
@@ -55,10 +57,12 @@ private:
 	void UpdateMove();
 	void UpdateRotate();
 	void UpdateSearch();
+	void UpdateCollition();		// 当たり判定の更新
 	void DoAttack();
 
 	Math::Vector3	m_worldPos;
 	Math::Vector3	m_worldRot;
+	Math::Vector3   m_prevPos;
 
 	KdAnimator m_animator;
 

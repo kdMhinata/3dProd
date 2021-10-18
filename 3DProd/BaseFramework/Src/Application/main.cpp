@@ -32,7 +32,7 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	// ウィンドウ作成
 	//===================================================================
-	if (m_window.Create(w, h, "3D GameProgramming", "Window") == false) {
+	if (m_window.Create(w, h, "Ekard", "Window") == false) {
 		MessageBoxA(nullptr, "ウィンドウ作成に失敗", "エラー", MB_OK);
 		return false;
 	}
@@ -157,6 +157,8 @@ void Application::Execute()
 		GameSystem::GetInstance().Draw();	// クリア後スワップチェイン前
 
 		D3D.WorkSwapChain()->Present(0, 0);
+
+		ShowCursor(FALSE);
 
 
 		//=========================================

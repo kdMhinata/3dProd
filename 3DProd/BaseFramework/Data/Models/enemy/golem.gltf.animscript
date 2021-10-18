@@ -1,0 +1,40 @@
+{
+	"Animations": [
+		{
+			"AnimName": "Die",
+			"Data": [
+				{
+					"EventName": "Elim",
+					"Time": 400
+				}
+			]
+		},
+		{
+			"AnimName": "Attack",
+			"Data": [
+				{
+					"EventName": "DoAttack",
+					"Time": 35
+				},
+				{
+					"EventName": "End",
+					"Time": 180
+				}
+			]
+		},
+		{
+			"AnimName": "GetHit",
+			"Data": [
+				{
+					"EventName": "PlaySound",
+					"Time": 2,
+					"SoundName": "Data/Audio/SE/hit1.wav"
+				},
+				{
+					"EventName": "End",
+					"Time": 52
+				}
+			]
+		}
+	]
+}

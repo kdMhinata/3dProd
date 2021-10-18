@@ -13,7 +13,7 @@ const float Player::s_limitOfStepHeight = 0.1f;
 
 void Player::Init()
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/chara.gltf"));
+	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf"));
 
 	m_spCamera = std::make_shared<TPSCamera>();
 
@@ -38,7 +38,6 @@ void Player::Init()
 	m_bumpSphereInfo.m_pos.y =0.65f;
 	m_bumpSphereInfo.m_radius = 0.4f;
 
-	m_worldPos.y = 3.00f;
 
 	m_hp = 200;
 

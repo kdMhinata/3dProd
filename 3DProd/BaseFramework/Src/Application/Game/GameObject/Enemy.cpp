@@ -15,6 +15,8 @@ void Enemy::Init()
 
 	m_worldPos = { 0.0,0.0,5.0 };
 
+	m_worldRot.y =180;
+
 	m_hp = 100;
 
 	//AudioEngin初期化
@@ -31,6 +33,8 @@ void Enemy::Update()
 	}
 
 	UpdateSearch();
+
+	UpdateCollition();
 
 	// ワールド行列生成
 	Math::Matrix trans = Math::Matrix::CreateTranslation(m_worldPos);
@@ -147,7 +151,7 @@ void Enemy::UpdateSearch()
 	float targetDistSqr = targetDir.LengthSquared();
 
 	//攻撃処理(仮)
-	float findRange = 8.00f;
+	float findRange =11.00f;
 	if (targetDistSqr < findRange * findRange) { m_findTargetFlg = true; }
 	else { m_findTargetFlg = false; }
 }
@@ -237,6 +241,25 @@ void Enemy::DoAttack()
 			}
 		}
 	}
+}
+
+void Enemy::UpdateCollition()
+{
+	/*for (const std::shared_ptr<GameObject>& spStageObj : GameSystem::GetInstance().GetObjects())
+	{
+		if (spStageObj->GetClassID() != GameObject::eStage) { continue; }
+
+		BumpResult result;
+
+		//壁判定
+		SphereInfo sphereInfo(GetPos() + m_bumpSphereInfo.m_pos, m_bumpSphereInfo.m_radius);
+
+		if (spStageObj->CheckCollisionBump(sphereInfo, result))
+		{
+			m_worldPos += result.m_pushVec;
+
+		}
+	}*/
 }
 
 void Enemy::ActionWait::Update(Enemy& owner)

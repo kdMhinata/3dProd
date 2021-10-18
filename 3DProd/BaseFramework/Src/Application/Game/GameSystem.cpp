@@ -25,19 +25,43 @@ void GameSystem::Init()
 	AddObject(spPlayer);
 
 	Math::Vector3 pos = {0.0,0.0,5.0};
-	EnemyInstance(spPlayer,pos);
-	Math::Vector3 pos2 = { 10.0,0.0,30.0 };
-	EnemyInstance(spPlayer, pos2);
-	Math::Vector3 pos3 = { 0.0,0.0,30.0 };
-	EnemyInstance(spPlayer, pos3);
-	Math::Vector3 pos4 = { -10.0,0.0,30.0 };
-	EnemyInstance(spPlayer, pos4);
+	std::string modelname = "Data/Models/enemy/slime.gltf";
+	EnemyInstance(spPlayer,pos, modelname,10);
+	pos = { 8.0,0.0,25.0 };
+	modelname = "Data/Models/enemy/slime.gltf";
+	EnemyInstance(spPlayer, pos,modelname, 10);
+	pos = { 0.0,0.0,25.0 };
+	modelname = "Data/Models/enemy/slime.gltf";
+	EnemyInstance(spPlayer, pos,modelname, 10);
+	pos = { -8.0,0.0,25.0 };
+	modelname = "Data/Models/enemy/slime.gltf";
+	EnemyInstance(spPlayer, pos,modelname, 10);
+	pos = { 5.0,0.0,20.0 };
+	modelname = "Data/Models/enemy/slime.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 10);
+	pos = { -5.0,0.0,20.0 };
+	modelname = "Data/Models/enemy/slime.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 10);
+
+	pos = { 5.0,0.0,40.0 };
+	modelname = "Data/Models/enemy/skeleton.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 50);
+
+	pos = { -5.0,0.0,40.0 };
+	modelname = "Data/Models/enemy/skeleton.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 50);
+
+	pos = { 0.0,0.0,65.0 };
+	modelname = "Data/Models/enemy/golem.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 100);
 
 	//予め呼んでおきたい重いデータ等絶対使うデータ等
 	GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
 	GameResourceFactory.GetTexture("Data/Textures/Slash2.png");
 	GameResourceFactory.GetTexture("Data/Textures/SlashH1.png");
 	GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf");
+	GameResourceFactory.GetModelData("Data/Models/enemy/skeleton.gltf");
+	GameResourceFactory.GetModelData("Data/Models/enemy/golem.gltf");
 	GameResourceFactory.GetModelData("Data/Models/StageMap/DungeonStage.gltf");
 
 }
@@ -149,12 +173,14 @@ const std::shared_ptr<KdCamera> GameSystem::GetCamera() const
 	return m_spCamera;
 }
 
-void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target,Math::Vector3& pos)
+void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target,Math::Vector3& pos, std::string& modelname,int hp)
 {
 	std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
 	spEnemy->Init();
 	AddObject(spEnemy);
 	spEnemy->SetWPos(pos);
+	spEnemy->SetMData(modelname);
+	spEnemy->SetHP(hp);
 	spEnemy->SetTarget(target);
 }
 
