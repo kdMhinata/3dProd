@@ -68,7 +68,7 @@ void Enemy::NotifyDamage(DamageArg& arg)
 	m_hp -= arg.damage;
 	arg.ret_IsHit = true;
 
-	if (arg.ret_IsHit)
+	if (arg.ret_IsHit&&!m_sarmor)
 	{
 		ChangeGetHit();
 	}
@@ -119,7 +119,8 @@ void Enemy::UpdateMove()
 	float targetDistSqr = targetDir.LengthSquared();
 
 	//攻撃処理(仮)
-	float attackRange= 2.00f;
+	float attackRange= 1.5f;
+	attackRange += m_attackradius;
 	m_canAttackCnt--;
 	if (m_canAttackCnt <= 0) { m_canAttack = true; }
 
@@ -209,7 +210,7 @@ void Enemy::DoAttack()
 		Math::Vector3 attackPos = GetPos();
 		attackPos += (m_mWorld.Backward() * 1);
 
-		SphereInfo info(attackPos, m_bumpSphereInfo.m_radius+ 0.5f);
+		SphereInfo info(attackPos, m_bumpSphereInfo.m_radius+ m_attackradius);
 
 		BumpResult result;
 

@@ -40,6 +40,8 @@ public:
 	void SetWPos(const Math::Vector3 pos) { m_worldPos.x += pos.x; m_worldPos.z += pos.z; }
 	void SetMData(std::string filename) { m_modelWork.SetModel(GameResourceFactory.GetModelData(filename)); };
 	void SetHP(int hp) { m_hp = hp; };
+	void SetAttackRadius(float attackradius) { m_attackradius = attackradius; };
+	void SetSuperArmor(bool sarmor) { m_sarmor = sarmor; };
 
 	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
 	int GetHp()override { return m_hp; };
@@ -76,6 +78,9 @@ private:
 	bool m_attackFlg = false;
 	int m_canAttackCnt = 30;
 	bool m_findTargetFlg = false;
+	float m_attackradius;
+	bool m_sarmor = false;
+
 
 
 

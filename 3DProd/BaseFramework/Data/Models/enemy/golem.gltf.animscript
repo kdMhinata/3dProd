@@ -14,7 +14,7 @@
 			"Data": [
 				{
 					"EventName": "DoAttack",
-					"Time": 35
+					"Time": 60
 				},
 				{
 					"EventName": "End",

@@ -26,34 +26,51 @@ void GameSystem::Init()
 
 	Math::Vector3 pos = {0.0,0.0,5.0};
 	std::string modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer,pos, modelname,10);
+	EnemyInstance(spPlayer,pos, modelname,50);
 	pos = { 8.0,0.0,25.0 };
 	modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer, pos,modelname, 10);
+	EnemyInstance(spPlayer, pos,modelname, 50);
 	pos = { 0.0,0.0,25.0 };
 	modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer, pos,modelname, 10);
+	EnemyInstance(spPlayer, pos,modelname, 50);
 	pos = { -8.0,0.0,25.0 };
 	modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer, pos,modelname, 10);
+	EnemyInstance(spPlayer, pos,modelname, 50);
 	pos = { 5.0,0.0,20.0 };
 	modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 10);
+	EnemyInstance(spPlayer, pos, modelname, 50);
 	pos = { -5.0,0.0,20.0 };
 	modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 10);
+	EnemyInstance(spPlayer, pos, modelname, 50);
 
 	pos = { 5.0,0.0,40.0 };
 	modelname = "Data/Models/enemy/skeleton.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 50);
-
+	EnemyInstance(spPlayer, pos, modelname, 100);
 	pos = { -5.0,0.0,40.0 };
 	modelname = "Data/Models/enemy/skeleton.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 50);
+	EnemyInstance(spPlayer, pos, modelname, 100);
+	pos = { 5.0,0.0,45.0 };
+	modelname = "Data/Models/enemy/skeleton.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 100);
+	pos = { -5.0,0.0,45.0 };
+	modelname = "Data/Models/enemy/skeleton.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 100);
 
+	pos = { 7.0,0.0,65.0 };
+	modelname = "Data/Models/enemy/skeleton.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 100);
+	pos = { -7.0,0.0,65.0 };
+	modelname = "Data/Models/enemy/skeleton.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 100);
+	pos = { 5.0,0.0,70.0 };
+	modelname = "Data/Models/enemy/skeleton.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 100);
+	pos = { -5.0,0.0,70.0 };
+	modelname = "Data/Models/enemy/skeleton.gltf";
+	EnemyInstance(spPlayer, pos, modelname, 100);
 	pos = { 0.0,0.0,65.0 };
 	modelname = "Data/Models/enemy/golem.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 100);
+	EnemyInstance(spPlayer, pos, modelname, 200,5.0f,false);
 
 	//予め呼んでおきたい重いデータ等絶対使うデータ等
 	GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
@@ -173,7 +190,7 @@ const std::shared_ptr<KdCamera> GameSystem::GetCamera() const
 	return m_spCamera;
 }
 
-void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target,Math::Vector3& pos, std::string& modelname,int hp)
+void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target,Math::Vector3& pos, std::string& modelname,int hp,float attackradius,bool sarmor)
 {
 	std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
 	spEnemy->Init();
@@ -181,6 +198,8 @@ void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target,Math::Vector3&
 	spEnemy->SetWPos(pos);
 	spEnemy->SetMData(modelname);
 	spEnemy->SetHP(hp);
+	spEnemy->SetAttackRadius(attackradius);
+	spEnemy->SetSuperArmor(sarmor);
 	spEnemy->SetTarget(target);
 }
 
