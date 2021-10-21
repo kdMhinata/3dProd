@@ -11,12 +11,12 @@ bool StageMap::CheckCollisionBump(const SphereInfo& info, BumpResult& result)
 {
 	for (UINT i = 0; i < m_modelWork.GetDataNodes().size(); ++i)
 	{
-		const KdModelData::Node dataNode = m_modelWork.GetDataNodes()[i];
+		const KdModelData::Node& dataNode = m_modelWork.GetDataNodes()[i];
 
 		// ƒƒbƒVƒ…‚ª‚È‚¢ê‡”ò‚Î‚·
 		if (!dataNode.m_spMesh) { continue; }
 
-		const KdModelWork::Node workNode = m_modelWork.GetNodes()[i];
+		const KdModelWork::Node& workNode = m_modelWork.GetNodes()[i];
 
 		// ‰Ÿ‚µ•Ô‚³‚ê‚½À•W
 		Math::Vector3 localPushedPos;

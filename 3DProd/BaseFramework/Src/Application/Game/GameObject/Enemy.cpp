@@ -246,7 +246,7 @@ void Enemy::DoAttack()
 
 void Enemy::UpdateCollition()
 {
-	/*for (const std::shared_ptr<GameObject>& spStageObj : GameSystem::GetInstance().GetObjects())
+	for (const std::shared_ptr<GameObject>& spStageObj : GameSystem::GetInstance().GetObjects())
 	{
 		if (spStageObj->GetClassID() != GameObject::eStage) { continue; }
 
@@ -260,7 +260,7 @@ void Enemy::UpdateCollition()
 			m_worldPos += result.m_pushVec;
 
 		}
-	}*/
+	}
 }
 
 void Enemy::ActionWait::Update(Enemy& owner)
@@ -296,6 +296,11 @@ void Enemy::ActionAttack::Update(Enemy& owner)
 
 void Enemy::ActionElimination ::Update(Enemy& owner)
 {
+	owner.m_alpha -= 0.01f;
+	if (owner.m_alpha <= 0.0f)
+	{
+		owner.m_alpha = 0;
+	}
 }
 
 void Enemy::ActionGetHit::Update(Enemy& owner)

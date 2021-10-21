@@ -57,6 +57,8 @@ public:
 	virtual void DrawEffect() {}
 	virtual void Draw2D() {}
 
+	virtual void ImGuiUpdate();
+
 	virtual bool IsAlive() { return m_isAlive; }
 
 	virtual void SetPos(const Math::Vector3& pos){m_mWorld.Translation(pos);}
@@ -71,6 +73,8 @@ public:
 	virtual bool CheckCollisionBump(const SphereInfo& info, BumpResult& result);
 	// オブジェクト同士の衝突判定
 	bool CheckCollisionBump(const RayInfo& info, BumpResult& result);
+
+	const std::string& GetName() const { return  m_name; }
 
 // 継承したもののみ触れる 
 protected:
@@ -88,6 +92,10 @@ protected:
 	bool			m_isAlive = true;
 
 	SphereInfo  m_bumpSphereInfo;
+
+	float m_alpha = 1.0f;
+
+	std::string m_name = "GameObject";
 
 private:
 	void Release() {}

@@ -2,7 +2,16 @@
 
 void GameObject::Draw()
 {
+	SHADER->m_standardShader.SetAlpha(m_alpha);
+
 	SHADER->m_standardShader.DrawModel(m_modelWork, m_mWorld);
+
+	SHADER->m_standardShader.SetAlpha(1.0f);
+}
+
+void GameObject::ImGuiUpdate()
+{
+	ImGui::InputText("Name", &m_name);
 }
 
 bool GameObject::CheckCollisionBump(const SphereInfo& info, BumpResult& result)
@@ -40,11 +49,11 @@ bool GameObject::CheckCollisionBump(const RayInfo& info, BumpResult& result)
 
 	for (UINT i = 0; i < m_modelWork.GetDataNodes().size(); ++i)
 	{
-		const KdModelData::Node dataNode = m_modelWork.GetDataNodes()[i];
+		const KdModelData::Node& dataNode = m_modelWork.GetDataNodes()[i];
 
 		if (!dataNode.m_spMesh) { continue; }
 
-		const KdModelWork::Node workNode = m_modelWork.GetNodes()[i];
+		const KdModelWork::Node& workNode = m_modelWork.GetNodes()[i];
 
 		KdRayResult localResult;
 

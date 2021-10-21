@@ -172,6 +172,15 @@ void Player::DrawEffect()
 	SHADER->m_effectShader.DrawSquarePolygon(m_spShadow->GetPolyData(), mDraw);
 }
 
+void Player::ImGuiUpdate()
+{
+	Character::ImGuiUpdate();
+
+	ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
+
+	ImGui::DragInt("Hp", &m_hp);
+}
+
 void Player::NotifyDamage(DamageArg& arg)
 {
 	if (!invincibleFlg)

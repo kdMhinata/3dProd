@@ -21,6 +21,8 @@ public:
 	void Draw2D()override;
 	void DrawEffect()override;
 
+	virtual void ImGuiUpdate() override;
+
 	int GetHp()override { return m_hp; };
 
 	virtual void NotifyDamage(DamageArg& arg) override;

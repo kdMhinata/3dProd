@@ -85,6 +85,47 @@ void GameSystem::Init()
 
 void GameSystem::Update()
 {
+	// ImGui Objectrisuto windou 
+	if (ImGui::Begin("Object List"))
+	{
+		if (ImGui::Button("Load"))
+		{
+			std::string path;
+			if (KdWindow::OpenFileDialog(path))
+			{
+
+			}
+		}
+
+		for (auto&& obj : m_spObjects)
+		{
+			ImGui::PushID(obj.get());
+
+			bool isSelect = m_editor.m_selectObject.lock() == obj;
+
+			if (ImGui::Selectable(obj->GetName().c_str(), isSelect))
+			{
+				// Clickされた
+				m_editor.m_selectObject = obj;
+			}
+
+			ImGui::PopID();
+		}
+	}
+	ImGui::End();
+
+	// Inspector
+	if (ImGui::Begin("Inspector"))
+	{
+		auto obj = m_editor.m_selectObject.lock();
+		if (obj)
+		{
+			obj->ImGuiUpdate();
+		}
+	}
+	ImGui::End();
+
+
 	if (GetAsyncKeyState(VK_ESCAPE))
 	{
 		if (MessageBoxA(APP.m_window.GetWndHandle(), "本当にゲームを終了しますか？",

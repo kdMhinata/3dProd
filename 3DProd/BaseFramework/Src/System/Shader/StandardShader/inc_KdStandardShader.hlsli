@@ -21,6 +21,9 @@ cbuffer cbObject : register(b0)
 	
 	// フォグ有効
 	int     g_FogEnable;
+
+	// 透明率
+	float	g_alpha;
 };
 
 // マテリアル構造体

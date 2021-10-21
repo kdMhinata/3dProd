@@ -101,6 +101,14 @@ private:
 
 	ResourceFactory m_resourceFactory;
 
+	// 
+	struct EditorOnly
+	{
+		std::weak_ptr<GameObject> m_selectObject;
+	};
+
+	EditorOnly m_editor;
+
 	// シングルトンパターン化
 public:
 
