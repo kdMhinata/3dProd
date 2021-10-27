@@ -11,120 +11,112 @@ void GameSystem::Init()
 {
 //	m_sky.SetModel(m_resourceFactory.GetModelData("Data/Models/Sky/Sky.gltf"));
 
-	// スカイスフィア拡大行列
-	m_skyMat = m_skyMat.CreateScale(50.0f);
+	bool isLoaded = false;
 
-	
-	std::shared_ptr<StageMap> spStage = std::make_shared<StageMap>(); // stageMapのインスタンス化
-	spStage->Init();
-	AddObject(spStage);
+	// 
+	auto loadProc = [this, &isLoaded]()
+	{
+		// スカイスフィア拡大行列
+		m_skyMat = m_skyMat.CreateScale(50.0f);
 
-	std::shared_ptr<Player> spPlayer = std::make_shared<Player>();	// プレイヤーのインスタンス化
-	spPlayer->Init();
-	spPlayer->SetInput(std::make_shared<PlayerInput>());
-	AddObject(spPlayer);
 
-	Math::Vector3 pos = {0.0,0.0,5.0};
-	std::string modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer,pos, modelname,50);
-	pos = { 8.0,0.0,25.0 };
-	modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer, pos,modelname, 50);
-	pos = { 0.0,0.0,25.0 };
-	modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer, pos,modelname, 50);
-	pos = { -8.0,0.0,25.0 };
-	modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer, pos,modelname, 50);
-	pos = { 5.0,0.0,20.0 };
-	modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 50);
-	pos = { -5.0,0.0,20.0 };
-	modelname = "Data/Models/enemy/slime.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 50);
+		std::shared_ptr<StageMap> spStage = std::make_shared<StageMap>(); // stageMapのインスタンス化
+		spStage->Init();
+		AddObject(spStage);
 
-	pos = { 5.0,0.0,40.0 };
-	modelname = "Data/Models/enemy/skeleton.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 100);
-	pos = { -5.0,0.0,40.0 };
-	modelname = "Data/Models/enemy/skeleton.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 100);
-	pos = { 5.0,0.0,45.0 };
-	modelname = "Data/Models/enemy/skeleton.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 100);
-	pos = { -5.0,0.0,45.0 };
-	modelname = "Data/Models/enemy/skeleton.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 100);
+		std::shared_ptr<Player> spPlayer = std::make_shared<Player>();	// プレイヤーのインスタンス化
+		spPlayer->Init();
+		spPlayer->SetInput(std::make_shared<PlayerInput>());
+		AddObject(spPlayer);
 
-	pos = { 7.0,0.0,65.0 };
-	modelname = "Data/Models/enemy/skeleton.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 100);
-	pos = { -7.0,0.0,65.0 };
-	modelname = "Data/Models/enemy/skeleton.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 100);
-	pos = { 5.0,0.0,70.0 };
-	modelname = "Data/Models/enemy/skeleton.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 100);
-	pos = { -5.0,0.0,70.0 };
-	modelname = "Data/Models/enemy/skeleton.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 100);
-	pos = { 0.0,0.0,65.0 };
-	modelname = "Data/Models/enemy/golem.gltf";
-	EnemyInstance(spPlayer, pos, modelname, 200,5.0f,false);
+		Math::Vector3 pos = { 0.0,0.0,5.0 };
+		std::string modelname = "Data/Models/enemy/slime.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 50);
+		pos = { 8.0,0.0,25.0 };
+		modelname = "Data/Models/enemy/slime.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 50);
+		pos = { 0.0,0.0,25.0 };
+		modelname = "Data/Models/enemy/slime.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 50);
+		pos = { -8.0,0.0,25.0 };
+		modelname = "Data/Models/enemy/slime.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 50);
+		pos = { 5.0,0.0,20.0 };
+		modelname = "Data/Models/enemy/slime.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 50);
+		pos = { -5.0,0.0,20.0 };
+		modelname = "Data/Models/enemy/slime.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 50);
 
-	//予め呼んでおきたい重いデータ等絶対使うデータ等
-	GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
-	GameResourceFactory.GetTexture("Data/Textures/Slash2.png");
-	GameResourceFactory.GetTexture("Data/Textures/SlashH1.png");
-	GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf");
-	GameResourceFactory.GetModelData("Data/Models/enemy/skeleton.gltf");
-	GameResourceFactory.GetModelData("Data/Models/enemy/golem.gltf");
-	GameResourceFactory.GetModelData("Data/Models/StageMap/DungeonStage.gltf");
+		pos = { 5.0,0.0,40.0 };
+		modelname = "Data/Models/enemy/skeleton.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 100);
+		pos = { -5.0,0.0,40.0 };
+		modelname = "Data/Models/enemy/skeleton.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 100);
+		pos = { 5.0,0.0,45.0 };
+		modelname = "Data/Models/enemy/skeleton.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 100);
+		pos = { -5.0,0.0,45.0 };
+		modelname = "Data/Models/enemy/skeleton.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 100);
 
+		pos = { 7.0,0.0,65.0 };
+		modelname = "Data/Models/enemy/skeleton.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 100);
+		pos = { -7.0,0.0,65.0 };
+		modelname = "Data/Models/enemy/skeleton.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 100);
+		pos = { 5.0,0.0,70.0 };
+		modelname = "Data/Models/enemy/skeleton.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 100);
+		pos = { -5.0,0.0,70.0 };
+		modelname = "Data/Models/enemy/skeleton.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 100);
+		pos = { 0.0,0.0,65.0 };
+		modelname = "Data/Models/enemy/golem.gltf";
+		EnemyInstance(spPlayer, pos, modelname, 200, 5.0f, false);
+
+		//予め呼んでおきたい重いデータ等絶対使うデータ等
+		GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
+		GameResourceFactory.GetTexture("Data/Textures/Slash2.png");
+		GameResourceFactory.GetTexture("Data/Textures/SlashH1.png");
+		GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf");
+		GameResourceFactory.GetModelData("Data/Models/enemy/skeleton.gltf");
+		GameResourceFactory.GetModelData("Data/Models/enemy/golem.gltf");
+		GameResourceFactory.GetModelData("Data/Models/StageMap/DungeonStage.gltf");
+
+		isLoaded = true;
+
+	};
+
+	std::thread loadThread(loadProc);
+
+	while (isLoaded == false)
+	{
+		APP.m_window.ProcessMessage();
+
+		DirectX::SimpleMath::Color col(1.0f, 0.0f, 0.0f, 1.0f);
+
+		D3D.WorkDevContext()->ClearRenderTargetView(D3D.WorkBackBuffer()->WorkRTView(), col); //書き込めるテクスチャをクリア
+
+		D3D.WorkDevContext()->ClearDepthStencilView(D3D.WorkZBuffer()->WorkDSView(),
+			D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+
+		D3D.WorkSwapChain()->Present(0, 0);
+
+		Sleep(100);
+	}
+
+
+	// 
+	loadThread.join();	// スレッドの終了を待つ
 }
 
 void GameSystem::Update()
 {
-	// ImGui Objectrisuto windou 
-	if (ImGui::Begin("Object List"))
-	{
-		if (ImGui::Button("Load"))
-		{
-			std::string path;
-			if (KdWindow::OpenFileDialog(path))
-			{
-
-			}
-		}
-
-		for (auto&& obj : m_spObjects)
-		{
-			ImGui::PushID(obj.get());
-
-			bool isSelect = m_editor.m_selectObject.lock() == obj;
-
-			if (ImGui::Selectable(obj->GetName().c_str(), isSelect))
-			{
-				// Clickされた
-				m_editor.m_selectObject = obj;
-			}
-
-			ImGui::PopID();
-		}
-	}
-	ImGui::End();
-
-	// Inspector
-	if (ImGui::Begin("Inspector"))
-	{
-		auto obj = m_editor.m_selectObject.lock();
-		if (obj)
-		{
-			obj->ImGuiUpdate();
-		}
-	}
-	ImGui::End();
-
+	ImGuiUpdate();
 
 	if (GetAsyncKeyState(VK_ESCAPE))
 	{
@@ -169,15 +161,26 @@ void GameSystem::Update()
 		
 		++objectItr;
 	}
-	
+
+	if (m_editor.editFlg)
+	{
+		//m_editor.camera.
+	}
 }
 
 void GameSystem::Draw()
 {
-	// カメラの情報をシェーダーに渡す
-	if (m_spCamera)
+	if (!m_editor.editFlg)
 	{
-		m_spCamera->SetToShader();
+		// カメラの情報をシェーダーに渡す
+		if (m_spCamera)
+		{
+			m_spCamera->SetToShader();
+		}
+	}
+	else
+	{
+			m_editor.camera.SetToShader();
 	}
 
 	// ①不透明物の描画から
@@ -224,6 +227,58 @@ void GameSystem::Draw()
 		// 裏面カリング(表面のみ描画)
 		D3D.WorkDevContext()->RSSetState(SHADER->m_rs_CullBack);
 	}
+}
+
+void GameSystem::ImGuiUpdate()
+{
+	// ImGui Objectrisuto windou 
+	if (ImGui::Begin("Object List"))
+	{
+		if (ImGui::Button("Load"))
+		{
+			std::string path;
+			if (KdWindow::OpenFileDialog(path))
+			{
+
+			}
+		}
+
+		if (ImGui::Button("Reset"))
+		{
+			Release();
+		}
+		if (ImGui::Button("Start"))
+		{
+			Init();
+		}
+
+		for (auto&& obj : m_spObjects)
+		{
+			ImGui::PushID(obj.get());
+
+			bool isSelect = m_editor.m_selectObject.lock() == obj;
+
+				if (ImGui::Selectable(obj->GetName().c_str(), isSelect))
+				{
+					// Clickされた
+					m_editor.m_selectObject = obj;
+				}
+
+			ImGui::PopID();
+		}
+	}
+	ImGui::End();
+
+	// Inspector
+	if (ImGui::Begin("Inspector"))
+	{
+		auto obj = m_editor.m_selectObject.lock();
+		if (obj)
+		{
+			obj->ImGuiUpdate();
+		}
+	}
+	ImGui::End();
 }
 
 const std::shared_ptr<KdCamera> GameSystem::GetCamera() const

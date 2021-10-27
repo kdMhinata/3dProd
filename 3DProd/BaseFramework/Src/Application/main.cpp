@@ -184,7 +184,7 @@ void Application::Execute()
 
 		D3D.WorkSwapChain()->Present(0, 0);
 
-		ShowCursor(FALSE);
+		//ShowCursor(FALSE);
 
 
 		//=========================================

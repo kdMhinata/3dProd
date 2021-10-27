@@ -58,6 +58,8 @@ void Player::Init()
 	m_spShadow->Init();
 	m_spShadow->SetPos(GetPos());
 	m_spShadow->SetTexture(GameResourceFactory.GetTexture("Data/Textures/shadow.png"));
+
+	m_swordmodelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Weapon/sword.gltf"));
 }
 
 // XVˆ—
@@ -132,13 +134,13 @@ void Player::Update()
 void Player::Draw()
 {
 	Character::Draw();
-	/*
-	auto node = m_modelWork.FindNode("Bip001 Head");
+	
+	auto node = m_modelWork.FindNode("W_R");
 	if (node)
 	{
 		auto w = node->m_worldTransform * m_mWorld;
 		SHADER->m_standardShader.DrawModel(m_swordmodelWork, w);
-	}*/
+	}
 }
 
 void Player::Draw2D()
@@ -178,7 +180,46 @@ void Player::ImGuiUpdate()
 
 	ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
 
-	ImGui::DragInt("Hp", &m_hp);
+	ImGui::DragInt("Hp", &m_hp,1.0f,0,200);
+
+	ImGui::DragFloat3("CameraPos", &cameraMat.x, 0.01f);
+	m_spCamera->SetLocalPos(cameraMat);
+
+	ImGui::DragFloat3("CameraGazePos", &cameraGazeMat.x, 0.01f);
+	m_spCamera->SetLocalGazePos(cameraGazeMat);
+
+	if (ImGui::Button("Debug"))
+	{
+		m_worldPos.y = 100;
+		cameraMat.z = -10;
+	}
+
+	if (ImGui::ListBoxHeader("test"))
+	{
+		if (ImGui::Button("Wait"))
+		{
+			ChangeWait();
+		}
+		if (ImGui::Button("Attack"))
+		{
+			ChangeAttack();
+		}
+		if (ImGui::Button("Move"))
+		{
+			ChangeMove();
+		}
+		if (ImGui::Button("Dodge"))
+		{
+			ChangeDodge();
+		}
+
+	}
+	ImGui::ListBoxFooter();
+
+	if (m_spActionState)
+	{
+		ImGui::LabelText("State", typeid(*m_spActionState).name());
+	}
 }
 
 void Player::NotifyDamage(DamageArg& arg)
@@ -509,7 +550,7 @@ void Player::ActionDodge::Update(Player& owner)
 	Math::Vector3 dodgeVec = owner.m_mWorld.Backward();
 
 	dodgeVec.Normalize();
-	dodgeVec *= 0.3f;
+	dodgeVec *= 0.2f;
 
 	owner.m_worldPos.x += dodgeVec.x;
 	owner.m_worldPos.z += dodgeVec.z;

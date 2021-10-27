@@ -58,12 +58,16 @@ private:
 	Math::Vector3	m_worldPos;		// ワールド行列を作るための座標
 	Math::Vector3	m_worldRot;		// ワールド行列を作るための回転
 	Math::Vector3   m_prevPos;
+	Math::Vector3 cameraMat; //カメラImGuiでいじる為に
+	Math::Vector3 cameraGazeMat;
 
 	static const float s_limitOfStepHeight;
 
 	std::shared_ptr<TPSCamera>		m_spCamera;
 	std::shared_ptr<Effect2D> m_spShadow = nullptr;
 	std::shared_ptr<Enemy>			m_enemy;
+
+	KdModelWork        m_swordmodelWork;
 	
 	std::shared_ptr<BaseInput>		m_input;
 
@@ -72,6 +76,7 @@ private:
 	float m_gravity = 0.0f;
 
 	std::string m_atkCancelAnimName = "";
+	std::string m_name = "ekard";
 
 	bool CheckWait()
 	{
@@ -163,7 +168,6 @@ private:
 	};
 
 	std::shared_ptr<BaseAction> m_spActionState = nullptr;
-
 
 	KdAnimator m_animator;
 	//オーディオ管理クラス

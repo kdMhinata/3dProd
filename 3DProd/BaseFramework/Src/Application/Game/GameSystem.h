@@ -71,6 +71,7 @@ public:
 	void Init();
 	void Update();
 	void Draw();
+	virtual void ImGuiUpdate();
 
 	void AddObject(std::shared_ptr<GameObject> spObject)
 	{
@@ -105,6 +106,8 @@ private:
 	struct EditorOnly
 	{
 		std::weak_ptr<GameObject> m_selectObject;
+	KdCamera camera;
+		bool editFlg;
 	};
 
 	EditorOnly m_editor;
