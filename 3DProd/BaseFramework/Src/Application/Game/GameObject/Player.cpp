@@ -38,8 +38,9 @@ void Player::Init()
 	m_bumpSphereInfo.m_pos.y =0.65f;
 	m_bumpSphereInfo.m_radius = 0.4f;
 
-
 	m_hp = 200;
+
+	m_name = "player";
 
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
 

@@ -109,6 +109,7 @@ private:
 	KdCamera camera;
 		bool editFlg;
 		std::string setEnemyName;
+		std::string selectEnemyModelName;
 	};
 
 	EditorOnly m_editor;

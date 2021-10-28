@@ -252,32 +252,32 @@ void GameSystem::ImGuiUpdate()
 			Init();
 		}
 
-		if (ImGui::ListBoxHeader("EnemySet"))
+		if (ImGui::TreeNode("EnemySet"))
 		{
 
-			std::string enemyModelName;
-
-			KdTexture tex("Data/Textures/enemy/golem.png");
-
-			ImGui::SameLine();
-			if (ImGui::ImageButton(tex.WorkSRView, { 100.f,100.f }))
+			if (ImGui::TreeNode("Model"))
 			{
-				enemyModelName = "Data/Models/enemy/golem.gltf";
-			}
+				static KdTexture tex("Data/Textures/enemy/golem.png");
 
-			static KdTexture tex2("Data/Textures/enemy/skeleton.png");
-			ImGui::SameLine();
-			if (ImGui::ImageButton(tex2.WorkSRView, { 100.f,100.f }))
-			{
-				enemyModelName = "Data/Models/enemy/skeleton.gltf";
-			}
+				if (ImGui::ImageButton(tex.WorkSRView(), { 80.f,45.f }))
+				{
+					m_editor.selectEnemyModelName = "Data/Models/enemy/golem.gltf";
+				}
 
-			static KdTexture tex3("Data/Textures/enemy/slime.png");
-			ImGui::SameLine();
-			if (ImGui::ImageButton(tex3.WorkSRView, { 100.f,100.f }))
-			{
-				enemyModelName = "Data/Models/enemy/slime.gltf";
+				static KdTexture tex2("Data/Textures/enemy/skeleton.png");
+				if (ImGui::ImageButton(tex2.WorkSRView(), { 80.f,45.f }))
+				{
+					m_editor.selectEnemyModelName = "Data/Models/enemy/skeleton.gltf";
+				}
+
+				static KdTexture tex3("Data/Textures/enemy/slime.png");
+				if (ImGui::ImageButton(tex3.WorkSRView(), { 80.f,45.f }))
+				{
+					m_editor.selectEnemyModelName = "Data/Models/enemy/slime.gltf";
+				}
+				ImGui::TreePop();
 			}
+		
 			if(ImGui::Button("Set"))
 			{
 				std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
@@ -288,11 +288,11 @@ void GameSystem::ImGuiUpdate()
 				{
 					spEnemy->SetTarget(obj);
 					spEnemy->SetWPos(obj->GetPos());
-					spEnemy->SetMData(enemyModelName);
+					spEnemy->SetMData(m_editor.selectEnemyModelName);
 				}
 			}
+			ImGui::TreePop();
 		}
-		ImGui::ListBoxFooter();
 
 		for (auto&& obj : m_spObjects)
 		{
