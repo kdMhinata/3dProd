@@ -108,6 +108,7 @@ private:
 		std::weak_ptr<GameObject> m_selectObject;
 	KdCamera camera;
 		bool editFlg;
+		std::string setEnemyName;
 	};
 
 	EditorOnly m_editor;
