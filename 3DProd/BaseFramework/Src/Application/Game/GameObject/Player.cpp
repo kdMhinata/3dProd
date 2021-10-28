@@ -248,7 +248,7 @@ void Player::ScriptProc(const json11::Json& event)
 	{
 		DoAttack();
 	}
-	else if (eventName == "ConToAtk2")
+	else if (eventName == "ConToAtk")
 	{
 //		m_atkComboFlg = false;
 
@@ -264,6 +264,10 @@ void Player::ScriptProc(const json11::Json& event)
 	else if (eventName == "AttackEffect")
 	{
 		const std::string& EffectFile = event["EffectName"].string_value();
+		int	Size = event["Size"].int_value();
+		float Speed = event["Speed"].int_value();
+		int SpX = event["SpX"].int_value();
+		int SpY = event["SpY"].int_value();
 		//”š”­
 		std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
 		Math::Vector3 effectPos = GetPos();
@@ -275,11 +279,11 @@ void Player::ScriptProc(const json11::Json& event)
 		m = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90)) * m;
 
 		spEffect->Init();
-		spEffect->SetAnimation(4, 3,1.0f);
+		spEffect->SetAnimation(SpX,SpY,1.0f);
 //		spEffect->SetPos(effectPos);
 		spEffect->SetMatrix(m);
 		spEffect->SetLifeSpan(1000);
-		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile),4,4);
+		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile),Size,Size);
 
 		auto p = shared_from_this();
 
@@ -542,6 +546,14 @@ void Player::ActionAttack::Update(Player& owner)
 	{
 		owner.ChangeDodge();
 	}
+
+	Math::Vector3 attackVec = owner.m_mWorld.Backward();
+
+	attackVec.Normalize();
+	attackVec *= 0.05f;
+
+	owner.m_worldPos.x += attackVec.x;
+	owner.m_worldPos.z += attackVec.z;
 }
 
 void Player::ActionDodge::Update(Player& owner)

@@ -27,7 +27,11 @@
 				{
 					"EventName": "AttackEffect",
 					"Time": 6,
-					"EffectName": "Data/Textures/Slash1.png"
+					"EffectName": "Data/Textures/Slash1.png",
+					"Size": 4,
+					"SpX": 4,
+					"SpY": 3,
+					"Speed": 1.0
 				},
 				{
 
@@ -35,7 +39,7 @@
 					"Time": 6
 				},
 				{
-					"EventName": "ConToAtk2",
+					"EventName": "ConToAtk",
 					"Time": 17,
 					"AnimName": "Attack2"
 				},
@@ -57,7 +61,44 @@
 				{
 					"EventName": "AttackEffect",
 					"Time": 6,
-					"EffectName": "Data/Textures/Slash2.png"
+					"EffectName": "Data/Textures/Slash2.png",
+					"Size": 4,
+					"SpX": 4,
+					"SpY": 3,
+					"Speed": 1.0
+				},
+				{
+
+					"EventName": "DoAttack",
+					"Time": 6
+				},
+				{
+					"EventName": "ConToAtk",
+					"Time": 12,
+					"AnimName": "Attack3"
+				},
+				{
+					"EventName": "End",
+					"Time": 18
+				}
+			]
+		},
+		{
+			"AnimName": "Attack3",
+			"Data": [
+				{
+					"EventName": "PlaySound",
+					"Time": 6,
+					"SoundName": "Data/Audio/SE/Slash1.wav"
+				},
+				{
+					"EventName": "AttackEffect",
+					"Time": 6,
+					"EffectName": "Data/Textures/Slash3.png",
+					"Size": 4,
+					"SpX": 4,
+					"SpY": 4,
+					"Speed": 1.0
 				},
 				{
 
@@ -66,7 +107,7 @@
 				},
 				{
 					"EventName": "End",
-					"Time": 18
+					"Time": 26
 				}
 			]
 		},

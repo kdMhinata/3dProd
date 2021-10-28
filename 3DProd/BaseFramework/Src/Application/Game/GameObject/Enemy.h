@@ -37,7 +37,7 @@ public:
 	virtual bool IsAlive() override { return m_isAlive; }
 
 	void SetPos(const Math::Vector3& pos) override { m_mWorld.Translation(pos); }
-	void SetWPos(const Math::Vector3 pos) { m_worldPos.x += pos.x; m_worldPos.z += pos.z; }
+	void SetWPos(const Math::Vector3 pos) { m_worldPos.x += pos.x; m_worldPos.z += pos.z; m_worldPos.y = pos.y; }
 	void SetMData(std::string filename) { m_modelWork.SetModel(GameResourceFactory.GetModelData(filename)); };
 	void SetHP(int hp) { m_hp = hp; };
 	void SetAttackRadius(float attackradius) { m_attackradius = attackradius; };

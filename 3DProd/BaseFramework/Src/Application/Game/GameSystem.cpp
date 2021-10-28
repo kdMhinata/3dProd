@@ -252,6 +252,20 @@ void GameSystem::ImGuiUpdate()
 			Init();
 		}
 
+		if (ImGui::Button("EnemySet"))
+		{
+			
+			std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
+			spEnemy->Init();
+			AddObject(spEnemy);
+			auto obj = m_editor.m_selectObject.lock();
+			if (obj)
+			{
+				spEnemy->SetTarget(obj);
+				spEnemy->SetWPos(obj->GetPos());
+			}
+		}
+
 		for (auto&& obj : m_spObjects)
 		{
 			ImGui::PushID(obj.get());
