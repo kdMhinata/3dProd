@@ -9,6 +9,9 @@ public:
 	~StageMap() { Release(); }
 
 	void Init() override;
+
+	virtual void ImGuiUpdate() override;
+
 	bool CheckCollisionBump(const SphereInfo& info, BumpResult& result)override;
 
 	classID GetClassID() const override { return eStage; }

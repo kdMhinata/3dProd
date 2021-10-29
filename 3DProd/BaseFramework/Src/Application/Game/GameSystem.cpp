@@ -9,8 +9,6 @@
 
 void GameSystem::Init()
 {
-//	m_sky.SetModel(m_resourceFactory.GetModelData("Data/Models/Sky/Sky.gltf"));
-
 	bool isLoaded = false;
 
 	// 
@@ -84,10 +82,9 @@ void GameSystem::Init()
 		GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf");
 		GameResourceFactory.GetModelData("Data/Models/enemy/skeleton.gltf");
 		GameResourceFactory.GetModelData("Data/Models/enemy/golem.gltf");
-		GameResourceFactory.GetModelData("Data/Models/StageMap/DungeonStage.gltf");
+		GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf");
 
 		isLoaded = true;
-
 	};
 
 	std::thread loadThread(loadProc);

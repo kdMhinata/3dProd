@@ -40,8 +40,6 @@ void Player::Init()
 
 	m_hp = 200;
 
-	m_name = "player";
-
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
 
 
@@ -191,11 +189,11 @@ void Player::ImGuiUpdate()
 
 	if (ImGui::Button("Debug"))
 	{
-		m_worldPos.y = 100;
+		m_worldPos.y = 37;
 		cameraMat.z = -10;
 	}
 
-	if (ImGui::ListBoxHeader("test"))
+	if (ImGui::ListBoxHeader("Action"))
 	{
 		if (ImGui::Button("Wait"))
 		{
