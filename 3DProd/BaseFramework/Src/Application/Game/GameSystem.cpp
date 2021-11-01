@@ -240,6 +240,32 @@ void GameSystem::ImGuiUpdate()
 			}
 		}
 
+		if (ImGui::Button("SaveScene"))
+		{
+			json11::Json::array objArray;
+			for (auto&& obj : m_spObjects)
+			{
+				json11::Json::object serial;
+				obj->Serialize(serial);
+
+				objArray.push_back(serial);
+			}
+
+			std::string path;
+			if (KdWindow::SaveFileDialog(path))
+			{
+				// 文字列化
+				json11::Json json(objArray);
+				std::string strJson = json.dump(true);
+
+				std::ofstream ofs(path);
+				if (ofs)
+				{
+					ofs.write(strJson.c_str(), strJson.size());
+				}
+			}
+		}
+
 		if (ImGui::Button("Reset"))
 		{
 			Release();

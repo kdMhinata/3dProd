@@ -11,6 +11,25 @@ void GameObject::Draw()
 
 void GameObject::ImGuiUpdate()
 {
+	if (ImGui::Button("SaveToFile"))
+	{
+		std::string path;
+		if (KdWindow::SaveFileDialog(path))
+		{
+			// Jsonオブジェクト化
+			json11::Json::object obj;
+			Serialize(obj);
+			// 文字列化
+			json11::Json json(obj);
+			std::string strJson = json.dump(true);
+
+			std::ofstream ofs(path);
+			if(ofs)
+			{
+				ofs.write(strJson.c_str(), strJson.size());
+			}
+		}
+	}
 	ImGui::InputText("Name", &m_name);
 }
 

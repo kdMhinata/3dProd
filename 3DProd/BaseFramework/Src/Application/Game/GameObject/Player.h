@@ -76,7 +76,6 @@ private:
 	float m_gravity = 0.0f;
 
 	std::string m_atkCancelAnimName = "";
-	std::string m_name = "ekard";
 
 	bool CheckWait()
 	{

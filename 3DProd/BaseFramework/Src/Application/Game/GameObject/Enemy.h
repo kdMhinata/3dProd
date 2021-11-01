@@ -34,6 +34,7 @@ public:
 
 	void Init() override;
 	void Update() override;
+	void Draw2D()override;
 	virtual bool IsAlive() override { return m_isAlive; }
 
 	void SetPos(const Math::Vector3& pos) override { m_mWorld.Translation(pos); }

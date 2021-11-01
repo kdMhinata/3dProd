@@ -76,6 +76,26 @@ public:
 
 	const std::string& GetName() const { return  m_name; }
 
+	// 復元
+	virtual void Deserialize(const json11::Json& json)
+	{
+		m_name = json["Name"].string_value();
+		m_modelFilename = json["ModelFilename"].string_value();
+		LoadModel(m_modelFilename);
+	}
+	// 文字列化
+	virtual void Serialize(json11::Json::object& json)
+	{
+		json["Name"] = m_name;
+		json["ModelFilename"] = m_modelFilename;
+	}
+
+	void LoadModel(const std::string& path)
+	{
+		m_modelFilename = path;
+		m_modelWork.SetModel(GameResourceFactory.GetModelData(path));
+	}
+
 // 継承したもののみ触れる 
 protected:
 
@@ -91,11 +111,12 @@ protected:
 
 	bool			m_isAlive = true;
 
-	SphereInfo  m_bumpSphereInfo;
+	SphereInfo		m_bumpSphereInfo;
 
-	float m_alpha = 1.0f;
+	float			m_alpha = 1.0f;
 
 	std::string m_name = "GameObject";
+	std::string m_modelFilename;
 
 private:
 	void Release() {}

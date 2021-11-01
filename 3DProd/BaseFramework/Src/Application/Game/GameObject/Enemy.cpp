@@ -25,6 +25,10 @@ void Enemy::Init()
 	m_audioManager.Init();
 }
 
+void Enemy::Draw2D()
+{
+}
+
 void Enemy::Update()
 {
 	if (m_spActionState)
@@ -291,7 +295,7 @@ void Enemy::ActionMove::Update(Enemy& owner)
 
 void Enemy::ActionAttack::Update(Enemy& owner)
 {
-
+	
 }
 
 void Enemy::ActionElimination ::Update(Enemy& owner)

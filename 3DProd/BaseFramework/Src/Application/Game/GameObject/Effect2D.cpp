@@ -101,6 +101,8 @@ void Effect2D::SetTexture(const std::shared_ptr<KdTexture> spTex, float w, float
 void Effect2D::SetAnimation(int splitX, int splitY, float speed, bool isLoop)
 {
 	m_poly.SetAnimationInfo(splitX, splitY);
+	// 0ƒRƒ}–Ú‚É‚·‚é
+	m_poly.SetAnimationPos(0);
 
 	m_animSpd = speed;
 	m_isLoop = isLoop;

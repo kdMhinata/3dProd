@@ -7,6 +7,7 @@
 
 Player::Player()
 {
+	m_name = "player";
 }
 
 const float Player::s_limitOfStepHeight = 0.1f;
@@ -267,7 +268,7 @@ void Player::ScriptProc(const json11::Json& event)
 		float Speed = event["Speed"].int_value();
 		int SpX = event["SpX"].int_value();
 		int SpY = event["SpY"].int_value();
-		//”š”­
+		
 		std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
 		Math::Vector3 effectPos = GetPos();
 		effectPos += (m_mWorld.Up() * 1);
@@ -278,11 +279,11 @@ void Player::ScriptProc(const json11::Json& event)
 		m = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90)) * m;
 
 		spEffect->Init();
-		spEffect->SetAnimation(SpX,SpY,1.0f);
+		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile), Size, Size);
 //		spEffect->SetPos(effectPos);
 		spEffect->SetMatrix(m);
 		spEffect->SetLifeSpan(1000);
-		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile),Size,Size);
+		spEffect->SetAnimation(SpX, SpY, 1.0f);
 
 		auto p = shared_from_this();
 
@@ -417,10 +418,10 @@ void Player::DoAttack()
 					Math::Vector3 effectPos = (attackPos += (m_mWorld.Up() * 0.5)+=(m_mWorld.Backward()*0.5));
 
 					spEffect->Init();
-					spEffect->SetAnimation(4, 5,3.0f);
+					spEffect->SetAnimation(4, 5, 3.0f);
 					spEffect->SetPos(effectPos);
 					spEffect->SetLifeSpan(1000);
-					spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/SlashH1.png"),5,5);
+					spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/SlashH1.png"),15,15);
 					GameInstance.AddObject(spEffect);
 				}
 			}

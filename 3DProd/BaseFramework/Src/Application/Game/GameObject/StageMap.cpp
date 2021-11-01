@@ -2,13 +2,24 @@
 
 void StageMap::Init()
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf"));
+//	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf"));
+	LoadModel("Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf");
 }
 
 void StageMap::ImGuiUpdate()
 {
 	GameObject::ImGuiUpdate();
 
+	if (ImGui::Button("Load Model"))
+	{
+		std::string path;
+		if (KdWindow::OpenFileDialog(path))
+		{
+			LoadModel(path);
+		}
+	}
+
+	/*
 	if (ImGui::Button("SETHome"))
 	{
 		m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Home/Home1/StageMap.gltf"));
@@ -23,6 +34,12 @@ void StageMap::ImGuiUpdate()
 		m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon3/DungeonStage.gltf"));
 
 	}
+	if (ImGui::Button("SetStage4"))
+	{
+		m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon4/DungeonStage.gltf"));
+
+	}
+	*/
 }
 
 bool StageMap::CheckCollisionBump(const SphereInfo& info, BumpResult& result)
