@@ -1,10 +1,12 @@
 [
   {
-    "ModelFilename": "Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf",
+    "ClassName": "StageMap",
+    "ModelFilename": "Data\\Models\\StageMap\\StageMapD\\DungeonStage.gltf",
     "Name": "GameObject"
   },
   {
-    "ModelFilename": "",
+    "ClassName": "Player",
+    "ModelFilename": "Data/Models/robot/chara.gltf",
     "Name": "player"
   },
   {

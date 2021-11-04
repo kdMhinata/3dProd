@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#define CLASS_NAME(name) virtual std::string ClassName() const override { return #name; }
+
 // 球の情報
 struct SphereInfo
 {
@@ -69,6 +71,8 @@ public:
 
 	virtual classID GetClassID() const { return eBase; }
 
+	virtual std::string ClassName() const { return "GameObject"; };
+
 	// 押し戻しの衝突判定
 	virtual bool CheckCollisionBump(const SphereInfo& info, BumpResult& result);
 	// オブジェクト同士の衝突判定
@@ -88,12 +92,15 @@ public:
 	{
 		json["Name"] = m_name;
 		json["ModelFilename"] = m_modelFilename;
+		json["ClassName"] = ClassName();
 	}
 
 	void LoadModel(const std::string& path)
 	{
 		m_modelFilename = path;
-		m_modelWork.SetModel(GameResourceFactory.GetModelData(path));
+		auto model = GameResourceFactory.GetModelData(path);
+		if (model == nullptr)return;
+		m_modelWork.SetModel(model);
 	}
 
 // 継承したもののみ触れる 

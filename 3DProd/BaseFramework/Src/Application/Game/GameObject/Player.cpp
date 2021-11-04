@@ -12,8 +12,60 @@ Player::Player()
 
 const float Player::s_limitOfStepHeight = 0.1f;
 
+void Player::Deserialize(const json11::Json& json)
+{
+	Character::Deserialize(json);
+
+	m_spCamera = std::make_shared<TPSCamera>();
+
+	GameSystem::GetInstance().SetCamera(m_spCamera);
+
+	m_spCamera->Init();
+
+	m_spCamera->SetProjectionMatrix(60.0f, 3000.0f);	// 視野角の設定（左右に60度＝120度）,最大描画距離(短いほど判定が正確になる)
+
+	// カメラの注視点から5m離れる
+	m_spCamera->SetLocalPos(Math::Vector3(0.0f, 0.0f, -10.0f));
+
+	// キャラクターから注視点へのローカル座標を上に3m上げる
+	m_spCamera->SetLocalGazePos(Math::Vector3(0.0f, 3.0f, 0.0f));
+
+	// カメラの制限角度
+	m_spCamera->SetClampAngle(-75.0f, 90.0f);
+
+	// カメラの移動スピード
+	m_spCamera->SetRotationSpeed(0.25);
+
+	m_bumpSphereInfo.m_pos.y = 0.65f;
+	m_bumpSphereInfo.m_radius = 0.4f;
+
+	m_hp = 200;
+
+	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
+
+	m_spActionState = std::make_shared<ActionWait>();
+
+	//AudioEngin初期化
+	DirectX::AUDIO_ENGINE_FLAGS eflags =
+		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
+	m_audioManager.Init();
+
+	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/bar.png");
+	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
+
+	m_spShadow = std::make_shared<Effect2D>();
+	m_spShadow->Init();
+	m_spShadow->SetPos(GetPos());
+	m_spShadow->SetTexture(GameResourceFactory.GetTexture("Data/Textures/shadow.png"));
+
+	m_swordmodelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Weapon/sword.gltf"));
+
+	m_input = std::make_shared<PlayerInput>();
+}
+
 void Player::Init()
 {
+	/*
 	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf"));
 
 	m_spCamera = std::make_shared<TPSCamera>();
@@ -60,6 +112,7 @@ void Player::Init()
 	m_spShadow->SetTexture(GameResourceFactory.GetTexture("Data/Textures/shadow.png"));
 
 	m_swordmodelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Weapon/sword.gltf"));
+	*/
 }
 
 // 更新処理
@@ -234,6 +287,10 @@ void Player::NotifyDamage(DamageArg& arg)
 		arg.ret_IsHit = false;
 	}
 }
+
+
+// 
+
 
 void Player::ScriptProc(const json11::Json& event)
 {

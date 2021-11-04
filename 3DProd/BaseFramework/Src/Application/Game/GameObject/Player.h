@@ -12,6 +12,8 @@ class Effect2D;
 class Player : public Character
 {
 public:
+	CLASS_NAME(Player)
+	
 	Player();
 	virtual ~Player() override { Release(); };
 
@@ -39,6 +41,9 @@ public:
 	{
 		m_input = input;
 	}
+
+	// 
+	virtual void Deserialize(const json11::Json& json);
 
 private:
 	void ScriptProc(const json11::Json& event);

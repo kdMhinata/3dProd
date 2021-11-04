@@ -6,6 +6,8 @@
 class StageMap : public Character
 {
 public:
+	CLASS_NAME(StageMap)
+
 	StageMap() {}
 	~StageMap() { Release(); }
 

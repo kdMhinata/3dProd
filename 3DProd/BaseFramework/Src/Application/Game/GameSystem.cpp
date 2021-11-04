@@ -118,7 +118,7 @@ void GameSystem::Update()
 	if (GetAsyncKeyState(VK_ESCAPE))
 	{
 		if (MessageBoxA(APP.m_window.GetWndHandle(), "本当にゲームを終了しますか？",
-			"確認", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES) 
+			"確認", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
 		{
 			APP.End();
 		}
@@ -149,13 +149,13 @@ void GameSystem::Update()
 		if (!(*objectItr)->IsAlive())
 		{
 			objectItr->reset(/*引数にポインタを入れて新しくこっちを見さす*/);
-			
+
 			// 消したイテレータを受け取る
 			objectItr = m_spObjects.erase(objectItr);
 
 			continue;
 		}
-		
+
 		++objectItr;
 	}
 
@@ -177,7 +177,7 @@ void GameSystem::Draw()
 	}
 	else
 	{
-			m_editor.camera.SetToShader();
+		m_editor.camera.SetToShader();
 	}
 
 	// ①不透明物の描画から
@@ -200,8 +200,8 @@ void GameSystem::Draw()
 
 		// カリングなし(両面描画)
 		D3D.WorkDevContext()->RSSetState(SHADER->m_rs_CullNone);
-		
-	
+
+
 		// ゲームオブジェクト(透明物)の描画
 		for (std::shared_ptr<GameObject>& spObject : m_spObjects)
 		{
@@ -228,15 +228,53 @@ void GameSystem::Draw()
 
 void GameSystem::ImGuiUpdate()
 {
+	/*
+	// 生成クラス管理マップ
+	std::unordered_map<std::string, std::function<std::shared_ptr<GameObject>()>> m_classMap;
+
+	// 生成クラスを登録
+	m_classMap["Player"] = []() {return std::make_shared<Player>(); };
+
+	// 文字列からクラスインスタンスを生成
+	auto newObj = m_classMap["Player"]();
+	auto newObj = m_classMap[className]();
+	*/
+
 	// ImGui Objectrisuto windou 
 	if (ImGui::Begin("Object List"))
 	{
-		if (ImGui::Button("Load"))
+
+		if (ImGui::Button("LoadScene"))
 		{
 			std::string path;
 			if (KdWindow::OpenFileDialog(path))
 			{
+				json11::Json json = KdLoadJSONFile(path);
 
+				m_spObjects.clear();
+
+				json11::Json::array objArray = json.array_items();
+
+				for (auto&& obj : objArray)
+				{
+					const auto& className = obj["ClassName"].string_value();
+					std::shared_ptr<GameObject> newObj;
+					if (className == "StageMap")
+					{
+						newObj = std::make_shared<StageMap>();
+					}
+					else if (className == "Player")
+					{
+						newObj = std::make_shared<Player>();
+					}
+					else
+					{
+						newObj = std::make_shared<GameObject>();
+					}
+					newObj->Deserialize(obj);
+
+					m_spObjects.push_back(newObj);
+				}
 			}
 		}
 
@@ -300,8 +338,8 @@ void GameSystem::ImGuiUpdate()
 				}
 				ImGui::TreePop();
 			}
-		
-			if(ImGui::Button("Set"))
+
+			if (ImGui::Button("Set"))
 			{
 				std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
 				spEnemy->Init();
@@ -317,33 +355,36 @@ void GameSystem::ImGuiUpdate()
 			ImGui::TreePop();
 		}
 
+
 		for (auto&& obj : m_spObjects)
 		{
 			ImGui::PushID(obj.get());
 
 			bool isSelect = m_editor.m_selectObject.lock() == obj;
 
-				if (ImGui::Selectable(obj->GetName().c_str(), isSelect))
-				{
-					// Clickされた
-					m_editor.m_selectObject = obj;
-				}
+			if (ImGui::Selectable(obj->GetName().c_str(), isSelect))
+			{
+				// Clickされた
+				m_editor.m_selectObject = obj;
+			}
 
 			ImGui::PopID();
 		}
-	}
-	ImGui::End();
 
-	// Inspector
-	if (ImGui::Begin("Inspector"))
-	{
-		auto obj = m_editor.m_selectObject.lock();
-		if (obj)
+		ImGui::End();
+
+		// Inspector
+		if (ImGui::Begin("Inspector"))
 		{
-			obj->ImGuiUpdate();
+			auto obj = m_editor.m_selectObject.lock();
+			if (obj)
+			{
+				obj->ImGuiUpdate();
+			}
 		}
 	}
 	ImGui::End();
+
 }
 
 const std::shared_ptr<KdCamera> GameSystem::GetCamera() const
@@ -351,7 +392,7 @@ const std::shared_ptr<KdCamera> GameSystem::GetCamera() const
 	return m_spCamera;
 }
 
-void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target,Math::Vector3& pos, std::string& modelname,int hp,float attackradius,bool sarmor)
+void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos, std::string& modelname, int hp, float attackradius, bool sarmor)
 {
 	std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
 	spEnemy->Init();

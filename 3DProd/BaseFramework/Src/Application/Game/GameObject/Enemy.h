@@ -29,6 +29,8 @@ private:
 class Enemy : public Character
 {
 public: 
+	CLASS_NAME(Enemy);
+
 	Enemy(){}
 	virtual ~Enemy() override { Release(); }
 
