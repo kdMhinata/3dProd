@@ -47,7 +47,8 @@ public:
 		eBase,
 		eStage,
 		ePlayer,
-		eEnemy
+		eEnemy,
+		eDestuctible
 	};
 
 	GameObject(){}

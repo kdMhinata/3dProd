@@ -3,6 +3,7 @@
 #include"../Camera/TPSCamera.h"
 #include"../GameSystem.h"
 #include "Enemy.h"
+#include "StageMap.h"
 #include "Effect2D.h"
 
 Player::Player()
@@ -443,14 +444,14 @@ void Player::DoAttack()
 {	
 		for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
 		{
-			if (spObj->GetClassID() != GameObject::eEnemy) { continue; }
+ 			if (spObj->GetClassID() != GameObject::eEnemy&& spObj->GetClassID()!=GameObject::eDestuctible) { continue; }
 
-			Math::Vector3 attackPos = GetPos();
+    			Math::Vector3 attackPos = GetPos();
 			attackPos += (m_mWorld.Backward() * 0.5);
 
 			SphereInfo info(attackPos,m_bumpSphereInfo.m_radius+1.0f);
 
-			BumpResult result;
+ 			BumpResult result;
 
 			// ‘ŠŽè‚Ì”»’èŠÖ”‚ð—˜—p‚·‚é
 			if (spObj->CheckCollisionBump(info, result))
@@ -462,7 +463,7 @@ void Player::DoAttack()
 				DamageArg arg;
 				arg.damage = 10;
 				arg.attackPos = attackPos;
-				chara->NotifyDamage(arg);
+   				chara->NotifyDamage(arg);
 
 				if (arg.ret_IsHit)
 				{
@@ -505,7 +506,7 @@ void Player::UpdateCollition()
 
 	for (const std::shared_ptr<GameObject>& spStageObj : GameSystem::GetInstance().GetObjects())
 	{
-		if (spStageObj->GetClassID() != GameObject::eStage) { continue; }
+		if (spStageObj->GetClassID() != GameObject::eStage&& spStageObj->GetClassID() != GameObject::eDestuctible) { continue; }
 
 		BumpResult result;
 

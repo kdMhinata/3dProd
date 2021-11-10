@@ -313,6 +313,23 @@ void GameSystem::ImGuiUpdate()
 			Init();
 		}
 
+		if (ImGui::TreeNode("DestObjSet"))
+		{
+			if (ImGui::Button("Model"))
+			{
+				std::string path;
+				KdWindow::OpenFileDialog(path);
+			}
+
+			if (ImGui::Button("Set"))
+			{
+				std::shared_ptr<DestuctibleBox> spDestBox = std::make_shared<DestuctibleBox>();
+				spDestBox->Init();
+				AddObject(spDestBox);
+			}
+			ImGui::TreePop();
+		}
+
 		if (ImGui::TreeNode("EnemySet"))
 		{
 

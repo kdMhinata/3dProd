@@ -18,28 +18,6 @@ void StageMap::ImGuiUpdate()
 			LoadModel(path);
 		}
 	}
-
-	/*
-	if (ImGui::Button("SETHome"))
-	{
-		m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Home/Home1/StageMap.gltf"));
-	}
-
-	if (ImGui::Button("SETStage2"))
-	{
-		m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon2/DungeonStage.gltf"));
-	}
-	if (ImGui::Button("SetStage3"))
-	{
-		m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon3/DungeonStage.gltf"));
-
-	}
-	if (ImGui::Button("SetStage4"))
-	{
-		m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon4/DungeonStage.gltf"));
-
-	}
-	*/
 }
 
 bool StageMap::CheckCollisionBump(const SphereInfo& info, BumpResult& result)
@@ -68,7 +46,6 @@ bool StageMap::CheckCollisionBump(const SphereInfo& info, BumpResult& result)
 
 	return result.m_isHit;
 }
-
 
 void StageMap::Release()
 {

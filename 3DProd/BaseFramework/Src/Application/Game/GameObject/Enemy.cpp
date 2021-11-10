@@ -84,7 +84,7 @@ void Enemy::ScriptProc(const json11::Json& event)
 
 	if (eventName == "PlaySound")
 	{
-		const std::string& soundFile = event["SoundName"].string_value();
+ 		const std::string& soundFile = event["SoundName"].string_value();
 		m_audioManager.Play(soundFile);
 	}
 	else if (eventName == "DoAttack")

@@ -28,10 +28,35 @@ private:
 class DestuctibleBox : public StageMap
 {
 public :
+
+	void Init()override
+	{
+		m_hp = 10;
+		LoadModel("Data/Models/StageMap/Object/WoodBox.gltf");
+	}
+
+	void Update()override
+	{
+		if (m_hp <= 0)
+		{
+			m_isAlive = false;
+		}
+	}
+
 	virtual void NotifyDamage(DamageArg& arg) override
 	{
 		// モデル切り替え
 		// アニメーション変更
+
+		m_hp -= arg.damage;
+		arg.ret_IsHit = true;
+	}
+
+	virtual void ImGuiUpdate()override
+	{
+		StageMap::ImGuiUpdate();
+
+		ImGui::DragInt("Hp", &m_hp, 1.0f, 0, 200);
 	}
 
 	// 復元
@@ -52,6 +77,36 @@ public :
 		json["Hp"] = m_hp;
 	}
 
+	classID GetClassID() const override { return eDestuctible; }
+
+	bool CheckCollisionBump (const SphereInfo& info, BumpResult& result)override
+	{
+		Math::Vector3 selfPos = GetPos() + m_bumpSphereInfo.m_pos;
+
+		Math::Vector3 distVec = info.m_pos - selfPos;
+
+		// 2点間の距離
+		float distanceSqr = distVec.LengthSquared();
+
+		// 当たり判定の半径合計
+		float hitRadius = m_bumpSphereInfo.m_radius + info.m_radius;
+
+		// 判定の結果
+		result.m_isHit = (distanceSqr <= (hitRadius * hitRadius));
+
+		if (result.m_isHit)
+		{
+			// 押し戻し
+			result.m_pushVec = distVec;
+			result.m_pushVec.Normalize();
+
+			float distance = std::sqrt(distanceSqr);
+
+			// 押し戻すベクトル×押し戻す値
+			result.m_pushVec *= hitRadius - distance;
+		}
+		return result.m_isHit;
+	}
+
 private:
-	int m_hp = 100;
 };
