@@ -15,10 +15,13 @@ public:
 	virtual void NotifyDamage(DamageArg& arg) {}
 	virtual int GetHp() { return m_hp; }
 
+
 	int m_hitStop = 0;
 	int m_hp;
 	bool invincibleFlg = false;
 
 	std::shared_ptr<KdTexture> m_hpBarTex;
 	std::shared_ptr<KdTexture> m_hpFrameTex;
+private:
+	virtual void ScriptProc(const json11::Json& event) {}
 };

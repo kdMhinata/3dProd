@@ -4,7 +4,7 @@
 
 void Enemy::Init()
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/enemy/slime.gltf"));
+	LoadModel("Data/Models/enemy/slime.gltf");
 	
 	m_bumpSphereInfo.m_pos.y = 0.45f;
 	m_bumpSphereInfo.m_radius = 0.3f;

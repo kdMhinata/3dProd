@@ -55,7 +55,7 @@ public:
 
 private:
 
-	void ScriptProc(const json11::Json& event);
+	void ScriptProc(const json11::Json& event)override;
 
 	void Release();
 

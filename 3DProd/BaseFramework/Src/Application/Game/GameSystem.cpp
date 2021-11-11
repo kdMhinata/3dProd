@@ -267,6 +267,10 @@ void GameSystem::ImGuiUpdate()
 					{
 						newObj = std::make_shared<Player>();
 					}
+					else if (className == "Gimmick")
+					{
+						newObj = std::make_shared<Gimmick>();
+					}
 					else
 					{
 						newObj = std::make_shared<GameObject>();
@@ -315,17 +319,22 @@ void GameSystem::ImGuiUpdate()
 
 		if (ImGui::TreeNode("DestObjSet"))
 		{
-			if (ImGui::Button("Model"))
-			{
-				std::string path;
-				KdWindow::OpenFileDialog(path);
-			}
-
 			if (ImGui::Button("Set"))
 			{
 				std::shared_ptr<DestuctibleBox> spDestBox = std::make_shared<DestuctibleBox>();
 				spDestBox->Init();
 				AddObject(spDestBox);
+			}
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Gimmick"))
+		{
+			if (ImGui::Button("Set"))
+			{
+				std::shared_ptr<Gimmick> spGimmick = std::make_shared<Gimmick>();
+				spGimmick->Init();
+				AddObject(spGimmick);
 			}
 			ImGui::TreePop();
 		}

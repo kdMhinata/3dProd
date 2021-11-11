@@ -48,7 +48,8 @@ public:
 		eStage,
 		ePlayer,
 		eEnemy,
-		eDestuctible
+		eDestuctible,
+		eGimmick
 	};
 
 	GameObject(){}
