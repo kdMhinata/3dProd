@@ -204,6 +204,9 @@
     <ClInclude Include="..\Library\imgui\imgui.h">
       <Filter>Library\Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Src\System\Utility\Classinstantiater.h">
+      <Filter>Src\System\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -322,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="..\Library\imgui\imgui_impl_dx11.cpp">
       <Filter>Library\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Utility\Classinstantiater.cpp">
+      <Filter>Src\System\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

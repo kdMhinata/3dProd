@@ -9,6 +9,11 @@
 
 void GameSystem::Init()
 {
+	CLASS_REGISTER(GameObject);
+	CLASS_REGISTER(Player);
+	CLASS_REGISTER(Enemy);
+	CLASS_REGISTER(StageMap);
+
 	bool isLoaded = false;
 
 	// 
@@ -258,23 +263,8 @@ void GameSystem::ImGuiUpdate()
 				for (auto&& obj : objArray)
 				{
 					const auto& className = obj["ClassName"].string_value();
-					std::shared_ptr<GameObject> newObj;
-					if (className == "StageMap")
-					{
-						newObj = std::make_shared<StageMap>();
-					}
-					else if (className == "Player")
-					{
-						newObj = std::make_shared<Player>();
-					}
-					else if (className == "Gimmick")
-					{
-						newObj = std::make_shared<Gimmick>();
-					}
-					else
-					{
-						newObj = std::make_shared<GameObject>();
-					}
+					std::shared_ptr<GameObject> newObj = CLASS_INST.Instantiate<GameObject>(className);
+
 					newObj->Deserialize(obj);
 
 					m_spObjects.push_back(newObj);

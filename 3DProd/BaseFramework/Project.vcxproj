@@ -186,6 +186,7 @@
     <ClInclude Include="Src\System\Shader\SpriteShader\KdSpriteShader.h" />
     <ClInclude Include="Src\System\Shader\StandardShader\KdStandardShader.h" />
     <ClInclude Include="src\System\KdSystem.h" />
+    <ClInclude Include="Src\System\Utility\Classinstantiater.h" />
     <ClInclude Include="src\System\Utility\KdUtility.h" />
     <ClInclude Include="src\System\Window\KdWindow.h" />
   </ItemGroup>
@@ -230,6 +231,7 @@
     <ClCompile Include="Src\System\Shader\KdShaderManager.cpp" />
     <ClCompile Include="Src\System\Shader\SpriteShader\KdSpriteShader.cpp" />
     <ClCompile Include="Src\System\Shader\StandardShader\KdStandardShader.cpp" />
+    <ClCompile Include="Src\System\Utility\Classinstantiater.cpp" />
     <ClCompile Include="Src\System\Utility\KdUtility.cpp" />
     <ClCompile Include="src\System\Window\KdWindow.cpp" />
   </ItemGroup>
