@@ -13,6 +13,8 @@ void GameSystem::Init()
 	CLASS_REGISTER(Player);
 	CLASS_REGISTER(Enemy);
 	CLASS_REGISTER(StageMap);
+	CLASS_REGISTER(Gimmick);
+	CLASS_REGISTER(DestuctibleBox);
 
 	bool isLoaded = false;
 
@@ -22,7 +24,7 @@ void GameSystem::Init()
 		// スカイスフィア拡大行列
 		m_skyMat = m_skyMat.CreateScale(50.0f);
 
-
+		/*
 		std::shared_ptr<StageMap> spStage = std::make_shared<StageMap>(); // stageMapのインスタンス化
 		spStage->Init();
 		AddObject(spStage);
@@ -79,6 +81,9 @@ void GameSystem::Init()
 		pos = { 0.0,0.0,65.0 };
 		modelname = "Data/Models/enemy/golem.gltf";
 		EnemyInstance(spPlayer, pos, modelname, 200, 5.0f, false);
+		*/
+
+		Load("Data/Save/test.json");
 
 		//予め呼んでおきたい重いデータ等絶対使うデータ等
 		GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
@@ -233,19 +238,6 @@ void GameSystem::Draw()
 
 void GameSystem::ImGuiUpdate()
 {
-	/*
-	// 生成クラス管理マップ
-	std::unordered_map<std::string, std::function<std::shared_ptr<GameObject>()>> m_classMap;
-
-	// 生成クラスを登録
-	m_classMap["Player"] = []() {return std::make_shared<Player>(); };
-
-	// 文字列からクラスインスタンスを生成
-	auto newObj = m_classMap["Player"]();
-	auto newObj = m_classMap[className]();
-	*/
-
-	// ImGui Objectrisuto windou 
 	if (ImGui::Begin("Object List"))
 	{
 
@@ -419,6 +411,25 @@ void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3
 	spEnemy->SetAttackRadius(attackradius);
 	spEnemy->SetSuperArmor(sarmor);
 	spEnemy->SetTarget(target);
+}
+
+void GameSystem::Load(const std::string& filename)
+{		//・Objectのロード
+	json11::Json json = KdLoadJSONFile(filename);
+
+	json11::Json::array objArray = json.array_items();
+
+	for (auto&& obj : objArray)
+	{
+		const auto& className = obj["ClassName"].string_value();
+		std::shared_ptr<GameObject> newObj = CLASS_INST.Instantiate<GameObject>(className);
+
+		newObj->Deserialize(obj);
+
+		m_spObjects.push_back(newObj);
+	}
+	//・設定のロード
+	//・
 }
 
 void GameSystem::Release()

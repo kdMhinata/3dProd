@@ -89,6 +89,15 @@ public:
 
 	void EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos, std::string& modelname, int hp, float attackradius = 0.5f,bool sarmor =false);
 
+	void Load(const std::string& filename);
+
+	// 文字列化
+	void Save(const std::string& filename)
+	{
+
+	}
+
+
 private:
 	void Release();		// 解放
 

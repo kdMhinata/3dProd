@@ -1,0 +1,23 @@
+[
+  {
+    "ClassName": "StageMap",
+    "ModelFilename": "Data\\Models\\StageMap\\StageMapD\\DungeonStage.gltf",
+    "Name": "GameObject"
+  },
+  {
+    "ClassName": "Player",
+    "ModelFilename": "Data/Models/robot/chara.gltf",
+    "Name": "player"
+  },
+  {
+    "Active": false,
+    "ClassName": "Gimmick",
+    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
+    "Name": "Gimmik"
+  },
+  {
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "GameObject"
+  }
+]
