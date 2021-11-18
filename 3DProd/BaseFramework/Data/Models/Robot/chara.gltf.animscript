@@ -112,6 +112,34 @@
 			]
 		},
 		{
+			"AnimName": "Thrust",
+			"Data": [
+				{
+					"EventName": "PlaySound",
+					"Time": 6,
+					"SoundName": "Data/Audio/SE/Slash1.wav"
+				},
+				{
+					"EventName": "AttackEffect",
+					"Time": 6,
+					"EffectName": "Data/Textures/Thrust1.png",
+					"Size": 6,
+					"SpX": 4,
+					"SpY": 5,
+					"Speed": 1.0
+				},
+				{
+
+					"EventName": "DoAttack",
+					"Time": 12
+				},
+				{
+					"EventName": "End",
+					"Time": 36
+				}
+			]
+		},
+		{
 			"AnimName": "Dodge",
 			"Data": [
 				{

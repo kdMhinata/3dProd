@@ -38,6 +38,21 @@ struct BumpResult
 	Math::Vector3 m_pushVec;
 };
 
+
+inline json11::Json::array Vec3ToJson(const Math::Vector3& v)
+{
+	return json11::Json::array( { v.x, v.y, v.z } );
+}
+
+inline void JsonToVec3(json11::Json json, Math::Vector3& vec3)
+{
+	if (!json.is_array())return;
+	if (json.array_items().size() != 3)return;
+	vec3.x = (float)json.array_items()[0].number_value();
+	vec3.y = (float)json.array_items()[1].number_value();
+	vec3.z = (float)json.array_items()[2].number_value();
+}
+
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
@@ -88,6 +103,11 @@ public:
 		m_name = json["Name"].string_value();
 		m_modelFilename = json["ModelFilename"].string_value();
 		LoadModel(m_modelFilename);
+	
+		Math::Vector3 pos=GetPos();
+		JsonToVec3(json["Pos"],pos);
+		SetPos(pos);
+
 	}
 	// 文字列化
 	virtual void Serialize(json11::Json::object& json)
@@ -95,6 +115,8 @@ public:
 		json["Name"] = m_name;
 		json["ModelFilename"] = m_modelFilename;
 		json["ClassName"] = ClassName();
+
+		json["Pos"] = Vec3ToJson(GetPos());
 	}
 
 	void LoadModel(const std::string& path)

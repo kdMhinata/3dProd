@@ -1,0 +1,14 @@
+[
+  {
+    "ClassName": "StageMap",
+    "ModelFilename": "Data\\Models\\StageMap\\StageMapD\\DungeonStage.gltf",
+    "Name": "GameObject",
+    "Pos": [0,0,0]
+  },
+  {
+    "ClassName": "Player",
+    "ModelFilename": "Data/Models/robot/chara.gltf",
+    "Name": "player",
+    "Pos": [0.23137050867080688,0.020000003278255463,-12.687021255493164]
+  }
+]

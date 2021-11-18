@@ -9,8 +9,10 @@ public:
 
 	BaseInput()
 	{
-		m_buttons.fill(0);
-		m_buttons.fill(1);
+		m_buttons.fill(0); //Space
+		m_buttons.fill(1); //Shift
+		m_buttons.fill(2); //Q
+		m_buttons.fill(3); //E
 	}
 
 	// キー情報を更新
@@ -43,7 +45,7 @@ public:
 		if (GetAsyncKeyState('S') & 0x8000) { m_axisL.y -= 1.0f; }	// 後ろ移動
 		if (GetAsyncKeyState('A') & 0x8000) { m_axisL.x -= 1.0f; }	// 左移動
 		if (GetAsyncKeyState('D') & 0x8000) { m_axisL.x += 1.0f; }	// 右移動
-
+		
 		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 		{
 			m_buttons[0]++;
@@ -60,6 +62,24 @@ public:
 		{
 			m_buttons[1] = 0;
 		}
+
+		if (GetAsyncKeyState('Q') & 0x8000)
+		{
+			m_buttons[2]++;
+		}
+		else
+		{
+			m_buttons[2] = 0;
+		}
+		if (GetAsyncKeyState('E') & 0x8000)
+		{
+			m_buttons[3]++;
+		}
+		else
+		{
+			m_buttons[3] = 0;
+		}
+
 	}
 
 };

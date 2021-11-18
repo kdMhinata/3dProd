@@ -78,7 +78,8 @@ private:
 
 	bool m_canAttack = true;
 	bool m_atkComboFlg = false;
-	float m_gravity = 0.0f;
+//	float m_gravity = 0.0f;
+	Math::Vector3 m_force;
 
 	std::string m_atkCancelAnimName = "";
 
@@ -96,6 +97,7 @@ private:
 		return false;
 	}
 
+	/*
 	void ChangeWait()
 	{
 		m_spActionState->Exit(*this);
@@ -116,7 +118,7 @@ private:
 		m_spActionState = std::make_shared<ActionDodge>();
 		m_spActionState->Entry(*this);
 	}
-
+	*/
 
 	template<class Type>
 	void ChangeAction()
@@ -169,6 +171,13 @@ private:
 		}
 		void Update(Player& owner) override;
 		void Exit(Player& owner) { owner.invincibleFlg = false; }
+	};
+
+	class ActionSkill : public BaseAction
+	{
+	public:
+		void Entry(Player& owner) {owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Thrust"), false);}
+		void Update(Player& owner)override;
 	};
 
 	std::shared_ptr<BaseAction> m_spActionState = nullptr;

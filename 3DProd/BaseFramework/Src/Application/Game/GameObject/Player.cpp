@@ -17,6 +17,8 @@ void Player::Deserialize(const json11::Json& json)
 {
 	Character::Deserialize(json);
 
+	m_worldPos = m_mWorld.Translation();
+
 	m_spCamera = std::make_shared<TPSCamera>();
 
 	GameSystem::GetInstance().SetCamera(m_spCamera);
@@ -121,7 +123,8 @@ void Player::Update()
 {
 //	UpdateInput();
 
-	m_gravity += 0.02f;
+//	m_gravity += 0.02f;
+	m_force.y -= 0.02f;
 	m_prevPos = GetPos();
 
 	m_input->Update();
@@ -169,7 +172,18 @@ void Player::Update()
 	{
 	};
 	*/
-	m_worldPos.y -= m_gravity;
+//	m_worldPos.y += m_gravity;
+	m_worldPos += m_force;
+
+	// –€ŽC
+	if (‹ó’†)
+	{
+		m_force *= 0.99f;
+	}
+	else
+	{
+		m_force *= 0.9f;
+	}
 
 	m_modelWork.CalcNodeMatrices();
 
@@ -252,19 +266,23 @@ void Player::ImGuiUpdate()
 	{
 		if (ImGui::Button("Wait"))
 		{
-			ChangeWait();
+			ChangeAction < Player::ActionWait>();
 		}
 		if (ImGui::Button("Attack"))
 		{
-			ChangeAttack();
+			ChangeAction < Player::ActionAttack>();
 		}
 		if (ImGui::Button("Move"))
 		{
-			ChangeMove();
+			ChangeAction < Player::ActionMove>();
 		}
 		if (ImGui::Button("Dodge"))
 		{
-			ChangeDodge();
+			ChangeAction < Player::ActionDodge>();
+		}
+		if (ImGui::Button("Skill"))
+		{
+			ChangeAction < Player::ActionSkill>();
 		}
 
 	}
@@ -317,7 +335,7 @@ void Player::ScriptProc(const json11::Json& event)
 	}
 	else if (eventName == "End")
 	{
-		ChangeWait();
+		ChangeAction < Player::ActionWait>();
 	}
 	else if (eventName == "AttackEffect")
 	{
@@ -541,7 +559,7 @@ void Player::ActionWait::Update(Player& owner)
 {
 	if (!owner.CheckWait())
 	{
-		owner.ChangeMove();
+		owner.ChangeAction < Player::ActionMove>();
 	}
 
 	if (owner.m_input->IsPressButton(0, false))
@@ -553,7 +571,16 @@ void Player::ActionWait::Update(Player& owner)
 
 	if (owner.m_input->IsPressButton(1, false))
 	{
-		owner.ChangeDodge();
+		owner.ChangeAction<Player::ActionDodge>();
+	}
+
+	if (owner.m_input->IsPressButton(2, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
+	}
+	if (owner.m_input->IsPressButton(3, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
 	}
 }
 
@@ -572,7 +599,16 @@ void Player::ActionMove::Update(Player& owner)
 
 	if (owner.m_input->IsPressButton(1, false))
 	{
-		owner.ChangeDodge();
+		owner.ChangeAction < Player::ActionDodge>();
+	}
+
+	if (owner.m_input->IsPressButton(2, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
+	}
+	if (owner.m_input->IsPressButton(3, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
 	}
 
 	Math::Vector3 vMove;
@@ -596,13 +632,22 @@ void Player::ActionAttack::Update(Player& owner)
 
 	if (owner.m_atkCancelAnimName.size() > 0)
 	{
-		owner.ChangeAttack();
+		owner.ChangeAction < Player::ActionAttack>();
 		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation(owner.m_atkCancelAnimName), false);
 		owner.m_atkCancelAnimName = "";
 	}
 	if (owner.m_input->IsPressButton(1, false))
 	{
-		owner.ChangeDodge();
+		owner.ChangeAction < Player::ActionDodge>();
+	}
+
+	if (owner.m_input->IsPressButton(2, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
+	}
+	if (owner.m_input->IsPressButton(3, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
 	}
 
 	Math::Vector3 attackVec = owner.m_mWorld.Backward();
@@ -638,4 +683,6 @@ void Player::UpdateInput()
 	*/
 }
 
-
+void Player::ActionSkill::Update(Player& owner)
+{
+}

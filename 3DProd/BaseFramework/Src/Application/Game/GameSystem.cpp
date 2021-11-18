@@ -88,11 +88,12 @@ void GameSystem::Init()
 		//予め呼んでおきたい重いデータ等絶対使うデータ等
 		GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
 		GameResourceFactory.GetTexture("Data/Textures/Slash2.png");
+		GameResourceFactory.GetTexture("Data/Textures/Slash3.png");
 		GameResourceFactory.GetTexture("Data/Textures/SlashH1.png");
 		GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf");
 		GameResourceFactory.GetModelData("Data/Models/enemy/skeleton.gltf");
 		GameResourceFactory.GetModelData("Data/Models/enemy/golem.gltf");
-		GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf");
+		//GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf");
 
 		isLoaded = true;
 	};
