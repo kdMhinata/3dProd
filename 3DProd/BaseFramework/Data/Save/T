@@ -9,6 +9,24 @@
     "ClassName": "Player",
     "ModelFilename": "Data/Models/robot/chara.gltf",
     "Name": "player",
-    "Pos": [0.23137050867080688,0.020000003278255463,-12.687021255493164]
+    "Pos": [0.29593321681022644,0,-14.908570289611816]
+  },
+  {
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-0.36881062388420105,0,-6.641667366027832]
+  },
+  {
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [0.2613486647605896,0,-8.0489406585693359]
+  },
+  {
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-0.13916563987731934,0,-9.2961225509643555]
   }
 ]

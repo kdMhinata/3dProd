@@ -4,6 +4,7 @@ void StageMap::Init()
 {
 //	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf"));
 	LoadModel("Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf");
+	m_name = "Stage";
 }
 
 void StageMap::ImGuiUpdate()

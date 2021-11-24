@@ -2,6 +2,50 @@
 #include"Player.h"
 #include "Effect2D.h"
 
+Enemy::Enemy()
+{
+	m_name = "Enemy";
+}
+
+void Enemy::Deserialize(const json11::Json& json)
+{
+	Character::Deserialize(json);
+
+	m_worldPos = m_mWorld.Translation();
+
+	LoadModel("Data/Models/enemy/slime.gltf");
+
+	m_bumpSphereInfo.m_pos.y = 0.45f;
+	m_bumpSphereInfo.m_radius = 0.3f;
+
+	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
+
+	m_spActionState = std::make_shared<ActionWait>();
+
+	m_worldRot.y = 180;
+
+	m_hp = 100;
+
+	//AudioEngin初期化
+	DirectX::AUDIO_ENGINE_FLAGS eflags =
+		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
+	m_audioManager.Init();
+
+	/*
+	uuid m_uuid = json["TargetUUID"].string_value();
+	// ※Searchダメ
+
+	uuid m_uuid2 = json["TargetUUID"].string_value();
+	*/
+}
+
+void Enemy::Serialize(json11::Json::object& json)
+{
+	Character::Serialize(json);
+
+	//json["Target"] = m_wpTarget;
+}
+
 void Enemy::Init()
 {
 	LoadModel("Data/Models/enemy/slime.gltf");

@@ -123,8 +123,9 @@
 					"EventName": "AttackEffect",
 					"Time": 6,
 					"EffectName": "Data/Textures/Thrust1.png",
-					"Size": 6,
 					"SpX": 4,
+					"Size": 6,
+					"Size2": 10,
 					"SpY": 5,
 					"Speed": 1.0
 				},

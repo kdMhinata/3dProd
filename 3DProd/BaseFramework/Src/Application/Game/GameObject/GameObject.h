@@ -146,6 +146,7 @@ protected:
 
 	float			m_alpha = 1.0f;
 
+	std::string m_tag = "";
 	std::string m_name = "GameObject";
 	std::string m_modelFilename;
 

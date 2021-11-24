@@ -93,6 +93,11 @@ public:
 		return result.m_isHit;
 	}
 
+	bool IsActive()
+	{
+		return m_activeFlg;
+	}
+
 	classID GetClassID() const override { return eStage; }
 
 private:

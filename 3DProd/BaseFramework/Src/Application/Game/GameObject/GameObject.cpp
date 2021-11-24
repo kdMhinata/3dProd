@@ -31,6 +31,7 @@ void GameObject::ImGuiUpdate()
 		}
 	}
 	ImGui::InputText("Name", &m_name);
+	ImGui::InputText("Tag", &m_tag);
 }
 
 bool GameObject::CheckCollisionBump(const SphereInfo& info, BumpResult& result)

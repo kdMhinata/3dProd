@@ -7,6 +7,7 @@
 
 #include"../main.h";
 
+
 void GameSystem::Init()
 {
 	CLASS_REGISTER(GameObject);
@@ -350,13 +351,17 @@ void GameSystem::ImGuiUpdate()
 
 			if (ImGui::Button("Set"))
 			{
+				auto obj = m_editor.m_selectObject.lock();
+
+				if (!obj)return;
+
 				std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
 				spEnemy->Init();
 				AddObject(spEnemy);
-				auto obj = m_editor.m_selectObject.lock();
+				
 				if (obj)
 				{
-					spEnemy->SetTarget(obj);
+//					spEnemy->SetTarget(obj);
 					spEnemy->SetWPos(obj->GetPos());
 					spEnemy->SetMData(m_editor.selectEnemyModelName);
 				}
@@ -431,6 +436,11 @@ void GameSystem::Load(const std::string& filename)
 	}
 	//・設定のロード
 	//・
+}
+
+void GameSystem::BlackOut()
+{
+//暗転処理
 }
 
 void GameSystem::Release()

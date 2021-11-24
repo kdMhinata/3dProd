@@ -83,6 +83,8 @@ private:
 
 	std::string m_atkCancelAnimName = "";
 
+	float m_effectValue = 0;
+
 	bool CheckWait()
 	{
 		if (m_input->GetAxisL().LengthSquared() <= 0)
@@ -165,9 +167,18 @@ private:
 	class ActionDodge : public BaseAction
 	{
 	public:
-		void Entry(Player& owner) {
+		void Entry(Player& owner) 
+		{
 			owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Dodge"), false);
 			owner.invincibleFlg = true;
+
+			Math::Vector3 dodgeVec = owner.m_mWorld.Backward();
+
+			dodgeVec.Normalize();
+			dodgeVec *= 0.55f;
+
+			owner.m_force.x += dodgeVec.x;
+			owner.m_force.z += dodgeVec.z;
 		}
 		void Update(Player& owner) override;
 		void Exit(Player& owner) { owner.invincibleFlg = false; }

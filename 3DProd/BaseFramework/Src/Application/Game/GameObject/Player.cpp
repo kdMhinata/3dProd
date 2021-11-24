@@ -8,7 +8,7 @@
 
 Player::Player()
 {
-	m_name = "player";
+	m_name = "Player";
 }
 
 const float Player::s_limitOfStepHeight = 0.1f;
@@ -28,10 +28,12 @@ void Player::Deserialize(const json11::Json& json)
 	m_spCamera->SetProjectionMatrix(60.0f, 3000.0f);	// 視野角の設定（左右に60度＝120度）,最大描画距離(短いほど判定が正確になる)
 
 	// カメラの注視点から5m離れる
-	m_spCamera->SetLocalPos(Math::Vector3(0.0f, 0.0f, -10.0f));
+	cameraMat = Math::Vector3(0.0f, 0.0f, -10.0f);
+	m_spCamera->SetLocalPos(cameraMat);
 
 	// キャラクターから注視点へのローカル座標を上に3m上げる
-	m_spCamera->SetLocalGazePos(Math::Vector3(0.0f, 3.0f, 0.0f));
+	cameraGazeMat = Math::Vector3(0.0f, 3.0f, 0.0f);
+	m_spCamera->SetLocalGazePos(cameraGazeMat);
 
 	// カメラの制限角度
 	m_spCamera->SetClampAngle(-75.0f, 90.0f);
@@ -176,14 +178,15 @@ void Player::Update()
 	m_worldPos += m_force;
 
 	// 摩擦
-	if (空中)
+/*	if (空中)
 	{
 		m_force *= 0.99f;
 	}
 	else
 	{
 		m_force *= 0.9f;
-	}
+	}*/
+	m_force *= 0.9f;
 
 	m_modelWork.CalcNodeMatrices();
 
@@ -340,10 +343,16 @@ void Player::ScriptProc(const json11::Json& event)
 	else if (eventName == "AttackEffect")
 	{
 		const std::string& EffectFile = event["EffectName"].string_value();
-		int	Size = event["Size"].int_value();
+		float	Size = (float)event["Size"].number_value();
+		if (event["Size2"].is_number())
+		{
+			float	Size2 = (float)event["Size2"].number_value();
+			Size = Size + (Size2 - Size) * m_effectValue;
+		}
 		float Speed = event["Speed"].int_value();
 		int SpX = event["SpX"].int_value();
 		int SpY = event["SpY"].int_value();
+
 		
 		std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
 		Math::Vector3 effectPos = GetPos();
@@ -478,6 +487,8 @@ void Player::DoAttack()
 
 				if (chara==nullptr) { continue; }
 				if (chara->GetHp()<=0) { continue; }
+
+
 				DamageArg arg;
 				arg.damage = 10;
 				arg.attackPos = attackPos;
@@ -542,14 +553,14 @@ void Player::UpdateCollition()
 		//　歩いて移動できる地面の限界の段差
 		rayPos.y += s_limitOfStepHeight;
 
-		RayInfo rayInfo(rayPos, Math::Vector3(0.0f, -1.0f, 0.0f),m_gravity+s_limitOfStepHeight);
+		RayInfo rayInfo(rayPos, Math::Vector3(0.0f, -1.0f, 0.0f),s_limitOfStepHeight);
 
 		spStageObj->CheckCollisionBump(rayInfo, result);
 
 		if (result.m_isHit)
 		{
 			m_worldPos += result.m_pushVec;
-			m_gravity = 0.0f;
+			m_force.y = 0.0f;
 		}
 	}
 
@@ -662,13 +673,13 @@ void Player::ActionAttack::Update(Player& owner)
 void Player::ActionDodge::Update(Player& owner)
 {
 	//ここ向いてる方向に回避したい処理書きたい
-	Math::Vector3 dodgeVec = owner.m_mWorld.Backward();
+	/*Math::Vector3 dodgeVec = owner.m_mWorld.Backward();
 
 	dodgeVec.Normalize();
-	dodgeVec *= 0.2f;
+	dodgeVec *= 0.01f;
 
-	owner.m_worldPos.x += dodgeVec.x;
-	owner.m_worldPos.z += dodgeVec.z;
+	owner.m_force.x += dodgeVec.x;
+	owner.m_force.z += dodgeVec.z;*/
 }
 
 void Player::UpdateInput()

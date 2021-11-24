@@ -117,6 +117,16 @@ public:
 
 	}
 
+	const std::shared_ptr<GameObject> FindObjectWithTag(const std::string& tag)
+	{
+		//タグ検索
+	}
+	const std::vector<std::shared_ptr<GameObject>> FindObjectsWithTag(const std::string& tag)
+	{
+
+	}
+
+	void BlackOut();
 
 private:
 	void Release();		// 解放

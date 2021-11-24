@@ -31,7 +31,7 @@ class Enemy : public Character
 public: 
 	CLASS_NAME(Enemy);
 
-	Enemy(){}
+	Enemy();
 	virtual ~Enemy() override { Release(); }
 
 	void Init() override;
@@ -41,7 +41,7 @@ public:
 
 	void SetPos(const Math::Vector3& pos) override { m_mWorld.Translation(pos); }
 	void SetWPos(const Math::Vector3 pos) { m_worldPos.x += pos.x; m_worldPos.z += pos.z; m_worldPos.y = pos.y; }
-	void SetMData(std::string filename) { m_modelWork.SetModel(GameResourceFactory.GetModelData(filename)); };
+	void SetMData(std::string filename) { LoadModel(filename); };
 	void SetHP(int hp) { m_hp = hp; };
 	void SetAttackRadius(float attackradius) { m_attackradius = attackradius; };
 	void SetSuperArmor(bool sarmor) { m_sarmor = sarmor; };
@@ -52,6 +52,10 @@ public:
 	virtual void NotifyDamage(DamageArg& arg) override;
 
 	classID GetClassID() const override{ return eEnemy; }
+
+	virtual void Deserialize(const json11::Json& json);
+//	virtual void AfterDeserialize();
+	virtual void Serialize(json11::Json::object& json);
 
 private:
 
