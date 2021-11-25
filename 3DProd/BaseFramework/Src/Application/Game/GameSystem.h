@@ -117,14 +117,8 @@ public:
 
 	}
 
-	const std::shared_ptr<GameObject> FindObjectWithTag(const std::string& tag)
-	{
-		//タグ検索
-	}
-	const std::vector<std::shared_ptr<GameObject>> FindObjectsWithTag(const std::string& tag)
-	{
-
-	}
+	std::shared_ptr<GameObject> FindObjectWithTag(const std::string& tag);
+	std::vector<std::shared_ptr<GameObject>> FindObjectsWithTag(const std::string& tag);
 
 	void BlackOut();
 

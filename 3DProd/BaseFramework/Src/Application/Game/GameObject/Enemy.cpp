@@ -1,6 +1,7 @@
 ﻿#include"Enemy.h"
 #include"Player.h"
 #include "Effect2D.h"
+#include"../GameSystem.h"
 
 Enemy::Enemy()
 {
@@ -13,7 +14,9 @@ void Enemy::Deserialize(const json11::Json& json)
 
 	m_worldPos = m_mWorld.Translation();
 
-	LoadModel("Data/Models/enemy/slime.gltf");
+//		LoadModel("Data/Models/enemy/slime.gltf");
+
+	//デシリアライズ時にtagがPlayerのGameObjectをターゲットする
 
 	m_bumpSphereInfo.m_pos.y = 0.45f;
 	m_bumpSphereInfo.m_radius = 0.3f;
@@ -73,6 +76,38 @@ void Enemy::Draw2D()
 {
 }
 
+void Enemy::ImGuiUpdate()
+{
+	Character::ImGuiUpdate();
+
+	ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
+
+	ImGui::DragInt("Hp", &m_hp, 1.0f, 0, 200);
+
+	if (ImGui::ListBoxHeader("Action"))
+	{
+		if (ImGui::Button("Wait"))
+		{
+			ChangeAction < Enemy::ActionWait>();
+		}
+		if (ImGui::Button("Attack"))
+		{
+			ChangeAction < Enemy::ActionAttack>();
+		}
+		if (ImGui::Button("Move"))
+		{
+			ChangeAction < Enemy::ActionMove>();
+		}
+
+	}
+	ImGui::ListBoxFooter();
+
+	if (m_spActionState)
+	{
+		ImGui::LabelText("State", typeid(*m_spActionState).name());
+	}
+}
+
 void Enemy::Update()
 {
 	if (m_spActionState)
@@ -118,7 +153,7 @@ void Enemy::NotifyDamage(DamageArg& arg)
 
 	if (arg.ret_IsHit&&!m_sarmor)
 	{
-		ChangeGetHit();
+		ChangeAction < Enemy::ActionGetHit>();
 	}
 }
 
@@ -141,7 +176,7 @@ void Enemy::ScriptProc(const json11::Json& event)
 	}
 	else if (eventName == "End")
 	{
-		ChangeWait();
+		ChangeAction < Enemy::ActionWait>();
 	}
 }
 
@@ -188,6 +223,8 @@ void Enemy::UpdateMove()
 
 void Enemy::UpdateSearch()
 {
+	m_wpTarget=GameInstance.FindObjectWithTag("Player");
+
 	// 見ている先が解放されているか
 	if (m_wpTarget.expired()) { return; }
 
@@ -315,7 +352,12 @@ void Enemy::ActionWait::Update(Enemy& owner)
 {
 	if (owner.m_findTargetFlg)
 	{
-		owner.ChangeMove();
+		owner.ChangeAction<ActionMove>();
+	}
+
+	if (owner.m_hp <= 0)
+	{
+		owner.ChangeAction < Enemy::ActionElimination>();
 	}
 }
 
@@ -323,12 +365,12 @@ void Enemy::ActionMove::Update(Enemy& owner)
 {
 	if (owner.m_attackFlg)
 	{
-		owner.ChangeAttack();
+		owner.ChangeAction < Enemy::ActionAttack>();
 	}
 
 	if (owner.m_hp <= 0)
 	{
-		owner.ChangeElimination();
+		owner.ChangeAction < Enemy::ActionElimination>();
 	}
 		// 回転の更新処理
 		owner.UpdateRotate();
@@ -353,30 +395,33 @@ void Enemy::ActionElimination ::Update(Enemy& owner)
 
 void Enemy::ActionGetHit::Update(Enemy& owner)
 {
-	std::shared_ptr<const GameObject> spTarget = owner.m_wpTarget.lock();
+	//std::shared_ptr<const GameObject> spTarget = owner.m_wpTarget.lock();
 
-	// キャラの正面方向ベクトル：出発地
-	Math::Vector3 nowDir = owner.m_mWorld.Backward();
+	//// キャラの正面方向ベクトル：出発地
+	//Math::Vector3 nowDir = owner.m_mWorld.Backward();
 
-	// ノックバック時向く方向のベクトル：攻撃座標
-	Math::Vector3 targetDir = spTarget->GetPos() - owner.m_worldPos;
+	//// ノックバック時向く方向のベクトル：攻撃座標
+	//Math::Vector3 targetDir = spTarget->GetPos() - owner.m_worldPos;
 
-	nowDir.Normalize();
-	targetDir.Normalize();
+	//nowDir.Normalize();
+	//targetDir.Normalize();
 
-	// それぞれのDegree角度を求める
-	float nowAng = atan2(nowDir.x, nowDir.z);
-	nowAng = DirectX::XMConvertToDegrees(nowAng);
+	//// それぞれのDegree角度を求める
+	//float nowAng = atan2(nowDir.x, nowDir.z);
+	//nowAng = DirectX::XMConvertToDegrees(nowAng);
 
-	float targetAng = atan2(targetDir.x, targetDir.z);
-	targetAng = DirectX::XMConvertToDegrees(targetAng);
+	//float targetAng = atan2(targetDir.x, targetDir.z);
+	//targetAng = DirectX::XMConvertToDegrees(targetAng);
 
-	// ２つの間の角度を求める
-	float rotateAng = targetAng - nowAng;
+	//// ２つの間の角度を求める
+	//float rotateAng = targetAng - nowAng;
 
-	// 回転量代入
-	rotateAng = std::clamp(rotateAng, -20.0f, 20.0f);
-	owner.m_worldRot.y += rotateAng;
+	//// 回転量代入
+	//rotateAng = std::clamp(rotateAng, -20.0f, 20.0f);
+	//owner.m_worldRot.y += rotateAng;
+
+	//targetがいたらその方向を向く回転処理
+	//if(targetいたら)
 
 	Math::Vector3 knockBackVec = owner.m_mWorld.Forward();
 
@@ -385,4 +430,9 @@ void Enemy::ActionGetHit::Update(Enemy& owner)
 
 	owner.m_worldPos.x += knockBackVec.x;
 	owner.m_worldPos.z += knockBackVec.z;
+
+	if (owner.m_hp <= 0)
+	{
+		owner.ChangeAction < Enemy::ActionElimination>();
+	}
 }

@@ -2,22 +2,43 @@
   {
     "ClassName": "StageMap",
     "ModelFilename": "Data\\Models\\StageMap\\StageMapD\\DungeonStage.gltf",
-    "Name": "GameObject"
+    "Name": "GameObject",
+    "Pos": [0,0,0],
+    "Tag": ""
   },
   {
     "ClassName": "Player",
     "ModelFilename": "Data/Models/robot/chara.gltf",
-    "Name": "player"
-  },
-  {
-    "Active": false,
-    "ClassName": "Gimmick",
-    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
-    "Name": "Gimmik"
+    "Name": "player",
+    "Pos": [-6.529728889465332,-0.26208159327507019,-9.433741569519043],
+    "Tag": "Player"
   },
   {
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "GameObject"
+    "Name": "Enemy",
+    "Pos": [-0.33639591932296753,0,7.656395435333252],
+    "Tag": "Enemy"
+  },
+  {
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [2.6809999942779541,0.025286722928285599,7.6635017395019531],
+    "Tag": "Enemy"
+  },
+  {
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/golem.gltf",
+    "Name": "Enemy",
+    "Pos": [-4.8189997673034668,0,7.4635019302368164],
+    "Tag": "Enemyz"
+  },
+  {
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [1.2790570259094238,-0.14943709969520569,6.2082839012145996],
+    "Tag": "Enemy"
   }
 ]

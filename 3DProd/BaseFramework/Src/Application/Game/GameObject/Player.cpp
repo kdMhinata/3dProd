@@ -265,6 +265,8 @@ void Player::ImGuiUpdate()
 		cameraMat.z = -10;
 	}
 
+	ImGui::Checkbox("noDamage", &invincibleFlg);
+
 	if (ImGui::ListBoxHeader("Action"))
 	{
 		if (ImGui::Button("Wait"))
@@ -353,22 +355,28 @@ void Player::ScriptProc(const json11::Json& event)
 		int SpX = event["SpX"].int_value();
 		int SpY = event["SpY"].int_value();
 
+		bool localMode = false;
+		JsonToBool(event["LocalMode"], localMode);
 		
 		std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
-		Math::Vector3 effectPos = GetPos();
-		effectPos += (m_mWorld.Up() * 1);
-
-		Math::Matrix m = m_mWorld;
-		m.Translation(m.Translation() + m.Up() * 1);
-
-		m = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90)) * m;
+		/*Math::Vector3 effectPos = GetPos();
+		effectPos += (m_mWorld.Up() * 1);*/
 
 		spEffect->Init();
 		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile), Size, Size);
 //		spEffect->SetPos(effectPos);
-		spEffect->SetMatrix(m);
+		if (!localMode)
+		{
+			Math::Matrix m = m_mWorld;
+			m.Translation(m.Translation() + m.Up() * 1);
+
+			m = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90)) * m;
+
+			spEffect->SetMatrix(m);
+		}
 		spEffect->SetLifeSpan(1000);
 		spEffect->SetAnimation(SpX, SpY, 1.0f);
+		spEffect->SetLocalMode(localMode);
 
 		auto p = shared_from_this();
 
@@ -696,4 +704,5 @@ void Player::UpdateInput()
 
 void Player::ActionSkill::Update(Player& owner)
 {
+	
 }

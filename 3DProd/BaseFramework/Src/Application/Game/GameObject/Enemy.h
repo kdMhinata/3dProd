@@ -39,6 +39,8 @@ public:
 	void Draw2D()override;
 	virtual bool IsAlive() override { return m_isAlive; }
 
+	virtual void ImGuiUpdate() override;
+
 	void SetPos(const Math::Vector3& pos) override { m_mWorld.Translation(pos); }
 	void SetWPos(const Math::Vector3 pos) { m_worldPos.x += pos.x; m_worldPos.z += pos.z; m_worldPos.y = pos.y; }
 	void SetMData(std::string filename) { LoadModel(filename); };
@@ -103,7 +105,7 @@ private:
 		return false;
 	}
 
-	void ChangeWait()
+	/*void ChangeWait()
 	{
 		m_spActionState->Exit(*this);
 		m_spActionState = std::make_shared<ActionWait>();
@@ -127,6 +129,16 @@ private:
 	void ChangeGetHit()
 	{
 		m_spActionState = std::make_shared<ActionGetHit>();
+		m_spActionState->Entry(*this);
+	}*/
+
+	template<class Type>
+	void ChangeAction()
+	{
+		m_spActionState->Exit(*this);
+
+		m_spActionState = std::make_shared<Type>();
+
 		m_spActionState->Entry(*this);
 	}
 	

@@ -187,7 +187,17 @@ private:
 	class ActionSkill : public BaseAction
 	{
 	public:
-		void Entry(Player& owner) {owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Thrust"), false);}
+		void Entry(Player& owner) 
+		{
+			owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Thrust"), false);
+		Math::Vector3 skillVec = owner.m_mWorld.Backward();
+
+		skillVec.Normalize();
+		skillVec *= 0.5f;
+
+		owner.m_force.x += skillVec.x;
+		owner.m_force.z += skillVec.z;
+		}
 		void Update(Player& owner)override;
 	};
 

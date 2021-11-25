@@ -53,6 +53,12 @@ inline void JsonToVec3(json11::Json json, Math::Vector3& vec3)
 	vec3.z = (float)json.array_items()[2].number_value();
 }
 
+inline void JsonToBool(json11::Json json, bool& ret)
+{
+	if (!json.is_bool())return;
+	ret = json.bool_value();
+}
+
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
@@ -84,6 +90,8 @@ public:
 
 	virtual const Math::Vector3 GetPos() const { return m_mWorld.Translation(); }
 
+	void SetTag(std::string tag) { m_tag = tag; }
+
 	virtual void SetMatrix(const Math::Matrix& m) { m_mWorld = m; }
 
 	virtual classID GetClassID() const { return eBase; }
@@ -96,12 +104,15 @@ public:
 	bool CheckCollisionBump(const RayInfo& info, BumpResult& result);
 
 	const std::string& GetName() const { return  m_name; }
+	const std::string& GetTag() const { return m_tag; }
+	const Math::Matrix& GetMatrix()const { return m_mWorld; }
 
 	// 復元
 	virtual void Deserialize(const json11::Json& json)
 	{
 		m_name = json["Name"].string_value();
 		m_modelFilename = json["ModelFilename"].string_value();
+		m_tag = json["Tag"].string_value();
 		LoadModel(m_modelFilename);
 	
 		Math::Vector3 pos=GetPos();
@@ -115,6 +126,7 @@ public:
 		json["Name"] = m_name;
 		json["ModelFilename"] = m_modelFilename;
 		json["ClassName"] = ClassName();
+		json["Tag"] = m_tag;
 
 		json["Pos"] = Vec3ToJson(GetPos());
 	}

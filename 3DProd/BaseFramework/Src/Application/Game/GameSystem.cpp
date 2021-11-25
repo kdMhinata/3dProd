@@ -362,8 +362,10 @@ void GameSystem::ImGuiUpdate()
 				if (obj)
 				{
 //					spEnemy->SetTarget(obj);
+					//spEnemy->SetTarget(FindObjectWithTag("Player"));
 					spEnemy->SetWPos(obj->GetPos());
 					spEnemy->SetMData(m_editor.selectEnemyModelName);
+					spEnemy->SetTag("Enemy");
 				}
 			}
 			ImGui::TreePop();
@@ -436,6 +438,28 @@ void GameSystem::Load(const std::string& filename)
 	}
 	//・設定のロード
 	//・
+}
+
+std::shared_ptr<GameObject> GameSystem::FindObjectWithTag(const std::string& tag)
+{
+	//タグ検索
+	for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
+	{
+		if (tag == spObj->GetTag()) { return spObj; }
+
+	}
+	return nullptr;
+}
+
+std::vector<std::shared_ptr<GameObject>> GameSystem::FindObjectsWithTag(const std::string& tag)
+{
+	std::vector<std::shared_ptr<GameObject>> vector;
+	//タグ検索
+	for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
+	{
+		if (tag == spObj->GetTag()) { vector.push_back(spObj); }
+	}
+	return vector;
 }
 
 void GameSystem::BlackOut()

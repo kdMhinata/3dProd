@@ -9,24 +9,30 @@
     "ClassName": "Player",
     "ModelFilename": "Data/Models/robot/chara.gltf",
     "Name": "player",
-    "Pos": [0.29593321681022644,0,-14.908570289611816]
+    "Pos": [-3.4633002281188965,0,3.7272028923034668]
   },
   {
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
-    "Pos": [-0.36881062388420105,0,-6.641667366027832]
+    "Pos": [-1.0869029760360718,0.1614871621131897,5.1690001487731934]
   },
   {
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
-    "Pos": [0.2613486647605896,0,-8.0489406585693359]
+    "Pos": [2.6129999160766602,0,7.0871062278747559]
   },
   {
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
-    "Pos": [-0.13916563987731934,0,-9.2961225509643555]
+    "Pos": [-7.2369999885559082,0,7.1271061897277832]
+  },
+  {
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-3.2194340229034424,-1.862645149230957e-09,9.4585466384887695]
   }
 ]

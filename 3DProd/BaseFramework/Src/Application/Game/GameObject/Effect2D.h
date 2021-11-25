@@ -33,6 +33,8 @@ public:
 		m_ownerChara = ownerChara;
 	}
 
+	void SetLocalMode(bool enable) { m_localModeFlg = enable; }
+
 private:
 
 	KdSquarePolygon m_poly;
@@ -46,4 +48,6 @@ private:
 	std::weak_ptr<Character> m_ownerChara;
 
 	bool m_isBillboard=false;
+
+	bool m_localModeFlg = false;
 };

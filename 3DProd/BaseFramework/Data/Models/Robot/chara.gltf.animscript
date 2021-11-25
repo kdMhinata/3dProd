@@ -31,7 +31,8 @@
 					"Size": 4,
 					"SpX": 4,
 					"SpY": 3,
-					"Speed": 1.0
+					"Speed": 1.0,
+					"LocalMode": true
 				},
 				{
 
@@ -65,7 +66,8 @@
 					"Size": 4,
 					"SpX": 4,
 					"SpY": 3,
-					"Speed": 1.0
+					"Speed": 1.0,
+					"LocalMode": true
 				},
 				{
 
@@ -98,7 +100,8 @@
 					"Size": 4,
 					"SpX": 4,
 					"SpY": 4,
-					"Speed": 1.0
+					"Speed": 1.0,
+					"LocalMode": true
 				},
 				{
 
@@ -127,7 +130,8 @@
 					"Size": 6,
 					"Size2": 10,
 					"SpY": 5,
-					"Speed": 1.0
+					"Speed": 1.0,
+					"LocalMode": true
 				},
 				{
 

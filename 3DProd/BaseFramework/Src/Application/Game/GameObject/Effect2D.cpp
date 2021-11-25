@@ -46,6 +46,11 @@ void Effect2D::Update()
 
 void Effect2D::Draw()
 {
+	if (m_localModeFlg)
+	{
+		SHADER->m_effectShader.DrawSquarePolygon(m_poly,m_ownerChara.lock()->GetMatrix());
+	}
+	else
 	SHADER->m_effectShader.DrawSquarePolygon(m_poly, m_mWorld);
 }
 
