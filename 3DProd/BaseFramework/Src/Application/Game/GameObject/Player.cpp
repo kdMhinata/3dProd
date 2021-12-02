@@ -365,7 +365,9 @@ void Player::ScriptProc(const json11::Json& event)
 		spEffect->Init();
 		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile), Size, Size);
 //		spEffect->SetPos(effectPos);
-		if (!localMode)
+
+		//ÉoÉOÇ†ÇÈÇÃÇ≈èåèîΩì]
+		if (localMode)
 		{
 			Math::Matrix m = m_mWorld;
 			m.Translation(m.Translation() + m.Up() * 1);
@@ -543,7 +545,7 @@ void Player::UpdateCollition()
 
 	for (const std::shared_ptr<GameObject>& spStageObj : GameSystem::GetInstance().GetObjects())
 	{
-		if (spStageObj->GetClassID() != GameObject::eStage&& spStageObj->GetClassID() != GameObject::eDestuctible) { continue; }
+		if (spStageObj->GetClassID() != GameObject::eStage&& spStageObj->GetClassID() != GameObject::eDestuctible && spStageObj->GetClassID() != GameObject::eGimmick) { continue; }
 
 		BumpResult result;
 

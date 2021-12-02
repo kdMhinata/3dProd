@@ -2,6 +2,7 @@
 #include"GameObject/StageMap.h"
 #include"GameObject/Player.h"
 #include"GameObject/Enemy.h"
+#include"GameObject/Gimmick.h"
 
 #include"Camera/TPSCamera.h"
 
@@ -24,65 +25,6 @@ void GameSystem::Init()
 	{
 		// スカイスフィア拡大行列
 		m_skyMat = m_skyMat.CreateScale(50.0f);
-
-		/*
-		std::shared_ptr<StageMap> spStage = std::make_shared<StageMap>(); // stageMapのインスタンス化
-		spStage->Init();
-		AddObject(spStage);
-
-		std::shared_ptr<Player> spPlayer = std::make_shared<Player>();	// プレイヤーのインスタンス化
-		spPlayer->Init();
-		spPlayer->SetInput(std::make_shared<PlayerInput>());
-		AddObject(spPlayer);
-
-		Math::Vector3 pos = { 0.0,0.0,5.0 };
-		std::string modelname = "Data/Models/enemy/slime.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 50);
-		pos = { 8.0,0.0,25.0 };
-		modelname = "Data/Models/enemy/slime.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 50);
-		pos = { 0.0,0.0,25.0 };
-		modelname = "Data/Models/enemy/slime.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 50);
-		pos = { -8.0,0.0,25.0 };
-		modelname = "Data/Models/enemy/slime.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 50);
-		pos = { 5.0,0.0,20.0 };
-		modelname = "Data/Models/enemy/slime.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 50);
-		pos = { -5.0,0.0,20.0 };
-		modelname = "Data/Models/enemy/slime.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 50);
-
-		pos = { 5.0,0.0,40.0 };
-		modelname = "Data/Models/enemy/skeleton.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 100);
-		pos = { -5.0,0.0,40.0 };
-		modelname = "Data/Models/enemy/skeleton.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 100);
-		pos = { 5.0,0.0,45.0 };
-		modelname = "Data/Models/enemy/skeleton.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 100);
-		pos = { -5.0,0.0,45.0 };
-		modelname = "Data/Models/enemy/skeleton.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 100);
-
-		pos = { 7.0,0.0,65.0 };
-		modelname = "Data/Models/enemy/skeleton.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 100);
-		pos = { -7.0,0.0,65.0 };
-		modelname = "Data/Models/enemy/skeleton.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 100);
-		pos = { 5.0,0.0,70.0 };
-		modelname = "Data/Models/enemy/skeleton.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 100);
-		pos = { -5.0,0.0,70.0 };
-		modelname = "Data/Models/enemy/skeleton.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 100);
-		pos = { 0.0,0.0,65.0 };
-		modelname = "Data/Models/enemy/golem.gltf";
-		EnemyInstance(spPlayer, pos, modelname, 200, 5.0f, false);
-		*/
 
 		Load("Data/Save/test.json");
 
@@ -112,12 +54,10 @@ void GameSystem::Init()
 		D3D.WorkDevContext()->ClearDepthStencilView(D3D.WorkZBuffer()->WorkDSView(),
 			D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-
 		D3D.WorkSwapChain()->Present(0, 0);
 
 		Sleep(100);
 	}
-
 
 	// 
 	loadThread.join();	// スレッドの終了を待つ
@@ -425,6 +365,8 @@ void GameSystem::Load(const std::string& filename)
 {		//・Objectのロード
 	json11::Json json = KdLoadJSONFile(filename);
 
+	//m_spObjects.clear();
+
 	json11::Json::array objArray = json.array_items();
 
 	for (auto&& obj : objArray)
@@ -436,6 +378,7 @@ void GameSystem::Load(const std::string& filename)
 
 		m_spObjects.push_back(newObj);
 	}
+
 	//・設定のロード
 	//・
 }

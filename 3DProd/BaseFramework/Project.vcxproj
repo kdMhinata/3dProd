@@ -163,6 +163,7 @@
     <ClInclude Include="Src\Application\Game\GameObject\Effect2D.h" />
     <ClInclude Include="Src\Application\Game\GameObject\Enemy.h" />
     <ClInclude Include="Src\Application\Game\GameObject\GameObject.h" />
+    <ClInclude Include="Src\Application\Game\GameObject\Gimmick.h" />
     <ClInclude Include="Src\Application\Game\GameObject\Player.h" />
     <ClInclude Include="Src\Application\Game\GameObject\StageMap.h" />
     <ClInclude Include="Src\Application\Game\GameSystem.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="Src\Application\Game\GameObject\Effect2D.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Enemy.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\GameObject.cpp" />
+    <ClCompile Include="Src\Application\Game\GameObject\Gimmick.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Player.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\StageMap.cpp" />
     <ClCompile Include="Src\Application\Game\GameSystem.cpp" />
