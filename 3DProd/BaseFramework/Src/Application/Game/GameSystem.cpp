@@ -65,6 +65,15 @@ void GameSystem::Init()
 
 void GameSystem::Update()
 {
+	// シーンの切り替え
+	if (m_changeSceneFilename.empty() == false)
+	{
+		Load(m_changeSceneFilename);
+
+		m_changeSceneFilename = "";
+	}
+
+	// 
 	ImGuiUpdate();
 
 	if (GetAsyncKeyState(VK_ESCAPE))
@@ -365,7 +374,7 @@ void GameSystem::Load(const std::string& filename)
 {		//・Objectのロード
 	json11::Json json = KdLoadJSONFile(filename);
 
-	//m_spObjects.clear();
+	m_spObjects.clear();
 
 	json11::Json::array objArray = json.array_items();
 

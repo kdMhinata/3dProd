@@ -6,13 +6,14 @@ class Gimmick : public StageMap
 {
 public:
 	CLASS_NAME(Gimmick)
-		void Init()override
+
+	void Init()override
 	{
 		m_activeFlg = false;
 		LoadModel("Data/Models/StageMap/Object/Door.gltf");
 	}
 
-	void Update()override
+	void Update()override;
 	
 
 	void ImGuiUpdate()override

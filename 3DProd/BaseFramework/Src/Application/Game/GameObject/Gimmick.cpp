@@ -5,8 +5,7 @@ void Gimmick::Update()
 	{
 		if (m_activeFlg)
 		{
-			Player::ChangeAction < Player::ActionMove>();
-			GameInstance.Load("Data/Save/Dungeon2");
+			GameInstance.ReserveChangeScene("Data/Save/Dungeon2");
 		}
 	}
 }

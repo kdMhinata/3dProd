@@ -109,7 +109,10 @@ public:
 
 	void EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos, std::string& modelname, int hp, float attackradius = 0.5f,bool sarmor =false);
 
-	void Load(const std::string& filename);
+	void ReserveChangeScene(const std::string& filename)
+	{
+		m_changeSceneFilename = filename;
+	}
 
 	// 文字列化
 	void Save(const std::string& filename)
@@ -125,6 +128,8 @@ public:
 private:
 	void Release();		// 解放
 
+	void Load(const std::string& filename);
+
 	KdModelWork m_sky;	// スカイスフィア
 
 	DirectX::SimpleMath::Matrix m_skyMat;	// キューブのワールド行列
@@ -134,6 +139,8 @@ private:
 	std::shared_ptr<KdCamera> m_spCamera = nullptr;
 
 	ResourceFactory m_resourceFactory;
+
+	std::string m_changeSceneFilename = "";
 
 	// 
 	struct EditorOnly
