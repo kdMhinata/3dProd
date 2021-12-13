@@ -44,15 +44,6 @@ void Effect2D::Update()
 	*/
 }
 
-void Effect2D::Draw()
-{
-	if (m_localModeFlg)
-	{
-		SHADER->m_effectShader.DrawSquarePolygon(m_poly,m_ownerChara.lock()->GetMatrix());
-	}
-	else
-	SHADER->m_effectShader.DrawSquarePolygon(m_poly, m_mWorld);
-}
 
 void Effect2D::DrawEffect()
 {
@@ -89,10 +80,27 @@ void Effect2D::DrawEffect()
 
 
 		SHADER->m_effectShader.DrawSquarePolygon(m_poly, mDraw);
+
+		/*
+		if (m_localModeFlg)
+		{
+			SHADER->m_effectShader.DrawSquarePolygon(m_poly, m_ownerChara.lock()->GetMatrix());
+		}
+		else
+		{
+		}
+		*/
 	}
 	else
 	{
-		SHADER->m_effectShader.DrawSquarePolygon(m_poly, m_mWorld);
+		if (m_localModeFlg)
+		{
+			SHADER->m_effectShader.DrawSquarePolygon(m_poly, m_ownerChara.lock()->GetMatrix());
+		}
+		else
+		{
+			SHADER->m_effectShader.DrawSquarePolygon(m_poly, m_mWorld);
+		}
 	}
 }
 void Effect2D::SetTexture(const std::shared_ptr<KdTexture> spTex, float w, float h, Math::Color col)

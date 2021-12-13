@@ -109,7 +109,7 @@ void GameSystem::Update()
 	{
 		if (!(*objectItr)->IsAlive())
 		{
-			objectItr->reset(/*引数にポインタを入れて新しくこっちを見さす*/);
+			objectItr->reset(/*引数にポインタを入れて新しくこっちを見させる*/);
 
 			// 消したイテレータを受け取る
 			objectItr = m_spObjects.erase(objectItr);
@@ -250,6 +250,27 @@ void GameSystem::ImGuiUpdate()
 			Init();
 		}
 
+		if (ImGui::Button("SelectObjDeleate"))
+		{
+			auto obj = m_editor.m_selectObject.lock();
+
+			if (obj)
+			{
+				obj->Destroy();
+			}
+		}
+
+		if (ImGui::IsKeyPressed(VK_DELETE, false))
+		{
+			auto obj = m_editor.m_selectObject.lock();
+
+			if (obj)
+			{
+				obj->Destroy();
+			}
+
+		}
+
 		if (ImGui::TreeNode("DestObjSet"))
 		{
 			if (ImGui::Button("Set"))
@@ -327,10 +348,26 @@ void GameSystem::ImGuiUpdate()
 
 			bool isSelect = m_editor.m_selectObject.lock() == obj;
 
-			if (ImGui::Selectable(obj->GetName().c_str(), isSelect))
+			bool isClicked = ImGui::Selectable(obj->GetName().c_str(), isSelect);
+			if (isClicked)
 			{
 				// Clickされた
 				m_editor.m_selectObject = obj;
+			}
+
+			if (ImGui::BeginPopupContextItem("TestTest", 1))
+			{
+				if (ImGui::Selectable("Delete"))
+				{
+					auto obj = m_editor.m_selectObject.lock();
+
+					if (obj)
+					{
+						obj->Destroy();
+					}
+				}
+
+				ImGui::EndPopup();
 			}
 
 			ImGui::PopID();

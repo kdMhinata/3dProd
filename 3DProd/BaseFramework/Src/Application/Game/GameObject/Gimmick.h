@@ -15,6 +15,14 @@ public:
 
 	void Update()override;
 	
+	void Draw() override
+	{
+		SHADER->m_standardShader.SetAlpha(m_alpha);
+
+		SHADER->m_standardShader.DrawModel(m_modelWork, m_mWorld);
+
+		SHADER->m_standardShader.SetAlpha(1.0f);
+	}
 
 	void ImGuiUpdate()override
 	{

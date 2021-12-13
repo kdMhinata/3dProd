@@ -28,11 +28,15 @@ void Enemy::Deserialize(const json11::Json& json)
 	m_worldRot.y = 180;
 
 	m_hp = 100;
+	SetMaxHp(100);
 
 	//AudioEngin初期化
 	DirectX::AUDIO_ENGINE_FLAGS eflags =
 		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
 	m_audioManager.Init();
+
+	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/ebar.png");
+	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
 
 	/*
 	uuid m_uuid = json["TargetUUID"].string_value();
@@ -65,6 +69,10 @@ void Enemy::Init()
 	m_worldRot.y =180;
 
 	m_hp = 100;
+	SetMaxHp(100);
+
+	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/ebar.png");
+	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
 
 	//AudioEngin初期化
 	DirectX::AUDIO_ENGINE_FLAGS eflags =
@@ -74,6 +82,18 @@ void Enemy::Init()
 
 void Enemy::Draw2D()
 {
+	if (!m_hpBarTex || !m_hpFrameTex) { return; }
+
+	Math::Vector3 _pos = Math::Vector3::Zero;
+	GameInstance.GetCamera()->ConvertWorldToScreenDetail(GetPos(), _pos);
+	Math::Rectangle barrec = { 0,0,60,5 };
+	Math::Rectangle framerec = { 0,0,60,5 };
+	Math::Color col = kWhiteColor;
+	float maxhp = (float)GetMaxHp();
+	float hpcalc = (m_hp / maxhp);
+	SHADER->m_spriteShader.SetMatrix(Math::Matrix::Identity);
+	SHADER->m_spriteShader.DrawTex(m_hpFrameTex.get(), _pos.x, _pos.y-20, 60, 5, &framerec, &col, { 0.5,0.5 });
+	SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), _pos.x- (60 / 2), _pos.y-20, 60 * hpcalc, 5, &barrec, &col, { 0.0,0.5 });
 }
 
 void Enemy::ImGuiUpdate()

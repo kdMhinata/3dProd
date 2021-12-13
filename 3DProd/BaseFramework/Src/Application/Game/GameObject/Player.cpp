@@ -45,6 +45,7 @@ void Player::Deserialize(const json11::Json& json)
 	m_bumpSphereInfo.m_radius = 0.4f;
 
 	m_hp = 200;
+	SetMaxHp(200);
 
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
 
@@ -218,15 +219,16 @@ void Player::Draw2D()
 {
 	if (!m_hpBarTex||!m_hpFrameTex) { return; }
 	Math::Vector3 _pos = Math::Vector3::Zero;
-	m_spCamera->ConvertWorldToScreenDetail(GetPos(), _pos);
-		Math::Rectangle barrec = { 0,0,454,38 };
-		Math::Rectangle framerec = { 0,0,703,187 };
+	// 
+	GameInstance.GetCamera()->ConvertWorldToScreenDetail(GetPos(), _pos);
+		Math::Rectangle barrec = { 0,0,500,20 };
+		Math::Rectangle framerec = { 0,0,500,20 };
 		Math::Color col= kWhiteColor;
-		float hpmax = 200;
-		float hpcalc = (m_hp / hpmax);
+		float maxhp = (float)GetMaxHp();
+		float hpcalc = (m_hp / maxhp);
 		SHADER->m_spriteShader.SetMatrix(Math::Matrix::Identity);
-		SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), -432, 253 , 454*hpcalc, 38,&barrec, &col, { 0.0,0.5 });
-		SHADER->m_spriteShader.DrawTex(m_hpFrameTex.get(), -270, 250, 703, 187, &framerec, &col,{0.5,0.5});
+		SHADER->m_spriteShader.DrawTex(m_hpFrameTex.get(), -302, -290, 500, 20, &framerec, &col, { 0.5,0.5 });
+		SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), -552, -290 , 500*hpcalc, 20,&barrec, &col, { 0.0,0.5 });
 }
 
 void Player::DrawEffect()
@@ -250,6 +252,8 @@ void Player::ImGuiUpdate()
 	Character::ImGuiUpdate();
 
 	ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
+
+	ImGui::DragFloat("Angle", &m_worldRot.y, 0.1f);
 
 	ImGui::DragInt("Hp", &m_hp,1.0f,0,200);
 

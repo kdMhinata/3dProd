@@ -33,8 +33,8 @@ public :
 	CLASS_NAME(DestuctibleBox)
 	void Init()override
 	{
-		m_hp = 10;
-		LoadModel("Data/Models/StageMap/Object/WoodBox.gltf");
+		m_hp = 100;
+		LoadModel("Data/Models/StageMap/Object/WoodBox_dest.gltf");
 	}
 
 	void Update()override
@@ -43,12 +43,18 @@ public :
 		{
 			m_isAlive = false;
 		}
+
+		m_animator.AdvanceTime(m_modelWork.WorkNodes(), 1.0f);
+
+		m_modelWork.CalcNodeMatrices();
 	}
 
 	virtual void NotifyDamage(DamageArg& arg) override
 	{
 		// モデル切り替え
 		// アニメーション変更
+
+		m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Dest"),false);
 
 		m_hp -= arg.damage;
 		arg.ret_IsHit = true;
@@ -121,4 +127,6 @@ private:
 	}
 
 	Math::Vector3	m_worldPos;
+
+	KdAnimator m_animator;
 };

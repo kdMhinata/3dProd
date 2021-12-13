@@ -59,6 +59,25 @@ inline void JsonToBool(json11::Json json, bool& ret)
 	ret = json.bool_value();
 }
 
+//inline Math::Vector3 MatToAngle(const Math::Matrix& mat)
+//{
+//
+//}
+
+//inline json11::Json MatToJson(const Math::Matrix& m)
+//{
+//	return json11::Json
+//}
+//
+//inline json11::Json JsonToAngle(json11::Json json, Math::Vector3& ang)
+//{
+//	if (!json.is_array())return;
+//	if (json.array_items().size() != 3)return;
+//	ang.x = (float)json.array_items()[0].number_value();
+//	ang.y = (float)json.array_items()[1].number_value();
+//	ang.z = (float)json.array_items()[2].number_value();
+//}
+
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
@@ -129,6 +148,7 @@ public:
 		json["Tag"] = m_tag;
 
 		json["Pos"] = Vec3ToJson(GetPos());
+		/*json["Angle"] = Vec3ToJson(MatToAngle(GetMatrix()));*/
 	}
 
 	void LoadModel(const std::string& path)
@@ -137,6 +157,11 @@ public:
 		auto model = GameResourceFactory.GetModelData(path);
 		if (model == nullptr)return;
 		m_modelWork.SetModel(model);
+	}
+
+	void Destroy()
+	{
+		m_isAlive = false;
 	}
 
 // 継承したもののみ触れる 

@@ -49,7 +49,6 @@ public:
 	void SetSuperArmor(bool sarmor) { m_sarmor = sarmor; };
 
 	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
-	int GetHp()override { return m_hp; };
 
 	virtual void NotifyDamage(DamageArg& arg) override;
 
@@ -82,7 +81,6 @@ private:
 	std::weak_ptr<const GameObject> m_wpTarget;
 
 	float m_stopDist = 1.01f;
-	bool m_isAlive = true;
 	bool m_canAttack = true;
 	bool m_attackFlg = false;
 	int m_canAttackCnt = 30;

@@ -12,7 +12,6 @@ public:
 
 	void Init() override;
 	void Update() override;
-	void Draw() override;
 	void DrawEffect() override;
 
 	void SetTexture(const std::shared_ptr<KdTexture> spTex
