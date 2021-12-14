@@ -60,13 +60,24 @@ inline void JsonToBool(json11::Json json, bool& ret)
 }
 
 inline Math::Vector3 MatToAngle(const Math::Matrix& mat)
-{
-	
+{		
+	Math::Matrix m=mat;
+	Math::Vector3 vx = m.Right(); //vxにmatのX軸を取得
+	vx.Normalize(); //vxを正規化
+	m.Right(vx); //正規化したvxをmatのX軸に設定
+
+	Math::Vector3 vy = m.Up();
+	vy.Normalize();
+	m.Up(vy);
+
+	Math::Vector3 vz = m.Backward();
+	vz.Normalize();
+	m.Backward(vz);	
 
 	Math::Vector3 angles;
-	angles.x = atan2f(mat.m[1][2], mat.m[2][2]);
-	angles.y = atan2f(-mat.m[0][2], sqrtf(mat.m[1][2] * mat.m[1][2] + mat.m[2][2] * mat.m[2][2]));
-	angles.z = atan2f(mat.m[0][1], mat.m[0][0]);
+	angles.x = atan2f(m.m[1][2], m.m[2][2]);
+	angles.y = atan2f(-m.m[0][2], sqrtf(m.m[1][2] * m.m[1][2] + m.m[2][2] * m.m[2][2]));
+	angles.z = atan2f(m.m[0][1], m.m[0][0]);
 	return angles;
 }
 
@@ -134,7 +145,6 @@ public:
 		Math::Vector3 pos=GetPos();
 		JsonToVec3(json["Pos"],pos);
 		SetPos(pos);
-
 	}
 	// 文字列化
 	virtual void Serialize(json11::Json::object& json)

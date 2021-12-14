@@ -41,6 +41,13 @@ public:
 		m_input = input;
 	}
 
+	void SetRotate(const Math::Vector3& r)
+	{
+		m_worldRot.x = r.x;
+		m_worldRot.y = r.y;
+		m_worldRot.z = r.z;
+	}
+
 	virtual void Deserialize(const json11::Json& json);
 
 private:

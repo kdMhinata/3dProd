@@ -78,18 +78,15 @@ void Effect2D::DrawEffect()
 		//-------------------------------------------------------------
 		mDraw.Translation(m_mWorld.Translation());
 
-
-		SHADER->m_effectShader.DrawSquarePolygon(m_poly, mDraw);
-
-		/*
 		if (m_localModeFlg)
 		{
 			SHADER->m_effectShader.DrawSquarePolygon(m_poly, m_ownerChara.lock()->GetMatrix());
 		}
 		else
 		{
+			SHADER->m_effectShader.DrawSquarePolygon(m_poly, mDraw);
 		}
-		*/
+		
 	}
 	else
 	{

@@ -47,6 +47,11 @@ void Player::Deserialize(const json11::Json& json)
 	m_hp = 200;
 	SetMaxHp(200);
 
+	//角度をデシリアライズ
+	Math::Vector3 rotate;
+	JsonToVec3(json["Angle"], rotate);
+	SetRotate(rotate);
+
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
 
 	m_spActionState = std::make_shared<ActionWait>();
