@@ -8,11 +8,20 @@
     "Tag": ""
   },
   {
-    "Angle": [0,-3.5246643276072703e-30,0],
+    "Angle": [0,-0,0],
     "ClassName": "Player",
     "ModelFilename": "Data/Models/robot/chara.gltf",
     "Name": "player",
-    "Pos": [0.52666652202606201,-3.7642621994018555,39.574531555175781],
+    "Pos": [-12.67850399017334,-3.7541389465332031,-15.269340515136719],
+    "Tag": "Player"
+  },
+  {
+    "Active": false,
+    "Angle": [0,-0,0],
+    "ClassName": "Gimmick",
+    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
+    "Name": "GameObject",
+    "Pos": [-0.98000001907348633,-4.119999885559082,42.400001525878906],
     "Tag": ""
   },
   {
@@ -21,7 +30,143 @@
     "ClassName": "Gimmick",
     "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
     "Name": "GameObject",
-    "Pos": [-0.10999999940395355,-4.559999942779541,41.080001831054688],
+    "Pos": [15.25,-4,42.169998168945313],
     "Tag": ""
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [2.8599998950958252,-3.7601385116577148,24.16200065612793],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [6.8319997787475586,-3.7344987392425537,24.058000564575195],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [3.7030000686645508,-3.8838846683502197,19.847000122070313],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/golem.gltf",
+    "Name": "Enemy",
+    "Pos": [6.8210000991821289,-3.6382052898406982,33.758998870849609],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [3.8810000419616699,-3.6488220691680908,36.770000457763672],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [9.8950004577636719,-3.6488220691680908,30.955999374389648],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-7.1669998168945313,-3.7587413787841797,19.690999984741211],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-4.2820000648498535,-3.6820893287658691,22.414058685302734],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [-1.3070000410079956,-3.7587413787841797,16.320999145507813],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [8.6478204727172852,-3.7340612411499023,4.2885880470275879],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [10.901383399963379,-3.734443187713623,5.5421414375305176],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [14.151000022888184,-3.733973503112793,2.0230000019073486],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [-3.7162070274353027,-3.7338781356811523,1.7061252593994141],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [3.0837910175323486,-3.7340960502624512,1.7061252593994141],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [2.7817091941833496,-3.7562036514282227,-4.5959587097167969],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-0.64440393447875977,-3.7338786125183105,-1.4673361778259277],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [0.12888683378696442,-3.7543439865112305,-9.1923789978027344],
+    "Tag": "Enemy"
   }
 ]
