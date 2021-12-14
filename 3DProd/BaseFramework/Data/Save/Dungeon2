@@ -1,14 +1,58 @@
 [
   {
+    "Angle": [0,-0,0],
     "ClassName": "StageMap",
     "ModelFilename": "Data\\Models\\StageMap\\Dungeon\\Dungeon4\\DungeonStage.gltf",
     "Name": "GameObject",
-    "Pos": [0,0,0]
+    "Pos": [0,0,0],
+    "Tag": ""
   },
   {
+    "Angle": [0,-1.1344640254974365,0],
     "ClassName": "Player",
     "ModelFilename": "Data/Models/robot/chara.gltf",
     "Name": "player",
-    "Pos": [3.5343532562255859,-2.8658716678619385,-10.652982711791992]
+    "Pos": [-9.7675895690917969,5.153660774230957,-14.63245964050293],
+    "Tag": ""
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-10.069999694824219,5.0275516510009766,-2.6150000095367432],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-16.909999847412109,5.0229535102844238,-2.1649999618530273],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-19.486679077148438,5.0878534317016602,-7.8459329605102539],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-8.0729999542236328,5.2140002250671387,-8.0971164703369141],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [3.1415927410125732,-2.3841866436669079e-07,3.1415927410125732],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-13.896049499511719,5.0888686180114746,-12.555999755859375],
+    "Tag": "Enemy"
   }
 ]

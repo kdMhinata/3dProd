@@ -124,9 +124,6 @@ void Player::Init()
 // 更新処理
 void Player::Update()
 {
-//	UpdateInput();
-
-//	m_gravity += 0.02f;
 	m_force.y -= 0.02f;
 	m_prevPos = GetPos();
 
@@ -187,7 +184,7 @@ void Player::Update()
 	{
 		m_force *= 0.9f;
 	}*/
-	m_force *= 0.9f;
+	m_force *= 0.87f;
 
 	m_modelWork.CalcNodeMatrices();
 
@@ -686,26 +683,11 @@ void Player::ActionAttack::Update(Player& owner)
 
 void Player::ActionDodge::Update(Player& owner)
 {
-	//ここ向いてる方向に回避したい処理書きたい
-	/*Math::Vector3 dodgeVec = owner.m_mWorld.Backward();
-
-	dodgeVec.Normalize();
-	dodgeVec *= 0.01f;
-
-	owner.m_force.x += dodgeVec.x;
-	owner.m_force.z += dodgeVec.z;*/
 }
 
 void Player::UpdateInput()
 {
-	/*
-	m_axisL = Math::Vector2::Zero;
 
-	if (GetAsyncKeyState('W')) { m_axisL.y += 1.0f; }	// 前移動
-	if (GetAsyncKeyState('S')) { m_axisL.y -= 1.0f; }	// 後ろ移動
-	if (GetAsyncKeyState('A')) { m_axisL.x -= 1.0f; }	// 左移動
-	if (GetAsyncKeyState('D')) { m_axisL.x += 1.0f; }	// 右移動
-	*/
 }
 
 void Player::ActionSkill::Update(Player& owner)

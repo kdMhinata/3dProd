@@ -47,15 +47,15 @@
             "mesh" : 0,
             "name" : "\u5e73\u9762",
             "rotation" : [
-                0.5,
-                -0.5,
-                -0.4999999701976776,
-                0.5
+                0,
+                0,
+                -0.7071067690849304,
+                0.7071068286895752
             ],
             "scale" : [
-                3.3492367267608643,
-                3.3492367267608643,
-                3.3492367267608643
+                1,
+                1,
+                1.496646761894226
             ],
             "translation" : [
                 0,
@@ -70,9 +70,9 @@
             "name" : "\u30de\u30c6\u30ea\u30a2\u30eb",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.8000000715255737,
-                    0.6716341972351074,
-                    0.022629516199231148,
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -100,63 +100,63 @@
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 4,
+            "count" : 8,
             "max" : [
-                0.301797091960907,
-                5.27128420912959e-08,
-                0.789775013923645
+                1,
+                1.8219468245206372e-07,
+                1
             ],
             "min" : [
-                -1.4613419771194458,
-                3.483035726503658e-08,
-                -0.789775013923645
+                -3.4132416248321533,
+                0,
+                -1
             ],
             "type" : "VEC3"
         },
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 4,
+            "count" : 8,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 4,
+            "count" : 8,
             "type" : "VEC2"
         },
         {
             "bufferView" : 3,
             "componentType" : 5123,
-            "count" : 6,
+            "count" : 12,
             "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 48,
+            "byteLength" : 96,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 48,
-            "byteOffset" : 48
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 32,
+            "byteLength" : 96,
             "byteOffset" : 96
         },
         {
             "buffer" : 0,
-            "byteLength" : 12,
-            "byteOffset" : 128
+            "byteLength" : 64,
+            "byteOffset" : 192
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 24,
+            "byteOffset" : 256
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 140,
+            "byteLength" : 280,
             "uri" : "Door.bin"
         }
     ]

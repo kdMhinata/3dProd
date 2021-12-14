@@ -26,7 +26,7 @@ void GameSystem::Init()
 		// スカイスフィア拡大行列
 		m_skyMat = m_skyMat.CreateScale(50.0f);
 
-		Load("Data/Save/test.json");
+		Load("Data/Save/Dungeon2");
 
 		//予め呼んでおきたい重いデータ等絶対使うデータ等
 		GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
@@ -36,7 +36,10 @@ void GameSystem::Init()
 		GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf");
 		GameResourceFactory.GetModelData("Data/Models/enemy/skeleton.gltf");
 		GameResourceFactory.GetModelData("Data/Models/enemy/golem.gltf");
-		//GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf");
+		GameResourceFactory.GetModelData("Data/Models/StageMap/Object/WoodBox_dest.gltf");
+		GameResourceFactory.GetModelData("Data/Models/StageMap/Object/WoodBox.gltf");
+		GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon3/DungeonStage.gltf");
+		GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon4/DungeonStage.gltf");
 
 		isLoaded = true;
 	};

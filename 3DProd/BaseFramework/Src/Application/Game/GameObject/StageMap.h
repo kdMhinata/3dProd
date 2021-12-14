@@ -33,28 +33,46 @@ public :
 	CLASS_NAME(DestuctibleBox)
 	void Init()override
 	{
-		m_hp = 100;
-		LoadModel("Data/Models/StageMap/Object/WoodBox_dest.gltf");
+		m_hp = 10;
+		LoadModel("Data/Models/StageMap/Object/WoodBox.gltf");
+
+		//AudioEngin初期化
+		DirectX::AUDIO_ENGINE_FLAGS eflags =
+			DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
+		m_audioManager.Init();
 	}
 
 	void Update()override
 	{
-		if (m_hp <= 0)
+		if (m_hp<=0)
 		{
-			m_isAlive = false;
+			m_alpha -= 0.01f;
+			if (m_alpha <= 0.0f)
+			{
+				m_alpha = 0;
+				m_isAlive = false;
+			}
 		}
+
+		//サウンド関連の更新
+			Math::Matrix listenerMat;
+			m_audioManager.Update(listenerMat.Translation(), listenerMat.Backward());
 
 		m_animator.AdvanceTime(m_modelWork.WorkNodes(), 1.0f);
 
 		m_modelWork.CalcNodeMatrices();
+
 	}
 
 	virtual void NotifyDamage(DamageArg& arg) override
 	{
+		if (m_hp <= 0) { return; }
 		// モデル切り替え
 		// アニメーション変更
-
+		LoadModel("Data/Models/StageMap/Object/WoodBox_dest.gltf");
 		m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Dest"),false);
+
+		m_audioManager.Play("Data/Audio/SE/hit1.wav");
 
 		m_hp -= arg.damage;
 		arg.ret_IsHit = true;
@@ -129,4 +147,6 @@ private:
 	Math::Vector3	m_worldPos;
 
 	KdAnimator m_animator;
+
+	KdAudioManager m_audioManager;
 };

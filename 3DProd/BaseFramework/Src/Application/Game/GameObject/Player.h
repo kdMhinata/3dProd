@@ -30,19 +30,17 @@ public:
 	virtual void NotifyDamage(DamageArg& arg) override;
 
 	const std::shared_ptr<const TPSCamera> GetCamera() const { return m_spCamera; }	// 参照用
-	std::shared_ptr<TPSCamera> WorkCamera() { return m_spCamera; }				// 変更用
+	std::shared_ptr<TPSCamera> WorkCamera() { return m_spCamera; }					// 変更用
 
 	const Math::Vector3 GetPos() const override{ return m_worldPos; }
 
 	classID GetClassID() const override { return ePlayer; }
 
-	// 
 	void SetInput(const std::shared_ptr<BaseInput>& input)
 	{
 		m_input = input;
 	}
 
-	// 
 	virtual void Deserialize(const json11::Json& json);
 
 private:
@@ -58,12 +56,11 @@ private:
 	void UpdateCollition();		// 当たり判定の更新
 
 	void UpdateInput();
-//	Math::Vector2 m_axisL;
 
 	Math::Vector3	m_worldPos;		// ワールド行列を作るための座標
 	Math::Vector3	m_worldRot;		// ワールド行列を作るための回転
 	Math::Vector3   m_prevPos;
-	Math::Vector3 cameraMat; //カメラImGuiでいじる為に
+	Math::Vector3 cameraMat;		//カメラImGuiでいじる為に
 	Math::Vector3 cameraGazeMat;
 
 	static const float s_limitOfStepHeight;
@@ -78,7 +75,6 @@ private:
 
 	bool m_canAttack = true;
 	bool m_atkComboFlg = false;
-//	float m_gravity = 0.0f;
 	Math::Vector3 m_force;
 
 	std::string m_atkCancelAnimName = "";
@@ -98,29 +94,6 @@ private:
 		return true;
 		return false;
 	}
-
-	/*
-	void ChangeWait()
-	{
-		m_spActionState->Exit(*this);
-		m_spActionState = std::make_shared<ActionWait>();
-		m_spActionState->Entry(*this);
-	};
-	void ChangeMove()
-	{
-		m_spActionState = std::make_shared<ActionMove>();
-		m_spActionState->Entry(*this);
-	};
-	void ChangeAttack()
-	{
-		m_spActionState = std::make_shared<ActionAttack>();
-	}
-	void ChangeDodge()
-	{
-		m_spActionState = std::make_shared<ActionDodge>();
-		m_spActionState->Entry(*this);
-	}
-	*/
 
 	template<class Type>
 	void ChangeAction()
@@ -175,7 +148,7 @@ private:
 			Math::Vector3 dodgeVec = owner.m_mWorld.Backward();
 
 			dodgeVec.Normalize();
-			dodgeVec *= 0.55f;
+			dodgeVec *= 0.3f;
 
 			owner.m_force.x += dodgeVec.x;
 			owner.m_force.z += dodgeVec.z;
@@ -190,13 +163,13 @@ private:
 		void Entry(Player& owner) 
 		{
 			owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Thrust"), false);
-		Math::Vector3 skillVec = owner.m_mWorld.Backward();
+	/*	Math::Vector3 skillVec = owner.m_mWorld.Backward();
 
 		skillVec.Normalize();
 		skillVec *= 0.5f;
 
 		owner.m_force.x += skillVec.x;
-		owner.m_force.z += skillVec.z;
+		owner.m_force.z += skillVec.z;*/
 		}
 		void Update(Player& owner)override;
 	};

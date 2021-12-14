@@ -30,6 +30,8 @@ void Enemy::Deserialize(const json11::Json& json)
 	m_hp = 100;
 	SetMaxHp(100);
 
+	m_attackradius = 1.0f;
+
 	//AudioEngin初期化
 	DirectX::AUDIO_ENGINE_FLAGS eflags =
 		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
@@ -50,7 +52,6 @@ void Enemy::Serialize(json11::Json::object& json)
 {
 	Character::Serialize(json);
 
-	//json["Target"] = m_wpTarget;
 }
 
 void Enemy::Init()
@@ -415,34 +416,6 @@ void Enemy::ActionElimination ::Update(Enemy& owner)
 
 void Enemy::ActionGetHit::Update(Enemy& owner)
 {
-	//std::shared_ptr<const GameObject> spTarget = owner.m_wpTarget.lock();
-
-	//// キャラの正面方向ベクトル：出発地
-	//Math::Vector3 nowDir = owner.m_mWorld.Backward();
-
-	//// ノックバック時向く方向のベクトル：攻撃座標
-	//Math::Vector3 targetDir = spTarget->GetPos() - owner.m_worldPos;
-
-	//nowDir.Normalize();
-	//targetDir.Normalize();
-
-	//// それぞれのDegree角度を求める
-	//float nowAng = atan2(nowDir.x, nowDir.z);
-	//nowAng = DirectX::XMConvertToDegrees(nowAng);
-
-	//float targetAng = atan2(targetDir.x, targetDir.z);
-	//targetAng = DirectX::XMConvertToDegrees(targetAng);
-
-	//// ２つの間の角度を求める
-	//float rotateAng = targetAng - nowAng;
-
-	//// 回転量代入
-	//rotateAng = std::clamp(rotateAng, -20.0f, 20.0f);
-	//owner.m_worldRot.y += rotateAng;
-
-	//targetがいたらその方向を向く回転処理
-	//if(targetいたら)
-
 	Math::Vector3 knockBackVec = owner.m_mWorld.Forward();
 
 	knockBackVec.Normalize();

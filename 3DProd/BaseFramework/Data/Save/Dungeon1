@@ -1,5 +1,6 @@
 [
   {
+    "Angle": [0,-0,0],
     "ClassName": "StageMap",
     "ModelFilename": "Data\\Models\\StageMap\\Dungeon\\Dungeon3\\DungeonStage.gltf",
     "Name": "GameObject",
@@ -7,118 +8,20 @@
     "Tag": ""
   },
   {
+    "Angle": [0,-3.5246643276072703e-30,0],
     "ClassName": "Player",
     "ModelFilename": "Data/Models/robot/chara.gltf",
     "Name": "player",
-    "Pos": [16.941699981689453,-2.8559832572937012,11.31117057800293],
+    "Pos": [0.52666652202606201,-3.7642621994018555,39.574531555175781],
     "Tag": ""
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [-2.4832043647766113,-2.8564510345458984,-6.3098621368408203],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [-23.164007186889648,-2.8375577926635742,-15.341435432434082],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [-19.263994216918945,-2.8761861324310303,-15.258947372436523],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [-15.620473861694336,-2.8560905456542969,-16.602458953857422],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [-12.169845581054688,-2.8560149669647217,-18.653081893920898],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [-2.1855185031890869,-2.8414418697357178,-1.8984208106994629],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [-6.0731015205383301,-2.9144046306610107,3.9382166862487793],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [-5.3805289268493652,-2.856583833694458,11.405460357666016],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [1.3591370582580566,-2.8562073707580566,11.459366798400879],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [9.6641101837158203,-2.8561854362487793,10.611560821533203],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [16.739425659179688,-2.8765726089477539,9.8337440490722656],
-    "Tag": "Enemy"
-  },
-  {
-    "ClassName": "Enemy",
-    "ModelFilename": "Data/Models/enemy/slime.gltf",
-    "Name": "Enemy",
-    "Pos": [21.093273162841797,-2.8269028663635254,5.1742596626281738],
-    "Tag": "Enemy"
   },
   {
     "Active": false,
+    "Angle": [0,-0,0],
     "ClassName": "Gimmick",
     "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
     "Name": "GameObject",
-    "Pos": [17.700000762939453,-4.4899997711181641,16.559999465942383],
-    "Tag": ""
-  },
-  {
-    "ClassName": "DestuctibleBox",
-    "Hp": 10,
-    "ModelFilename": "Data/Models/StageMap/Object/WoodBox.gltf",
-    "Name": "GameObject",
-    "Pos": [13.539999961853027,-2.8599998950958252,15.260000228881836],
-    "Tag": ""
-  },
-  {
-    "ClassName": "DestuctibleBox",
-    "Hp": 10,
-    "ModelFilename": "Data/Models/StageMap/Object/WoodBox.gltf",
-    "Name": "GameObject",
-    "Pos": [21.430000305175781,-2.8900001049041748,15.539999961853027],
+    "Pos": [-0.10999999940395355,-4.559999942779541,41.080001831054688],
     "Tag": ""
   }
 ]
