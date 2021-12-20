@@ -4,20 +4,24 @@
 #include"GameObject/Enemy.h"
 #include"GameObject/Gimmick.h"
 
+#include"TitleObject.h"
+
 #include"Camera/TPSCamera.h"
 
 #include"../main.h";
 
-
-void GameSystem::Init()
+void GameSystem::TitleInit()
 {
-	CLASS_REGISTER(GameObject);
-	CLASS_REGISTER(Player);
-	CLASS_REGISTER(Enemy);
-	CLASS_REGISTER(StageMap);
-	CLASS_REGISTER(Gimmick);
-	CLASS_REGISTER(DestuctibleBox);
+	//背景のスプライト描画用GameObject
+	//ゲームシーンに推移するためのボタンObject
+	std::shared_ptr<GameObject> spTitle = std::make_shared<TitleObject>();
+	spTitle->Init();
+	AddObject(spTitle);
 
+}
+
+void GameSystem::GameInit()
+{
 	bool isLoaded = false;
 
 	// 
@@ -26,7 +30,7 @@ void GameSystem::Init()
 		// スカイスフィア拡大行列
 		m_skyMat = m_skyMat.CreateScale(50.0f);
 
-		Load("Data/Save/Dungeon2");
+		Load("Data/Save/Dungeon1");
 
 		//予め呼んでおきたい重いデータ等絶対使うデータ等
 		GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
@@ -64,6 +68,21 @@ void GameSystem::Init()
 
 	// 
 	loadThread.join();	// スレッドの終了を待つ
+}
+
+void GameSystem::Init()
+{
+	CLASS_REGISTER(TitleObject);
+	CLASS_REGISTER(GameObject);
+	CLASS_REGISTER(Player);
+	CLASS_REGISTER(Enemy);
+	CLASS_REGISTER(StageMap);
+	CLASS_REGISTER(Gimmick);
+	CLASS_REGISTER(DestuctibleBox);
+
+
+	TitleInit();
+//	GameInit();
 }
 
 void GameSystem::Update()
@@ -192,203 +211,203 @@ void GameSystem::Draw()
 
 void GameSystem::ImGuiUpdate()
 {
-	if (ImGui::Begin("Object List"))
-	{
-
-		if (ImGui::Button("LoadScene"))
-		{
-			std::string path;
-			if (KdWindow::OpenFileDialog(path))
-			{
-				json11::Json json = KdLoadJSONFile(path);
-
-				m_spObjects.clear();
-
-				json11::Json::array objArray = json.array_items();
-
-				for (auto&& obj : objArray)
-				{
-					const auto& className = obj["ClassName"].string_value();
-					std::shared_ptr<GameObject> newObj = CLASS_INST.Instantiate<GameObject>(className);
-
-					newObj->Deserialize(obj);
-
-					m_spObjects.push_back(newObj);
-				}
-			}
-		}
-
-		if (ImGui::Button("SaveScene"))
-		{
-			json11::Json::array objArray;
-			for (auto&& obj : m_spObjects)
-			{
-				json11::Json::object serial;
-				obj->Serialize(serial);
-
-				objArray.push_back(serial);
-			}
-
-			std::string path;
-			if (KdWindow::SaveFileDialog(path))
-			{
-				// 文字列化
-				json11::Json json(objArray);
-				std::string strJson = json.dump(true);
-
-				std::ofstream ofs(path);
-				if (ofs)
-				{
-					ofs.write(strJson.c_str(), strJson.size());
-				}
-			}
-		}
-
-		if (ImGui::Button("Reset"))
-		{
-			Release();
-		}
-		if (ImGui::Button("Start"))
-		{
-			Init();
-		}
-
-		if (ImGui::Button("SelectObjDeleate"))
-		{
-			auto obj = m_editor.m_selectObject.lock();
-
-			if (obj)
-			{
-				obj->Destroy();
-			}
-		}
-
-		if (ImGui::IsKeyPressed(VK_DELETE, false))
-		{
-			auto obj = m_editor.m_selectObject.lock();
-
-			if (obj)
-			{
-				obj->Destroy();
-			}
-
-		}
-
-		if (ImGui::TreeNode("DestObjSet"))
-		{
-			if (ImGui::Button("Set"))
-			{
-				std::shared_ptr<DestuctibleBox> spDestBox = std::make_shared<DestuctibleBox>();
-				spDestBox->Init();
-				AddObject(spDestBox);
-			}
-			ImGui::TreePop();
-		}
-
-		if (ImGui::TreeNode("Gimmick"))
-		{
-			if (ImGui::Button("Set"))
-			{
-				std::shared_ptr<Gimmick> spGimmick = std::make_shared<Gimmick>();
-				spGimmick->Init();
-				AddObject(spGimmick);
-			}
-			ImGui::TreePop();
-		}
-
-		if (ImGui::TreeNode("EnemySet"))
-		{
-
-			if (ImGui::TreeNode("Model"))
-			{
-				static KdTexture tex("Data/Textures/enemy/golem.png");
-
-				if (ImGui::ImageButton(tex.WorkSRView(), { 80.f,45.f }))
-				{
-					m_editor.selectEnemyModelName = "Data/Models/enemy/golem.gltf";
-				}
-
-				static KdTexture tex2("Data/Textures/enemy/skeleton.png");
-				if (ImGui::ImageButton(tex2.WorkSRView(), { 80.f,45.f }))
-				{
-					m_editor.selectEnemyModelName = "Data/Models/enemy/skeleton.gltf";
-				}
-
-				static KdTexture tex3("Data/Textures/enemy/slime.png");
-				if (ImGui::ImageButton(tex3.WorkSRView(), { 80.f,45.f }))
-				{
-					m_editor.selectEnemyModelName = "Data/Models/enemy/slime.gltf";
-				}
-				ImGui::TreePop();
-			}
-
-			if (ImGui::Button("Set"))
-			{
-				auto obj = m_editor.m_selectObject.lock();
-
-				if (!obj)return;
-
-				std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
-				spEnemy->Init();
-				AddObject(spEnemy);
-				
-				if (obj)
-				{
-//					spEnemy->SetTarget(obj);
-					//spEnemy->SetTarget(FindObjectWithTag("Player"));
-					spEnemy->SetWPos(obj->GetPos());
-					spEnemy->SetMData(m_editor.selectEnemyModelName);
-					spEnemy->SetTag("Enemy");
-				}
-			}
-			ImGui::TreePop();
-		}
-
-
-		for (auto&& obj : m_spObjects)
-		{
-			ImGui::PushID(obj.get());
-
-			bool isSelect = m_editor.m_selectObject.lock() == obj;
-
-			bool isClicked = ImGui::Selectable(obj->GetName().c_str(), isSelect);
-			if (isClicked)
-			{
-				// Clickされた
-				m_editor.m_selectObject = obj;
-			}
-
-			if (ImGui::BeginPopupContextItem("TestTest", 1))
-			{
-				if (ImGui::Selectable("Delete"))
-				{
-					auto obj = m_editor.m_selectObject.lock();
-
-					if (obj)
-					{
-						obj->Destroy();
-					}
-				}
-
-				ImGui::EndPopup();
-			}
-
-			ImGui::PopID();
-		}
-
-		ImGui::End();
-
-		// Inspector
-		if (ImGui::Begin("Inspector"))
-		{
-			auto obj = m_editor.m_selectObject.lock();
-			if (obj)
-			{
-				obj->ImGuiUpdate();
-			}
-		}
-	}
-	ImGui::End();
+//	if (ImGui::Begin("Object List"))
+//	{
+//
+//		if (ImGui::Button("LoadScene"))
+//		{
+//			std::string path;
+//			if (KdWindow::OpenFileDialog(path))
+//			{
+//				json11::Json json = KdLoadJSONFile(path);
+//
+//				m_spObjects.clear();
+//
+//				json11::Json::array objArray = json.array_items();
+//
+//				for (auto&& obj : objArray)
+//				{
+//					const auto& className = obj["ClassName"].string_value();
+//					std::shared_ptr<GameObject> newObj = CLASS_INST.Instantiate<GameObject>(className);
+//
+//					newObj->Deserialize(obj);
+//
+//					m_spObjects.push_back(newObj);
+//				}
+//			}
+//		}
+//
+//		if (ImGui::Button("SaveScene"))
+//		{
+//			json11::Json::array objArray;
+//			for (auto&& obj : m_spObjects)
+//			{
+//				json11::Json::object serial;
+//				obj->Serialize(serial);
+//
+//				objArray.push_back(serial);
+//			}
+//
+//			std::string path;
+//			if (KdWindow::SaveFileDialog(path))
+//			{
+//				// 文字列化
+//				json11::Json json(objArray);
+//				std::string strJson = json.dump(true);
+//
+//				std::ofstream ofs(path);
+//				if (ofs)
+//				{
+//					ofs.write(strJson.c_str(), strJson.size());
+//				}
+//			}
+//		}
+//
+//		if (ImGui::Button("Reset"))
+//		{
+//			Release();
+//		}
+//		if (ImGui::Button("Start"))
+//		{
+//			Init();
+//		}
+//
+//		if (ImGui::Button("SelectObjDeleate"))
+//		{
+//			auto obj = m_editor.m_selectObject.lock();
+//
+//			if (obj)
+//			{
+//				obj->Destroy();
+//			}
+//		}
+//
+//		if (ImGui::IsKeyPressed(VK_DELETE, false))
+//		{
+//			auto obj = m_editor.m_selectObject.lock();
+//
+//			if (obj)
+//			{
+//				obj->Destroy();
+//			}
+//
+//		}
+//
+//		if (ImGui::TreeNode("DestObjSet"))
+//		{
+//			if (ImGui::Button("Set"))
+//			{
+//				std::shared_ptr<DestuctibleBox> spDestBox = std::make_shared<DestuctibleBox>();
+//				spDestBox->Init();
+//				AddObject(spDestBox);
+//			}
+//			ImGui::TreePop();
+//		}
+//
+//		if (ImGui::TreeNode("Gimmick"))
+//		{
+//			if (ImGui::Button("Set"))
+//			{
+//				std::shared_ptr<Gimmick> spGimmick = std::make_shared<Gimmick>();
+//				spGimmick->Init();
+//				AddObject(spGimmick);
+//			}
+//			ImGui::TreePop();
+//		}
+//
+//		if (ImGui::TreeNode("EnemySet"))
+//		{
+//
+//			if (ImGui::TreeNode("Model"))
+//			{
+//				static KdTexture tex("Data/Textures/enemy/golem.png");
+//
+//				if (ImGui::ImageButton(tex.WorkSRView(), { 80.f,45.f }))
+//				{
+//					m_editor.selectEnemyModelName = "Data/Models/enemy/golem.gltf";
+//				}
+//
+//				static KdTexture tex2("Data/Textures/enemy/skeleton.png");
+//				if (ImGui::ImageButton(tex2.WorkSRView(), { 80.f,45.f }))
+//				{
+//					m_editor.selectEnemyModelName = "Data/Models/enemy/skeleton.gltf";
+//				}
+//
+//				static KdTexture tex3("Data/Textures/enemy/slime.png");
+//				if (ImGui::ImageButton(tex3.WorkSRView(), { 80.f,45.f }))
+//				{
+//					m_editor.selectEnemyModelName = "Data/Models/enemy/slime.gltf";
+//				}
+//				ImGui::TreePop();
+//			}
+//
+//			if (ImGui::Button("Set"))
+//			{
+//				auto obj = m_editor.m_selectObject.lock();
+//
+//				if (!obj)return;
+//
+//				std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
+//				spEnemy->Init();
+//				AddObject(spEnemy);
+//				
+//				if (obj)
+//				{
+////					spEnemy->SetTarget(obj);
+//					//spEnemy->SetTarget(FindObjectWithTag("Player"));
+//					spEnemy->SetWPos(obj->GetPos());
+//					spEnemy->SetMData(m_editor.selectEnemyModelName);
+//					spEnemy->SetTag("Enemy");
+//				}
+//			}
+//			ImGui::TreePop();
+//		}
+//
+//
+//		for (auto&& obj : m_spObjects)
+//		{
+//			ImGui::PushID(obj.get());
+//
+//			bool isSelect = m_editor.m_selectObject.lock() == obj;
+//
+//			bool isClicked = ImGui::Selectable(obj->GetName().c_str(), isSelect);
+//			if (isClicked)
+//			{
+//				// Clickされた
+//				m_editor.m_selectObject = obj;
+//			}
+//
+//			if (ImGui::BeginPopupContextItem("TestTest", 1))
+//			{
+//				if (ImGui::Selectable("Delete"))
+//				{
+//					auto obj = m_editor.m_selectObject.lock();
+//
+//					if (obj)
+//					{
+//						obj->Destroy();
+//					}
+//				}
+//
+//				ImGui::EndPopup();
+//			}
+//
+//			ImGui::PopID();
+//		}
+//
+//		ImGui::End();
+//
+//		// Inspector
+//		if (ImGui::Begin("Inspector"))
+//		{
+//			auto obj = m_editor.m_selectObject.lock();
+//			if (obj)
+//			{
+//				obj->ImGuiUpdate();
+//			}
+//		}
+//	}
+//	ImGui::End();
 
 }
 

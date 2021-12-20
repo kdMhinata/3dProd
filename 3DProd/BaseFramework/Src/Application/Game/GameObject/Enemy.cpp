@@ -84,6 +84,7 @@ void Enemy::Init()
 void Enemy::Draw2D()
 {
 	if (!m_hpBarTex || !m_hpFrameTex) { return; }
+	if (m_hp == GetMaxHp() || m_hp <= 0) { return; }
 
 	Math::Vector3 _pos = Math::Vector3::Zero;
 	GameInstance.GetCamera()->ConvertWorldToScreenDetail(GetPos(), _pos);

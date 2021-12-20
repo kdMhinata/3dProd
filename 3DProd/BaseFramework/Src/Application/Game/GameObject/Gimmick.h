@@ -28,8 +28,6 @@ public:
 	{
 		StageMap::ImGuiUpdate();
 		ImGui::Checkbox("Active", &m_activeFlg);
-		ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
-		m_mWorld = Math::Matrix::CreateTranslation(m_worldPos);
 	}
 
 	// 復元
@@ -92,5 +90,5 @@ public:
 private:
 	bool m_activeFlg;
 
-	Math::Vector3	m_worldPos;
+//	Math::Vector3	m_worldPos;
 };

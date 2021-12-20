@@ -166,7 +166,9 @@
     <ClInclude Include="Src\Application\Game\GameObject\Gimmick.h" />
     <ClInclude Include="Src\Application\Game\GameObject\Player.h" />
     <ClInclude Include="Src\Application\Game\GameObject\StageMap.h" />
+    <ClInclude Include="Src\Application\Game\GameOver.h" />
     <ClInclude Include="Src\Application\Game\GameSystem.h" />
+    <ClInclude Include="Src\Application\Game\TitleObject.h" />
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\Utility\ResourceFactory.h" />
     <ClInclude Include="Src\Application\Utility\SceneChanger.h" />
@@ -211,7 +213,9 @@
     <ClCompile Include="Src\Application\Game\GameObject\Gimmick.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Player.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\StageMap.cpp" />
+    <ClCompile Include="Src\Application\Game\GameOver.cpp" />
     <ClCompile Include="Src\Application\Game\GameSystem.cpp" />
+    <ClCompile Include="Src\Application\Game\TitleObject.cpp" />
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\Utility\ResourceFactory.cpp" />
     <ClCompile Include="Src\Application\Utility\SceneChanger.cpp" />

@@ -52,13 +52,14 @@ void Effect2D::DrawEffect()
 		//描画用の行列
 		Math::Matrix mDraw;
 
-		//行列の拡大=S
-		//----------------------------------------------------------
-		Math::Vector3 scale;
-		scale.x = m_mWorld.Right().Length();
-		scale.y = m_mWorld.Up().Length();
-		scale.z = m_mWorld.Forward().Length();
-		mDraw = Math::Matrix::CreateScale(scale);
+		if (m_localModeFlg)
+		{
+			mDraw = m_mWorld * m_ownerChara.lock()->GetMatrix();
+		}
+		else
+		{
+			mDraw = m_mWorld;
+		}
 
 		//行列の回転=R
 		//----------------------------------------------------------
@@ -66,33 +67,29 @@ void Effect2D::DrawEffect()
 
 		if (gameCam)
 		{
-			//カメラの逆行列の合成=ワールド行列->カメラから見た行列にする
-			Math::Matrix mCamInv = gameCam->GetCameraMatrix();
-			mCamInv.Invert();
+			//行列の拡大=S
+			//----------------------------------------------------------
+			Math::Vector3 scale;
+			scale.x = mDraw.Right().Length();
+			scale.y = mDraw.Up().Length();
+			scale.z = mDraw.Forward().Length();
 
-			//カメラの目の前に持ってくる
-			mDraw *= mCamInv;
+			//カメラの行列の合成=ワールド行列->カメラから見た行列にする
+			Math::Matrix mCam = gameCam->GetCameraMatrix();
+
+			mDraw.Right(mCam.Right() * scale.x);
+			mDraw.Up(mCam.Up() * scale.y);
+			mDraw.Backward(mCam.Backward() * scale.z);
 		}
 
-		//行列の移動=T
-		//-------------------------------------------------------------
-		mDraw.Translation(m_mWorld.Translation());
-
-		if (m_localModeFlg)
-		{
-			SHADER->m_effectShader.DrawSquarePolygon(m_poly, m_ownerChara.lock()->GetMatrix());
-		}
-		else
-		{
-			SHADER->m_effectShader.DrawSquarePolygon(m_poly, mDraw);
-		}
+		SHADER->m_effectShader.DrawSquarePolygon(m_poly, mDraw);
 		
 	}
 	else
 	{
 		if (m_localModeFlg)
 		{
-			SHADER->m_effectShader.DrawSquarePolygon(m_poly, m_ownerChara.lock()->GetMatrix());
+			SHADER->m_effectShader.DrawSquarePolygon(m_poly, m_mWorld * m_ownerChara.lock()->GetMatrix());
 		}
 		else
 		{

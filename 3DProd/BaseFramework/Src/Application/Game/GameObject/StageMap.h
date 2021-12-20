@@ -67,12 +67,13 @@ public :
 	virtual void NotifyDamage(DamageArg& arg) override
 	{
 		if (m_hp <= 0) { return; }
+
+		m_audioManager.Play("Data/Audio/SE/hit1.wav");
+
 		// モデル切り替え
 		// アニメーション変更
 		LoadModel("Data/Models/StageMap/Object/WoodBox_dest.gltf");
 		m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Dest"),false);
-
-		m_audioManager.Play("Data/Audio/SE/hit1.wav");
 
 		m_hp -= arg.damage;
 		arg.ret_IsHit = true;

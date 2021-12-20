@@ -164,7 +164,7 @@ void Application::Execute()
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 		//imguiDemoウィンドウ表示
-		ImGui::ShowDemoWindow(nullptr);
+	//	ImGui::ShowDemoWindow(nullptr);
 
 
 		GameSystem::GetInstance().Update();

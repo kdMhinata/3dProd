@@ -38,54 +38,6 @@ struct BumpResult
 	Math::Vector3 m_pushVec;
 };
 
-
-inline json11::Json::array Vec3ToJson(const Math::Vector3& v)
-{
-	return json11::Json::array( { v.x, v.y, v.z } );
-}
-
-inline void JsonToVec3(json11::Json json, Math::Vector3& vec3)
-{
-	if (!json.is_array())return;
-	if (json.array_items().size() != 3)return;
-	vec3.x = (float)json.array_items()[0].number_value();
-	vec3.y = (float)json.array_items()[1].number_value();
-	vec3.z = (float)json.array_items()[2].number_value();
-}
-
-inline void JsonToBool(json11::Json json, bool& ret)
-{
-	if (!json.is_bool())return;
-	ret = json.bool_value();
-}
-
-inline Math::Vector3 MatToAngle(const Math::Matrix& mat)
-{		
-	Math::Matrix m=mat;
-	Math::Vector3 vx = m.Right(); //vxにmatのX軸を取得
-	vx.Normalize(); //vxを正規化
-	m.Right(vx); //正規化したvxをmatのX軸に設定
-
-	Math::Vector3 vy = m.Up();
-	vy.Normalize();
-	m.Up(vy);
-
-	Math::Vector3 vz = m.Backward();
-	vz.Normalize();
-	m.Backward(vz);	
-
-	Math::Vector3 angles;
-	angles.x = atan2f(m.m[1][2], m.m[2][2]);
-	angles.y = atan2f(-m.m[0][2], sqrtf(m.m[1][2] * m.m[1][2] + m.m[2][2] * m.m[2][2]));
-	angles.z = atan2f(m.m[0][1], m.m[0][0]);
-	return angles;
-}
-
-//inline json11::Json MatToJson(const Math::Matrix& m)
-//{
-//	return json11::Json
-//}
-
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
@@ -142,9 +94,16 @@ public:
 		m_tag = json["Tag"].string_value();
 		LoadModel(m_modelFilename);
 	
-		Math::Vector3 pos=GetPos();
+		Math::Vector3 pos;
 		JsonToVec3(json["Pos"],pos);
-		SetPos(pos);
+		Math::Vector3 ang;
+		JsonToVec3(json["Angle"], ang);
+
+		// SR(x*y*z)T
+		m_mWorld = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(ang.x)) *
+					Math::Matrix::CreateRotationY(DirectX::XMConvertToRadians(ang.y))*
+					Math::Matrix::CreateRotationZ(DirectX::XMConvertToRadians(ang.z))*
+					Math::Matrix::CreateTranslation(pos);
 	}
 	// 文字列化
 	virtual void Serialize(json11::Json::object& json)

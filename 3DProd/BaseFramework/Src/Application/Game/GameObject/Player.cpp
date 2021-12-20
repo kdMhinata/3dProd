@@ -1,10 +1,54 @@
 #include"Player.h"
-//#include"../Camera/FPSCamera.h"
 #include"../Camera/TPSCamera.h"
 #include"../GameSystem.h"
 #include "Enemy.h"
 #include "StageMap.h"
 #include "Effect2D.h"
+#include "System/Utility/KdUtility.h"
+
+/*
+class TransformComponent
+{
+public:
+
+	const Math::Matrix& GetMatrix()
+	{
+		if (m_isDirty)
+		{
+			m_isDirty = false;
+			m_matrix = Math::Matrix::CreateScale(m_scale); //srt
+		}
+		return m_matrix;
+	}
+
+	void SetMatirx(const Math::Matrix& m)
+	{
+		m_matrix = m;
+
+		m_position = m_matrix.Translation();
+		m_angle = MatToAngle(m);
+		m_scale.x = m.Right().Length();
+		m_scale.y = m.Up().Length();
+		m_scale.z = m.Backward().Length();
+		m_isDirty = false;
+	}
+
+	void SetPosition(const Math::Vector3& pos)
+	{
+		m_position = pos;
+		m_isDirty = true;
+	}
+
+private:
+	Math::Matrix m_matrix;
+
+	Math::Vector3 m_position;
+	Math::Vector3 m_angle;
+	Math::Vector3 m_scale = { 1,1,1 };
+
+	bool m_isDirty = true;
+};
+*/
 
 Player::Player()
 {
@@ -44,8 +88,8 @@ void Player::Deserialize(const json11::Json& json)
 	m_bumpSphereInfo.m_pos.y = 0.65f;
 	m_bumpSphereInfo.m_radius = 0.4f;
 
-	m_hp = 200;
-	SetMaxHp(200);
+	m_hp = 400;
+	SetMaxHp(400);
 
 	//角度をデシリアライズ
 	Math::Vector3 rotate;
@@ -76,54 +120,6 @@ void Player::Deserialize(const json11::Json& json)
 
 void Player::Init()
 {
-	/*
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf"));
-
-	m_spCamera = std::make_shared<TPSCamera>();
-
-	GameSystem::GetInstance().SetCamera(m_spCamera);
-
-	m_spCamera->Init();
-
-	m_spCamera->SetProjectionMatrix(60.0f, 3000.0f);	// 視野角の設定（左右に60度＝120度）,最大描画距離(短いほど判定が正確になる)
-
-	// カメラの注視点から5m離れる
-	m_spCamera->SetLocalPos(Math::Vector3(0.0f, 0.0f, -10.0f));
-
-	// キャラクターから注視点へのローカル座標を上に3m上げる
-	m_spCamera->SetLocalGazePos(Math::Vector3(0.0f, 3.0f, 0.0f));
-
-	// カメラの制限角度
-	m_spCamera->SetClampAngle(-75.0f,90.0f);
-
-	// カメラの移動スピード
-	m_spCamera->SetRotationSpeed(0.25);
-
-	m_bumpSphereInfo.m_pos.y =0.65f;
-	m_bumpSphereInfo.m_radius = 0.4f;
-
-	m_hp = 200;
-
-	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
-
-
-	m_spActionState = std::make_shared<ActionWait>();
-
-	//AudioEngin初期化
-	DirectX::AUDIO_ENGINE_FLAGS eflags =
-		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
-	m_audioManager.Init();
-
-	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/bar.png");
-	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
-
-	m_spShadow = std::make_shared<Effect2D>();
-	m_spShadow->Init();
-	m_spShadow->SetPos(GetPos());
-	m_spShadow->SetTexture(GameResourceFactory.GetTexture("Data/Textures/shadow.png"));
-
-	m_swordmodelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Weapon/sword.gltf"));
-	*/
 }
 
 // 更新処理
@@ -253,7 +249,7 @@ void Player::ImGuiUpdate()
 {
 	Character::ImGuiUpdate();
 
-	ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
+	ImGui::DragFloat3("Pos##Player", &m_worldPos.x, 0.01f);
 
 	ImGui::DragFloat("Angle", &m_worldRot.y, 0.1f);
 
@@ -337,8 +333,6 @@ void Player::ScriptProc(const json11::Json& event)
 	}
 	else if (eventName == "ConToAtk")
 	{
-//		m_atkComboFlg = false;
-
 		if (m_atkComboFlg)
 		{
 			m_atkCancelAnimName = event["AnimName"].string_value();
@@ -361,24 +355,28 @@ void Player::ScriptProc(const json11::Json& event)
 		int SpX = event["SpX"].int_value();
 		int SpY = event["SpY"].int_value();
 
+		Math::Vector3 Angle;
+		JsonToVec3(event["Angle"], Angle);
+
+		Math::Vector3 Pos;
+		JsonToVec3(event["Pos"], Pos);
+
 		bool localMode = false;
 		JsonToBool(event["LocalMode"], localMode);
 		
 		std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
-		/*Math::Vector3 effectPos = GetPos();
-		effectPos += (m_mWorld.Up() * 1);*/
-
+	
 		spEffect->Init();
 		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile), Size, Size);
-//		spEffect->SetPos(effectPos);
-
-		//バグあるので条件反転
+		
 		if (localMode)
 		{
 			Math::Matrix m = m_mWorld;
-			m.Translation(m.Translation() + m.Up() * 1);
 
-			m = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90)) * m;
+			m = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(Angle.x))*
+				Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(Angle.y))*
+				Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(Angle.z))*
+				Math::Matrix::CreateTranslation(Pos);
 
 			spEffect->SetMatrix(m);
 		}
@@ -492,7 +490,7 @@ void Player::DoAttack()
     			Math::Vector3 attackPos = GetPos();
 			attackPos += (m_mWorld.Backward() * 0.5);
 
-			SphereInfo info(attackPos,m_bumpSphereInfo.m_radius+1.0f);
+			SphereInfo info(attackPos,m_bumpSphereInfo.m_radius+2.0f);
 
  			BumpResult result;
 
@@ -591,7 +589,6 @@ void Player::ActionWait::Update(Player& owner)
 
 	if (owner.m_input->IsPressButton(0, false))
 	{
-//		owner.ChangeAttack();
 		owner.ChangeAction<Player::ActionAttack>();
 		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"), false);
 	}
@@ -677,13 +674,26 @@ void Player::ActionAttack::Update(Player& owner)
 		owner.ChangeAction<Player::ActionSkill>();
 	}
 
-	Math::Vector3 attackVec = owner.m_mWorld.Backward();
+	if (owner.m_input->GetAxisL().y)
+	{
+		Math::Vector3 attackVec = owner.m_mWorld.Backward();
 
-	attackVec.Normalize();
-	attackVec *= 0.05f;
+		attackVec.Normalize();
+		attackVec *= 0.05f;
 
-	owner.m_worldPos.x += attackVec.x;
-	owner.m_worldPos.z += attackVec.z;
+		owner.m_worldPos.x += attackVec.x;
+		owner.m_worldPos.z += attackVec.z;
+	}
+	else
+	{
+		Math::Vector3 attackVec = owner.m_mWorld.Backward();
+
+		attackVec.Normalize();
+		attackVec *= 0.025f;
+
+		owner.m_worldPos.x += attackVec.x;
+		owner.m_worldPos.z += attackVec.z;
+	}
 }
 
 void Player::ActionDodge::Update(Player& owner)

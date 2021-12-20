@@ -93,6 +93,11 @@ public:
 	void Draw();
 	virtual void ImGuiUpdate();
 
+	//タイトル
+	void TitleInit();
+
+	void GameInit();
+
 	void AddObject(std::shared_ptr<GameObject> spObject)
 	{
 		if (spObject){ m_spObjects.push_back(spObject);}
@@ -135,6 +140,8 @@ private:
 	DirectX::SimpleMath::Matrix m_skyMat;	// キューブのワールド行列
 
 	std::list<std::shared_ptr<GameObject>> m_spObjects;
+
+	std::list<std::shared_ptr<GameObject>> m_spWaitingRoom; //一時的にGameObjectを保存しておく関数
 
 	std::shared_ptr<KdCamera> m_spCamera = nullptr;
 

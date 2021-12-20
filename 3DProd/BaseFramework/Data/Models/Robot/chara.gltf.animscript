@@ -32,6 +32,8 @@
 					"SpX": 4,
 					"SpY": 3,
 					"Speed": 1.0,
+					"Pos": [0,1,0],
+					"Angle": [0,-90,0],
 					"LocalMode": true
 				},
 				{
@@ -67,6 +69,8 @@
 					"SpX": 4,
 					"SpY": 3,
 					"Speed": 1.0,
+					"Angle": [ 0, -90, 0 ],
+					"Pos": [ 0, 1, 0 ],
 					"LocalMode": true
 				},
 				{
@@ -101,6 +105,8 @@
 					"SpX": 4,
 					"SpY": 4,
 					"Speed": 1.0,
+					"Angle": [ 0, -90, 0 ],
+					"Pos": [ 0, 1, 0 ],
 					"LocalMode": true
 				},
 				{
@@ -131,6 +137,8 @@
 					"Size2": 10,
 					"SpY": 5,
 					"Speed": 1.0,
+					"Angle": [ 0, -90, 0 ],
+					"Pos": [ 0, 1, 0 ],
 					"LocalMode": true
 				},
 				{
