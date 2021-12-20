@@ -329,7 +329,8 @@ void Player::ScriptProc(const json11::Json& event)
 	}
 	else if (eventName == "DoAttack")
 	{
-		DoAttack();
+		int damage = event["Damage"].int_value();
+		DoAttack(damage);
 	}
 	else if (eventName == "ConToAtk")
 	{
@@ -481,7 +482,7 @@ void Player::UpdateMatrix()
 	m_mWorld =rotation * trans;
 }
 
-void Player::DoAttack()
+void Player::DoAttack(int damage)
 {	
 		for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
 		{
@@ -504,7 +505,7 @@ void Player::DoAttack()
 
 
 				DamageArg arg;
-				arg.damage = 10;
+				arg.damage = damage;
 				arg.attackPos = attackPos;
    				chara->NotifyDamage(arg);
 
