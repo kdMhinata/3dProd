@@ -34,6 +34,7 @@ public:
 	virtual void Deserialize(const json11::Json& json) override
 	{
 		Character::Deserialize(json);
+		m_alpha = 0.5;
 
 		// 
 		m_activeFlg = json["Active"].bool_value();
@@ -89,6 +90,4 @@ public:
 
 private:
 	bool m_activeFlg;
-
-//	Math::Vector3	m_worldPos;
 };

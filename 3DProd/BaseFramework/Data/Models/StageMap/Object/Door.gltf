@@ -8,44 +8,14 @@
         {
             "name" : "Scene",
             "nodes" : [
-                0,
-                1,
-                2
+                0
             ]
         }
     ],
     "nodes" : [
         {
-            "name" : "Light",
-            "rotation" : [
-                0.16907575726509094,
-                0.7558803558349609,
-                -0.27217137813568115,
-                0.570947527885437
-            ],
-            "translation" : [
-                4.076245307922363,
-                5.903861999511719,
-                -1.0054539442062378
-            ]
-        },
-        {
-            "name" : "Camera",
-            "rotation" : [
-                0.483536034822464,
-                0.33687159419059753,
-                -0.20870360732078552,
-                0.7804827094078064
-            ],
-            "translation" : [
-                7.358891487121582,
-                4.958309173583984,
-                6.925790786743164
-            ]
-        },
-        {
             "mesh" : 0,
-            "name" : "\u5e73\u9762",
+            "name" : "\u5e73\u9762.001",
             "rotation" : [
                 0,
                 0,
@@ -53,13 +23,13 @@
                 0.7071068286895752
             ],
             "scale" : [
-                1,
-                1,
-                1.496646761894226
+                2.0661637783050537,
+                1.538883090019226,
+                1.538883090019226
             ],
             "translation" : [
                 0,
-                1,
+                2.0672028064727783,
                 0
             ]
         }
@@ -67,14 +37,11 @@
     "materials" : [
         {
             "doubleSided" : true,
-            "name" : "\u30de\u30c6\u30ea\u30a2\u30eb",
+            "name" : "\u30de\u30c6\u30ea\u30a2\u30eb.003",
             "pbrMetallicRoughness" : {
-                "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
-                    1
-                ],
+                "baseColorTexture" : {
+                    "index" : 0
+                },
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.5
             }
@@ -82,7 +49,7 @@
     ],
     "meshes" : [
         {
-            "name" : "\u5e73\u9762",
+            "name" : "\u5e73\u9762.004",
             "primitives" : [
                 {
                     "attributes" : {
@@ -96,18 +63,31 @@
             ]
         }
     ],
+    "textures" : [
+        {
+            "sampler" : 0,
+            "source" : 0
+        }
+    ],
+    "images" : [
+        {
+            "mimeType" : "image/png",
+            "name" : "door",
+            "uri" : "door.png"
+        }
+    ],
     "accessors" : [
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 8,
+            "count" : 4,
             "max" : [
                 1,
-                1.8219468245206372e-07,
+                0,
                 1
             ],
             "min" : [
-                -3.4132416248321533,
+                -1,
                 0,
                 -1
             ],
@@ -116,47 +96,53 @@
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 8,
+            "count" : 4,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 8,
+            "count" : 4,
             "type" : "VEC2"
         },
         {
             "bufferView" : 3,
             "componentType" : 5123,
-            "count" : 12,
+            "count" : 6,
             "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 96,
+            "byteLength" : 48,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 96,
+            "byteLength" : 48,
+            "byteOffset" : 48
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 32,
             "byteOffset" : 96
         },
         {
             "buffer" : 0,
-            "byteLength" : 64,
-            "byteOffset" : 192
-        },
+            "byteLength" : 12,
+            "byteOffset" : 128
+        }
+    ],
+    "samplers" : [
         {
-            "buffer" : 0,
-            "byteLength" : 24,
-            "byteOffset" : 256
+            "magFilter" : 9729,
+            "minFilter" : 9987
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 280,
+            "byteLength" : 140,
             "uri" : "Door.bin"
         }
     ]

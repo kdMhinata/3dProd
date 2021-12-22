@@ -130,6 +130,11 @@ void Player::Update()
 
 	m_input->Update();
 
+	//if (m_hp <= 0)
+	//{
+	//	
+	//}
+
 	// ’Êí
 	if (m_hitStop <= 0)
 	{
@@ -167,13 +172,6 @@ void Player::Update()
 		m_spCamera->SetCameraMatrix(trans);
 	}
 
-	/*
-	// ƒ‰ƒ€ƒ_Ž®
-	auto onEvent = [this](const json11::Json& event)
-	{
-	};
-	*/
-//	m_worldPos.y += m_gravity;
 	m_worldPos += m_force;
 
 	// –€ŽC
@@ -675,7 +673,7 @@ void Player::ActionAttack::Update(Player& owner)
 		owner.ChangeAction<Player::ActionSkill>();
 	}
 
-	if (owner.m_input->GetAxisL().y)
+	if (owner.m_input->GetAxisL().y != 0 || owner.m_input->GetAxisL().x != 0)
 	{
 		Math::Vector3 attackVec = owner.m_mWorld.Backward();
 

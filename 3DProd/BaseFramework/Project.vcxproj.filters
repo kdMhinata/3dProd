@@ -219,6 +219,9 @@
     <ClInclude Include="Src\Application\Game\GameOver.h">
       <Filter>Src\Application\Game\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Game\Result.h">
+      <Filter>Src\Application\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -352,6 +355,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Game\GameOver.cpp">
       <Filter>Src\Application\Game\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Game\Result.cpp">
+      <Filter>Src\Application\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

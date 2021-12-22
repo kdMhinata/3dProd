@@ -34,7 +34,7 @@ void GameObject::ImGuiUpdate()
 	ImGui::InputText("Tag", &m_tag);
 
 	// 回転
-
+	
 	// 座標
 	ImGui::DragFloat3("Pos", &m_mWorld._41, 0.01f);
 }

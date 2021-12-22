@@ -84,10 +84,6 @@ public :
 		StageMap::ImGuiUpdate();
 
 		ImGui::DragInt("Hp", &m_hp, 1.0f, 0, 200);
-
-		ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
-		m_mWorld = Math::Matrix::CreateTranslation(m_worldPos);
-
 	}
 
 	// •œŒ³

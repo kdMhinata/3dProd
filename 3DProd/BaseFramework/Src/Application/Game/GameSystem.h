@@ -98,6 +98,8 @@ public:
 
 	void GameInit();
 
+	void ResultInit();
+
 	void AddObject(std::shared_ptr<GameObject> spObject)
 	{
 		if (spObject){ m_spObjects.push_back(spObject);}
@@ -148,7 +150,6 @@ private:
 	ResourceFactory m_resourceFactory;
 
 	std::string m_changeSceneFilename = "";
-
 	// 
 	struct EditorOnly
 	{

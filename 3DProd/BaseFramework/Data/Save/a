@@ -8,7 +8,7 @@
     "Tag": ""
   },
   {
-    "Angle": [0,45.000011444091797,0],
+    "Angle": [0,45.000007629394531,0],
     "ClassName": "Player",
     "ModelFilename": "Data/Models/robot/chara.gltf",
     "Name": "player",
@@ -34,7 +34,7 @@
     "Tag": ""
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
@@ -42,7 +42,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
@@ -50,7 +50,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
@@ -58,7 +58,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/golem.gltf",
     "Name": "Enemy",
@@ -66,7 +66,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/skeleton.gltf",
     "Name": "Enemy",
@@ -74,7 +74,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/skeleton.gltf",
     "Name": "Enemy",
@@ -82,7 +82,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
@@ -90,7 +90,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
@@ -98,7 +98,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/skeleton.gltf",
     "Name": "Enemy",
@@ -106,7 +106,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
@@ -114,7 +114,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
@@ -122,7 +122,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-1.3660390322911553e-05,-179.99996948242188],
+    "Angle": [0,-1.3660389413416851e-05,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
@@ -130,7 +130,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [-179.99996948242188,-12.300003051757813,-179.99996948242188],
+    "Angle": [0,-12.300002098083496,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/skeleton.gltf",
     "Name": "Enemy",
@@ -138,7 +138,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [179.99996948242188,-45.600009918212891,-179.99992370605469],
+    "Angle": [0,-45.600006103515625,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/skeleton.gltf",
     "Name": "Enemy",
@@ -146,7 +146,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [179.99978637695313,-70.400009155273438,-179.99983215332031],
+    "Angle": [0,-70.400009155273438,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
@@ -154,7 +154,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [179.99996948242188,-43.400001525878906,-179.99993896484375],
+    "Angle": [0,-43.400001525878906,0],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
@@ -162,7 +162,7 @@
     "Tag": "Enemy"
   },
   {
-    "Angle": [179.9998779296875,-65.700004577636719,-179.99989318847656],
+    "Angle": [180,-56.799999237060547,180],
     "ClassName": "Enemy",
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",

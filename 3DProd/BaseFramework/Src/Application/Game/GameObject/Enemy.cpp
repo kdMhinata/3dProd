@@ -30,6 +30,11 @@ void Enemy::Deserialize(const json11::Json& json)
 	m_hp = 100;
 	SetMaxHp(100);
 
+	//角度をデシリアライズ
+	Math::Vector3 rotate;
+	JsonToVec3(json["Angle"], rotate);
+	SetRotate(rotate);
+
 	m_attackradius = 1.0f;
 
 	//AudioEngin初期化
@@ -103,6 +108,8 @@ void Enemy::ImGuiUpdate()
 	Character::ImGuiUpdate();
 
 	ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
+
+	ImGui::DragFloat("Angle", &m_worldRot.y, 0.1f);
 
 	ImGui::DragInt("Hp", &m_hp, 1.0f, 0, 200);
 
