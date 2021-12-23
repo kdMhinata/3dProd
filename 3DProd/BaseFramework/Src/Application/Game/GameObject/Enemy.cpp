@@ -375,6 +375,21 @@ void Enemy::UpdateCollition()
 
 		}
 	}
+
+	for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
+	{
+		if (spObj->GetClassID() != GameObject::eEnemy) { continue; }
+
+		SphereInfo info(GetPos() + m_bumpSphereInfo.m_pos, m_bumpSphereInfo.m_radius);
+
+		BumpResult result;
+
+		// 相手の判定関数を利用する
+		if (spObj->CheckCollisionBump(info, result))
+		{
+			m_worldPos += result.m_pushVec;
+		}
+	}
 }
 
 void Enemy::ActionWait::Update(Enemy& owner)

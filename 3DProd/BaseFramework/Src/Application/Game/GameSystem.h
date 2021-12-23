@@ -121,6 +121,20 @@ public:
 		m_changeSceneFilename = filename;
 	}
 
+	enum gameMode
+	{
+		Title,  //0
+		Game,   //1
+		Result, //2
+		GameOver//3
+	};
+
+	void ReserveChangeMode(enum gameMode mode)
+	{
+		m_changeGameModeFlg = true;
+		m_changeGameModeName = mode;
+	}
+
 	// 文字列化
 	void Save(const std::string& filename)
 	{
@@ -150,6 +164,8 @@ private:
 	ResourceFactory m_resourceFactory;
 
 	std::string m_changeSceneFilename = "";
+	gameMode m_changeGameModeName;
+	bool m_changeGameModeFlg = false;
 	// 
 	struct EditorOnly
 	{

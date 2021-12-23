@@ -24,7 +24,6 @@ public:
 
 private:
 	void Release();		// ‰ð•ú
-
 };
 
 class DestuctibleBox : public StageMap

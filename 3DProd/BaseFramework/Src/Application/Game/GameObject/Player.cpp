@@ -130,11 +130,6 @@ void Player::Update()
 
 	m_input->Update();
 
-	//if (m_hp <= 0)
-	//{
-	//	
-	//}
-
 	// ’Êí
 	if (m_hitStop <= 0)
 	{
@@ -196,6 +191,12 @@ void Player::Update()
 			listenerMat = m_spCamera->GetCameraMatrix();
 		}
 		m_audioManager.Update(listenerMat.Translation(), listenerMat.Backward());
+	}
+
+	if (m_hp <= 0)
+	{
+		m_isAlive = false;
+		GameInstance.ReserveChangeMode(GameSystem::Result);
 	}
 }
 
@@ -290,8 +291,8 @@ void Player::ImGuiUpdate()
 			ChangeAction < Player::ActionSkill>();
 		}
 
-	}
 	ImGui::ListBoxFooter();
+	}
 
 	if (m_spActionState)
 	{

@@ -103,8 +103,31 @@ void GameSystem::Update()
 
 		m_changeSceneFilename = "";
 	}
+	//ゲームモードの切り替え
+	if (m_changeGameModeFlg)
+	{
+		m_spObjects.clear();
 
-	// 
+		switch (m_changeGameModeName)
+		{
+		case GameSystem::Title:
+			TitleInit();
+			break;
+		case GameSystem::Game:
+			GameInit();
+			break;
+		case GameSystem::Result:
+			ResultInit();
+			break;
+		case GameSystem::GameOver:
+			break;
+		default:
+			break;
+		}
+
+		m_changeGameModeFlg = false;
+	}
+ 
 	ImGuiUpdate();
 
 	if (GetAsyncKeyState(VK_ESCAPE))
