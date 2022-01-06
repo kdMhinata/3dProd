@@ -17,7 +17,6 @@ public:
 	virtual int GetMaxHp() { return m_maxHp; }
 	virtual void SetMaxHp(int maxhp) { m_maxHp = maxhp; }
 
-
 	int m_hitStop = 0;
 	int m_hp;
 	int m_maxHp;
@@ -25,6 +24,8 @@ public:
 
 	std::shared_ptr<KdTexture> m_hpBarTex;
 	std::shared_ptr<KdTexture> m_hpFrameTex;
+
+	std::shared_ptr<KdTexture> m_damageFont;
 private:
 	virtual void ScriptProc(const json11::Json& event) {}
 };

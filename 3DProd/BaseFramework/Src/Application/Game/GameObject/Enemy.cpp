@@ -1,6 +1,7 @@
 ﻿#include"Enemy.h"
 #include"Player.h"
 #include "Effect2D.h"
+#include "Bullet.h"
 #include"../GameSystem.h"
 
 Enemy::Enemy()
@@ -27,13 +28,15 @@ void Enemy::Deserialize(const json11::Json& json)
 
 	m_worldRot.y = 180;
 
-	m_hp = 100;
-	SetMaxHp(100);
+	m_hp = json["HP"].int_value();
+	SetMaxHp(json["MaxHP"].int_value());
 
 	//角度をデシリアライズ
 	Math::Vector3 rotate;
 	JsonToVec3(json["Angle"], rotate);
 	SetRotate(rotate);
+
+	m_sArmor = json["SuperArmor"].bool_value();
 
 	m_attackradius = 1.0f;
 
@@ -57,6 +60,9 @@ void Enemy::Serialize(json11::Json::object& json)
 {
 	Character::Serialize(json);
 
+	json["SuperArmor"] = m_sArmor;
+	json["HP"] = m_hp;
+	json["MaxHP"] = m_maxHp;
 }
 
 void Enemy::Init()
@@ -111,7 +117,11 @@ void Enemy::ImGuiUpdate()
 
 	ImGui::DragFloat("Angle", &m_worldRot.y, 0.1f);
 
-	ImGui::DragInt("Hp", &m_hp, 1.0f, 0, 200);
+	ImGui::DragInt("Hp", &m_hp, 1.0f, 0, 1000);
+
+	ImGui::DragInt("MaxHp", &m_maxHp, 1.0f, 0, 1000);
+
+	ImGui::Checkbox("SuperArmor", &m_sArmor);
 
 	if (ImGui::ListBoxHeader("Action"))
 	{
@@ -180,7 +190,7 @@ void Enemy::NotifyDamage(DamageArg& arg)
 	m_hp -= arg.damage;
 	arg.ret_IsHit = true;
 
-	if (arg.ret_IsHit&&!m_sarmor)
+	if (arg.ret_IsHit&&!m_sArmor)
 	{
 		ChangeAction < Enemy::ActionGetHit>();
 	}
@@ -198,6 +208,10 @@ void Enemy::ScriptProc(const json11::Json& event)
 	else if (eventName == "DoAttack")
 	{
 		DoAttack();
+	}
+	else if (eventName == "DoShot")
+	{
+		DoShot();
 	}
 	else if (eventName == "Elim")
 	{
@@ -358,9 +372,20 @@ void Enemy::DoAttack()
 	}
 }
 
+void Enemy::DoShot()
+{
+	std::shared_ptr<Bullet> spBullet = std::make_shared<Bullet>();
+
+	spBullet->Init();
+
+	spBullet->SetWorldMatrix(m_mWorld);
+
+	GameInstance.AddObject(spBullet);
+}
+
 void Enemy::UpdateCollition()
 {
-	for (const std::shared_ptr<GameObject>& spStageObj : GameSystem::GetInstance().GetObjects())
+	for (const std::shared_ptr<GameObject>& spStageObj : GameInstance.GetObjects())
 	{
 		if (spStageObj->GetClassID() != GameObject::eStage) { continue; }
 
@@ -376,7 +401,7 @@ void Enemy::UpdateCollition()
 		}
 	}
 
-	for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
+	for (const std::shared_ptr<GameObject>& spObj : GameInstance.GetObjects())
 	{
 		if (spObj->GetClassID() != GameObject::eEnemy) { continue; }
 

@@ -159,6 +159,7 @@
     <ClInclude Include="Src\Application\Application.h" />
     <ClInclude Include="Src\Application\Game\Camera\FPSCamera.h" />
     <ClInclude Include="Src\Application\Game\Camera\TPSCamera.h" />
+    <ClInclude Include="Src\Application\Game\GameObject\Bullet.h" />
     <ClInclude Include="Src\Application\Game\GameObject\Character.h" />
     <ClInclude Include="Src\Application\Game\GameObject\Effect2D.h" />
     <ClInclude Include="Src\Application\Game\GameObject\Enemy.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="..\Library\json11KdCustom\json11.cpp" />
     <ClCompile Include="Src\Application\Game\Camera\FPSCamera.cpp" />
     <ClCompile Include="Src\Application\Game\Camera\TPSCamera.cpp" />
+    <ClCompile Include="Src\Application\Game\GameObject\Bullet.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Character.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Effect2D.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Enemy.cpp" />

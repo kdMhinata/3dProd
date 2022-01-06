@@ -43,10 +43,6 @@ public:
 
 	void SetPos(const Math::Vector3& pos) override { m_mWorld.Translation(pos); }
 	void SetWPos(const Math::Vector3 pos) { m_worldPos.x += pos.x; m_worldPos.z += pos.z; m_worldPos.y = pos.y; }
-	void SetMData(std::string filename) { LoadModel(filename); };
-	void SetHP(int hp) { m_hp = hp; };
-	void SetAttackRadius(float attackradius) { m_attackradius = attackradius; };
-	void SetSuperArmor(bool sarmor) { m_sarmor = sarmor; };
 
 	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
 
@@ -76,6 +72,7 @@ private:
 	void UpdateSearch();
 	void UpdateCollition();		// 当たり判定の更新
 	void DoAttack();
+	void DoShot();
 
 	Math::Vector3	m_worldPos;
 	Math::Vector3	m_worldRot;
@@ -93,10 +90,7 @@ private:
 	int m_canAttackCnt = 30;
 	bool m_findTargetFlg = false;
 	float m_attackradius;
-	bool m_sarmor = false;
-
-
-
+	bool m_sArmor = false;
 
 	bool CheckWait()
 	{
@@ -109,33 +103,6 @@ private:
 			return true;
 		return false;
 	}
-
-	/*void ChangeWait()
-	{
-		m_spActionState->Exit(*this);
-		m_spActionState = std::make_shared<ActionWait>();
-		m_spActionState->Entry(*this);
-	};
-	void ChangeMove()
-	{
-		m_spActionState = std::make_shared<ActionMove>();
-		m_spActionState->Entry(*this);
-	};
-	void ChangeAttack()
-	{
-		m_spActionState = std::make_shared<ActionAttack>();
-		m_spActionState->Entry(*this);
-	}
-	void ChangeElimination()
-	{
-		m_spActionState = std::make_shared<ActionElimination>();
-		m_spActionState->Entry(*this);
-	}
-	void ChangeGetHit()
-	{
-		m_spActionState = std::make_shared<ActionGetHit>();
-		m_spActionState->Entry(*this);
-	}*/
 
 	template<class Type>
 	void ChangeAction()

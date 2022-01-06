@@ -114,7 +114,7 @@ public:
 
 	const std::shared_ptr<KdCamera> GetCamera() const;
 
-	void EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos, std::string& modelname, int hp, float attackradius = 0.5f,bool sarmor =false);
+	void EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos, std::string& modelname);
 
 	void ReserveChangeScene(const std::string& filename)
 	{
@@ -135,6 +135,10 @@ public:
 		m_changeGameModeName = mode;
 	}
 
+	void EnterStage();
+	
+	void ExitStage(Math::Matrix mat);
+
 	// 文字列化
 	void Save(const std::string& filename)
 	{
@@ -143,6 +147,18 @@ public:
 
 	std::shared_ptr<GameObject> FindObjectWithTag(const std::string& tag);
 	std::vector<std::shared_ptr<GameObject>> FindObjectsWithTag(const std::string& tag);
+
+	//一時的にGameObjectをWaitingRoomに保存する
+	void SaveWaitingRoom(std::shared_ptr<GameObject> obj)
+	{
+		m_spWaitingRoom=obj;
+	}
+
+	//一時的に保存したGameObjectをWaitingRoomから読み込む
+	std::shared_ptr<GameObject>& LoadWaitingRoom()
+	{
+		return m_spWaitingRoom;
+	}
 
 	void BlackOut();
 
@@ -157,7 +173,7 @@ private:
 
 	std::list<std::shared_ptr<GameObject>> m_spObjects;
 
-	std::list<std::shared_ptr<GameObject>> m_spWaitingRoom; //一時的にGameObjectを保存しておく関数
+	std::shared_ptr<GameObject> m_spWaitingRoom; //一時的にGameObjectを保存しておく
 
 	std::shared_ptr<KdCamera> m_spCamera = nullptr;
 

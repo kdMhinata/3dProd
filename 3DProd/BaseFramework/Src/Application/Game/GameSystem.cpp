@@ -28,21 +28,21 @@ void GameSystem::GameInit()
 	// 
 	auto loadProc = [this, &isLoaded]()
 	{
-		// スカイスフィア拡大行列
-		m_skyMat = m_skyMat.CreateScale(50.0f);
-
 		Load("Data/Save/Dungeon1");
 
 		//予め呼んでおきたい重いデータ等絶対使うデータ等
 		GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
 		GameResourceFactory.GetTexture("Data/Textures/Slash2.png");
 		GameResourceFactory.GetTexture("Data/Textures/Slash3.png");
+		GameResourceFactory.GetTexture("Data/Textures/Thrust1.png");
 		GameResourceFactory.GetTexture("Data/Textures/SlashH1.png");
+		GameResourceFactory.GetTexture("Data/Textures/damagefont.png");
 		GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf");
 		GameResourceFactory.GetModelData("Data/Models/enemy/skeleton.gltf");
 		GameResourceFactory.GetModelData("Data/Models/enemy/golem.gltf");
 		GameResourceFactory.GetModelData("Data/Models/StageMap/Object/WoodBox_dest.gltf");
 		GameResourceFactory.GetModelData("Data/Models/StageMap/Object/WoodBox.gltf");
+		GameResourceFactory.GetModelData("Data/Models/StageMap/Object/Door.gltf");
 		GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon3/DungeonStage.gltf");
 		GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon4/DungeonStage.gltf");
 
@@ -347,6 +347,17 @@ void GameSystem::ImGuiUpdate()
 			ImGui::TreePop();
 		}
 
+		if (ImGui::TreeNode("EnptyObject"))
+		{
+			if (ImGui::Button("Set"))
+			{
+				std::shared_ptr<GameObject> spEnpty = std::make_shared<GameObject>();
+				spEnpty->Init();
+				AddObject(spEnpty);
+			}
+			ImGui::TreePop();
+		}
+
 		if (ImGui::TreeNode("EnemySet"))
 		{
 
@@ -388,13 +399,12 @@ void GameSystem::ImGuiUpdate()
 //					spEnemy->SetTarget(obj);
 					//spEnemy->SetTarget(FindObjectWithTag("Player"));
 					spEnemy->SetWPos(obj->GetPos());
-					spEnemy->SetMData(m_editor.selectEnemyModelName);
+					spEnemy->LoadModel(m_editor.selectEnemyModelName);
 					spEnemy->SetTag("Enemy");
 				}
 			}
 			ImGui::TreePop();
 		}
-
 
 		for (auto&& obj : m_spObjects)
 		{
@@ -448,16 +458,13 @@ const std::shared_ptr<KdCamera> GameSystem::GetCamera() const
 	return m_spCamera;
 }
 
-void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos, std::string& modelname, int hp, float attackradius, bool sarmor)
+void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos, std::string& modelname)
 {
 	std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
 	spEnemy->Init();
 	AddObject(spEnemy);
 	spEnemy->SetWPos(pos);
-	spEnemy->SetMData(modelname);
-	spEnemy->SetHP(hp);
-	spEnemy->SetAttackRadius(attackradius);
-	spEnemy->SetSuperArmor(sarmor);
+	spEnemy->LoadModel(modelname);
 	spEnemy->SetTarget(target);
 }
 
@@ -481,6 +488,39 @@ void GameSystem::Load(const std::string& filename)
 
 	//・設定のロード
 	//・
+}
+
+void GameSystem::EnterStage()
+{
+	//ブラックアウトからゲームに切り替え
+		//BlackOut() 逆
+
+	//空のPlayerSpawnPointと一時的に保存しておいたプレイヤーを置き換える
+	AddObject(LoadWaitingRoom());
+	//FindObjectWithTag("SpawnPoint")->GetPos();
+}
+
+void GameSystem::ExitStage(Math::Matrix mat)
+{
+	std::shared_ptr<GameObject> obj = FindObjectWithTag("Player");
+
+	auto player = std::dynamic_pointer_cast<Player>(obj);
+
+	if (player == nullptr) { return; }
+
+	//行列をプレイヤー用の角度に変換
+	Math::Vector3 vec = MatToAngle(mat);
+	
+	player->Exit(vec);
+
+	//プレイヤーを一時的に保存しておく
+	SaveWaitingRoom(FindObjectWithTag("Player"));
+
+	//ブラックアウトする
+	BlackOut();
+
+	//ステージを変更する
+	//ReserveChangeScene("Data/Save/Dungeon2test");
 }
 
 std::shared_ptr<GameObject> GameSystem::FindObjectWithTag(const std::string& tag)
@@ -507,7 +547,18 @@ std::vector<std::shared_ptr<GameObject>> GameSystem::FindObjectsWithTag(const st
 
 void GameSystem::BlackOut()
 {
-//暗転処理
+	//暗転処理
+
+	DirectX::SimpleMath::Color col(1.0f, 1.0f, 1.0f, 0.0f);
+
+	D3D.WorkDevContext()->ClearRenderTargetView(D3D.WorkBackBuffer()->WorkRTView(), col); //書き込めるテクスチャをクリア
+
+	D3D.WorkDevContext()->ClearDepthStencilView(D3D.WorkZBuffer()->WorkDSView(),
+		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	D3D.WorkSwapChain()->Present(0, 0);
+
+	
 }
 
 void GameSystem::Release()

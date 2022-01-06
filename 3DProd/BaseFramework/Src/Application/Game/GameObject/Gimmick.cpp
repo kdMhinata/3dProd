@@ -1,11 +1,17 @@
 ﻿#include "Gimmick.h"
 
 void Gimmick::Update()
-{
+{	
+	if (!m_clearFlg)
 	{
-		if (m_activeFlg)
+		if (GameInstance.FindObjectWithTag("Enemy") == nullptr)
 		{
-			GameInstance.ReserveChangeScene("Data/Save/Dungeon2");
+			m_clearFlg = true;
 		}
+	}
+
+	if (m_active==1)
+	{
+		GameInstance.ExitStage(GetMatrix());
 	}
 }

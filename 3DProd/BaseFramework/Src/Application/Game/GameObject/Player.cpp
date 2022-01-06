@@ -108,6 +108,8 @@ void Player::Deserialize(const json11::Json& json)
 	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/bar.png");
 	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
 
+	m_damageFont = GameResourceFactory.GetTexture("Data/Textures/damagefont.png");
+
 	m_spShadow = std::make_shared<Effect2D>();
 	m_spShadow->Init();
 	m_spShadow->SetPos(GetPos());
@@ -157,15 +159,15 @@ void Player::Update()
 	UpdateMatrix();
 
 	// カメラを構成する行列の合成結果をセット
-	if (m_spCamera)
-	{
-		m_spCamera->Update();
+		if (m_spCamera&&m_useCamera)
+		{
+			m_spCamera->Update();
 
-		Math::Matrix trans = Math::Matrix::CreateTranslation(m_worldPos);
+			Math::Matrix trans = Math::Matrix::CreateTranslation(m_worldPos);
 
-		// プレイヤーの絶対行列のセット
-		m_spCamera->SetCameraMatrix(trans);
-	}
+			// プレイヤーの絶対行列のセット
+			m_spCamera->SetCameraMatrix(trans);
+		}
 
 	m_worldPos += m_force;
 
@@ -216,7 +218,7 @@ void Player::Draw2D()
 {
 	if (!m_hpBarTex||!m_hpFrameTex) { return; }
 	Math::Vector3 _pos = Math::Vector3::Zero;
-	// 
+	// hpの描画処理
 	GameInstance.GetCamera()->ConvertWorldToScreenDetail(GetPos(), _pos);
 		Math::Rectangle barrec = { 0,0,500,20 };
 		Math::Rectangle framerec = { 0,0,500,20 };
@@ -266,6 +268,11 @@ void Player::ImGuiUpdate()
 		cameraMat.z = -10;
 	}
 
+	if(ImGui::Button("UseCamera"))
+	{
+		ChangeUseCamera();
+	}
+
 	ImGui::Checkbox("noDamage", &invincibleFlg);
 
 	if (ImGui::ListBoxHeader("Action"))
@@ -302,14 +309,23 @@ void Player::ImGuiUpdate()
 
 void Player::NotifyDamage(DamageArg& arg)
 {
-	if (!invincibleFlg)
-	{
+	//無敵状態ならヒットしていない事にする
+	if (invincibleFlg){arg.ret_IsHit = false; return;}
+
 		m_hp -= arg.damage;
+		DamageDisplay(arg.damage);
 		arg.ret_IsHit = true;
-	}
-	else
+}
+
+void Player::DamageDisplay(int damage)
+{
+	if (!m_damageFont) { return; }
 	{
-		arg.ret_IsHit = false;
+		Math::Vector3 _pos = Math::Vector3::Zero;
+		// hpの描画処理
+		GameInstance.GetCamera()->ConvertWorldToScreenDetail(GetPos(), _pos);
+		Math::Rectangle font = { 110,0,110,150 };
+		SHADER->m_spriteShader.DrawTex(m_damageFont.get(), _pos.x, _pos.y, 22, 30, &font, &kWhiteColor, { 0.5,0.5 });
 	}
 }
 
@@ -708,4 +724,14 @@ void Player::UpdateInput()
 void Player::ActionSkill::Update(Player& owner)
 {
 	
+}
+
+void Player::ActionExit::Update(Player& owner)
+{
+	Math::Vector3 vec = owner.m_exitVec;
+	vec.Normalize();
+	vec*= 0.1f;
+
+	owner.m_worldPos.x -= vec.x;
+	owner.m_worldPos.z -= vec.z;
 }

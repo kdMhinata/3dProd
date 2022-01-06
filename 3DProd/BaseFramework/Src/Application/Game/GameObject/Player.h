@@ -29,12 +29,22 @@ public:
 
 	virtual void NotifyDamage(DamageArg& arg) override;
 
+	void DamageDisplay(int damage);
+
+	void Exit(Math::Vector3 vec) 
+	{
+		m_exitVec = vec;
+		ChangeAction<Player::ActionExit>();
+	}
+
 	const std::shared_ptr<const TPSCamera> GetCamera() const { return m_spCamera; }	// 参照用
 	std::shared_ptr<TPSCamera> WorkCamera() { return m_spCamera; }					// 変更用
 
 	const Math::Vector3 GetPos() const override{ return m_worldPos; }
 
 	classID GetClassID() const override { return ePlayer; }
+
+	void ChangeUseCamera() { m_useCamera = !m_useCamera; }
 
 	void SetInput(const std::shared_ptr<BaseInput>& input)
 	{
@@ -70,6 +80,8 @@ private:
 	Math::Vector3 cameraMat;		//カメラImGuiでいじる為に
 	Math::Vector3 cameraGazeMat;
 
+	Math::Vector3 m_exitVec; //exit関数で退出方向を決めるために使う角度
+
 	static const float s_limitOfStepHeight;
 
 	std::shared_ptr<TPSCamera>		m_spCamera;
@@ -79,6 +91,8 @@ private:
 	KdModelWork        m_swordmodelWork;
 	
 	std::shared_ptr<BaseInput>		m_input;
+
+	bool m_useCamera = true;
 
 	bool m_canAttack = true;
 	bool m_atkComboFlg = false;
@@ -183,6 +197,17 @@ private:
 			}
 		}
 		void Update(Player& owner)override;
+	};
+
+	class ActionExit : public BaseAction
+	{
+	public:
+		void Entry(Player& owner) 
+		{
+			owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Run"));
+			owner.ChangeUseCamera();
+		}
+		void Update(Player& owner) override;
 	};
 
 	std::shared_ptr<BaseAction> m_spActionState = nullptr;

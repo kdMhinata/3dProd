@@ -9,7 +9,6 @@ public:
 
 	void Init()override
 	{
-		m_activeFlg = false;
 		LoadModel("Data/Models/StageMap/Object/Door.gltf");
 	}
 
@@ -24,29 +23,17 @@ public:
 		SHADER->m_standardShader.SetAlpha(1.0f);
 	}
 
-	void ImGuiUpdate()override
-	{
-		StageMap::ImGuiUpdate();
-		ImGui::Checkbox("Active", &m_activeFlg);
-	}
-
 	// 復元
 	virtual void Deserialize(const json11::Json& json) override
 	{
 		Character::Deserialize(json);
 		m_alpha = 0.5;
-
-		// 
-		m_activeFlg = json["Active"].bool_value();
 	}
 
 	// 文字列化
 	virtual void Serialize(json11::Json::object& json) override
 	{
 		Character::Serialize(json);
-
-		// 自分の内容
-		json["Active"] = m_activeFlg;
 	}
 
 	bool CheckCollisionBump(const SphereInfo& info, BumpResult& result)override
@@ -69,25 +56,28 @@ public:
 			{
 				result.m_isHit = true;
 
-				m_activeFlg = true;
+				if (m_clearFlg)
+				{
+					m_active++;
+				}
+				else
+				{
+					result.m_pushVec += localPushedPos - info.m_pos;
+				}
 			}
 		}
 
 		if (!result.m_isHit)
 		{
-			m_activeFlg = false;
+			m_active =0;
 		}
 
 		return result.m_isHit;
 	}
 
-	bool IsActive()
-	{
-		return m_activeFlg;
-	}
-
 	classID GetClassID() const override { return eGimmick; }
 
 private:
-	bool m_activeFlg;
+	int m_active=0;
+	bool m_clearFlg = false;
 };

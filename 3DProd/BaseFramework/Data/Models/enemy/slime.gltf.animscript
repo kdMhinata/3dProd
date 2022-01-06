@@ -13,7 +13,7 @@
 			"AnimName": "Attack",
 			"Data": [
 				{
-					"EventName": "DoAttack",
+					"EventName": "DoShot",
 					"Time": 34
 				},
 				{

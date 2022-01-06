@@ -1,0 +1,71 @@
+[
+  {
+    "Angle": [0,-0,0],
+    "ClassName": "StageMap",
+    "ModelFilename": "Data\\Models\\StageMap\\Dungeon\\Dungeon4\\DungeonStage.gltf",
+    "Name": "GameObject",
+    "Pos": [0,0,0],
+    "Tag": ""
+  },
+  {
+    "Angle": [0,-65,0],
+    "ClassName": "Player",
+    "ModelFilename": "Data/Models/robot/chara.gltf",
+    "Name": "player",
+    "Pos": [-7.860720157623291,5.1200623512268066,-18.283046722412109],
+    "Tag": "Player"
+  },
+  {
+    "Angle": [0,-0,0],
+    "ClassName": "DestuctibleBox",
+    "Hp": 10,
+    "ModelFilename": "Data/Models/StageMap/Object/WoodBox.gltf",
+    "Name": "GameObject",
+    "Pos": [-15,5,0],
+    "Tag": ""
+  },
+  {
+    "Angle": [0,-0,0],
+    "ClassName": "DestuctibleBox",
+    "Hp": 10,
+    "ModelFilename": "Data/Models/StageMap/Object/WoodBox.gltf",
+    "Name": "GameObject",
+    "Pos": [-12.590000152587891,5,0],
+    "Tag": ""
+  },
+  {
+    "Angle": [0,45.000003814697266,0],
+    "ClassName": "Gimmick",
+    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
+    "Name": "GameObject",
+    "Pos": [-23.989999771118164,4.7600002288818359,-0.94999998807907104],
+    "Tag": ""
+  },
+  {
+    "Angle": [180,45,180],
+    "ClassName": "Gimmick",
+    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
+    "Name": "GameObject",
+    "Pos": [-3.630000114440918,4.6500000953674316,-0.86000001430511475],
+    "Tag": ""
+  },
+  {
+    "Angle": [180,45,180],
+    "ClassName": "Gimmick",
+    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
+    "Name": "GameObject",
+    "Pos": [-20.959999084472656,4.7800002098083496,-12.369999885559082],
+    "Tag": ""
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 300,
+    "MaxHP": 300,
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [-18.311000823974609,5.2275605201721191,-7.8979997634887695],
+    "SuperArmor": true,
+    "Tag": "Enemy"
+  }
+]

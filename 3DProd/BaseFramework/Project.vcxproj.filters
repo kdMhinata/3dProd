@@ -222,6 +222,9 @@
     <ClInclude Include="Src\Application\Game\Result.h">
       <Filter>Src\Application\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Application\Game\GameObject\Bullet.h">
+      <Filter>Src\Application\Game\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -358,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Game\Result.cpp">
       <Filter>Src\Application\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Game\GameObject\Bullet.cpp">
+      <Filter>Src\Application\Game\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
