@@ -3,30 +3,6 @@
 #include"GameObject.h"
 #include"Character.h"
 
-class EnemyAIInput : public BaseInput
-{
-public:
-	virtual void Update() override
-	{
-		if (1)
-		{
-			m_axisL.x = 1;
-		}
-
-		// 周囲を判定
-		if (1)
-		{
-//			m_target = player;
-		}
-
-		// ステートベースAI
-	}
-
-	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
-private:
-	std::weak_ptr<const GameObject> m_wpTarget;
-};
-
 class Enemy : public Character
 {
 public: 
@@ -39,8 +15,6 @@ public:
 	void Update() override;
 	void Draw2D()override;
 	virtual bool IsAlive() override { return m_isAlive; }
-
-	virtual void ImGuiUpdate() override;
 
 	void SetPos(const Math::Vector3& pos) override { m_mWorld.Translation(pos); }
 	void SetWPos(const Math::Vector3 pos) { m_worldPos.x += pos.x; m_worldPos.z += pos.z; m_worldPos.y = pos.y; }
@@ -59,7 +33,6 @@ public:
 	}
 
 	virtual void Deserialize(const json11::Json& json);
-//	virtual void AfterDeserialize();
 	virtual void Serialize(json11::Json::object& json);
 
 private:
@@ -73,7 +46,6 @@ private:
 	void UpdateSearch();
 	void UpdateCollition();		// 当たり判定の更新
 	void DoAttack();
-	void DoShot();
 
 	Math::Vector3	m_worldPos;
 	Math::Vector3	m_worldRot;
@@ -93,11 +65,6 @@ private:
 	bool m_findTargetFlg = false;
 	float m_attackradius;
 	bool m_sArmor = false;
-
-	bool CheckWait()
-	{
-		
-	}
 
 	bool CheckAttack()
 	{

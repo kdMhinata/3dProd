@@ -1,24 +1,5 @@
 ﻿#include "Gimmick.h"
 
-class FadeIn : public GameObject
-{
-public:
-
-	void Update()
-	{
-		GameInstance.BlackOut(-0.01f);
-		Destroy();
-	}
-};
-
-/*
-void Gimmick::Start()
-{
-	auto list = GameInstance.FindObjectsWithTag("Enemy");
-	for( )
-	m_enemies.push_back(p);
-}
-*/
 void Gimmick::Update()
 {	
 	if (!m_clearFlg)
@@ -31,12 +12,7 @@ void Gimmick::Update()
 
 	if (m_active==1)
 	{
-
-		if (GameInstance.GetBlackoutRate() >= 1.0f)
-		{
-			//GameInstance.ExitStage(GetMatrix());
-			GameInstance.ReserveChangeScene("Data/Save/Dungeon2test");
-		}
+			GameInstance.ReserveChangeScene("Data/Save/Dungeon2");
 	}
 }
 
@@ -75,12 +51,6 @@ bool Gimmick::CheckCollisionBump(const SphereInfo& info, BumpResult& result)
 					Math::Vector3 vec = MatToAngle(GetMatrix());
 
 					player->Exit(vec);
-
-					//プレイヤーを一時的に保存しておく
-					GameInstance.SaveWaitingRoom(player);
-
-					GameInstance.BlackOut(0.01f);
-
 
 					m_active = 1;
 				}

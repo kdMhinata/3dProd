@@ -6,50 +6,6 @@
 #include "Effect2D.h"
 #include "System/Utility/KdUtility.h"
 
-/*
-class TransformComponent
-{
-public:
-
-	const Math::Matrix& GetMatrix()
-	{
-		if (m_isDirty)
-		{
-			m_isDirty = false;
-			m_matrix = Math::Matrix::CreateScale(m_scale); //srt
-		}
-		return m_matrix;
-	}
-
-	void SetMatirx(const Math::Matrix& m)
-	{
-		m_matrix = m;
-
-		m_position = m_matrix.Translation();
-		m_angle = MatToAngle(m);
-		m_scale.x = m.Right().Length();
-		m_scale.y = m.Up().Length();
-		m_scale.z = m.Backward().Length();
-		m_isDirty = false;
-	}
-
-	void SetPosition(const Math::Vector3& pos)
-	{
-		m_position = pos;
-		m_isDirty = true;
-	}
-
-private:
-	Math::Matrix m_matrix;
-
-	Math::Vector3 m_position;
-	Math::Vector3 m_angle;
-	Math::Vector3 m_scale = { 1,1,1 };
-
-	bool m_isDirty = true;
-};
-*/
-
 Player::Player()
 {
 	m_name = "Player";
@@ -178,14 +134,6 @@ void Player::Update()
 	m_worldPos += m_force;
 
 	// –€ŽC
-/*	if (‹ó’†)
-	{
-		m_force *= 0.99f;
-	}
-	else
-	{
-		m_force *= 0.9f;
-	}*/
 	m_force *= 0.87f;
 
 	m_modelWork.CalcNodeMatrices();
@@ -252,67 +200,6 @@ void Player::DrawEffect()
 	SHADER->m_effectShader.DrawSquarePolygon(m_spShadow->GetPolyData(), mDraw);
 }
 
-void Player::ImGuiUpdate()
-{
-	Character::ImGuiUpdate();
-
-	ImGui::DragFloat3("Pos##Player", &m_worldPos.x, 0.01f);
-
-	ImGui::DragFloat("Angle", &m_worldRot.y, 0.1f);
-
-	ImGui::DragInt("Hp", &m_hp,1.0f,0,200);
-
-	ImGui::DragFloat3("CameraPos", &cameraMat.x, 0.01f);
-	m_spCamera->SetLocalPos(cameraMat);
-
-	ImGui::DragFloat3("CameraGazePos", &cameraGazeMat.x, 0.01f);
-	m_spCamera->SetLocalGazePos(cameraGazeMat);
-
-	if (ImGui::Button("Debug"))
-	{
-		m_worldPos.y = 37;
-		cameraMat.z = -10;
-	}
-
-	if(ImGui::Button("UseCamera"))
-	{
-		ChangeUseCamera();
-	}
-
-	ImGui::Checkbox("noDamage", &invincibleFlg);
-
-	if (ImGui::ListBoxHeader("Action"))
-	{
-		if (ImGui::Button("Wait"))
-		{
-			ChangeAction < Player::ActionWait>();
-		}
-		if (ImGui::Button("Attack"))
-		{
-			ChangeAction < Player::ActionAttack>();
-		}
-		if (ImGui::Button("Move"))
-		{
-			ChangeAction < Player::ActionMove>();
-		}
-		if (ImGui::Button("Dodge"))
-		{
-			ChangeAction < Player::ActionDodge>();
-		}
-		if (ImGui::Button("Skill"))
-		{
-			ChangeAction < Player::ActionSkill>();
-		}
-
-	ImGui::ListBoxFooter();
-	}
-
-	if (m_spActionState)
-	{
-		ImGui::LabelText("State", typeid(*m_spActionState).name());
-	}
-}
-
 void Player::NotifyDamage(DamageArg& arg)
 {
 	//–³“Gó‘Ô‚È‚çƒqƒbƒg‚µ‚Ä‚¢‚È‚¢Ž–‚É‚·‚é
@@ -334,10 +221,6 @@ void Player::DamageDisplay(int damage)
 		SHADER->m_spriteShader.DrawTex(m_damageFont.get(), _pos.x, _pos.y, 22, 30, &font, &kWhiteColor, { 0.5,0.5 });
 	}
 }
-
-
-// 
-
 
 void Player::ScriptProc(const json11::Json& event)
 {

@@ -39,7 +39,6 @@ public:
 	virtual void Update() override
 	{
 		m_axisL = Math::Vector2::Zero;
-//		m_buttons.fill(0);
 
 		if (GetAsyncKeyState('W') & 0x8000) { m_axisL.y += 1.0f; }	// 前移動
 		if (GetAsyncKeyState('S') & 0x8000) { m_axisL.y -= 1.0f; }	// 後ろ移動
@@ -91,7 +90,6 @@ public:
 	void Init();
 	void Update();
 	void Draw();
-	virtual void ImGuiUpdate();
 
 	//タイトル
 	void TitleInit();
@@ -135,10 +133,6 @@ public:
 		m_changeGameModeName = mode;
 	}
 
-	void EnterStage();
-	
-	void ExitStage(Math::Matrix mat);
-
 	// 文字列化
 	void Save(const std::string& filename)
 	{
@@ -148,30 +142,10 @@ public:
 	std::shared_ptr<GameObject> FindObjectWithTag(const std::string& tag);
 	std::vector<std::shared_ptr<GameObject>> FindObjectsWithTag(const std::string& tag);
 
-	//一時的にGameObjectをWaitingRoomに保存する
-	void SaveWaitingRoom(std::shared_ptr<GameObject> obj)
-	{
-		m_spWaitingRoom=obj;
-	}
-
-	//一時的に保存したGameObjectをWaitingRoomから読み込む
-	std::shared_ptr<GameObject>& LoadWaitingRoom()
-	{
-		return m_spWaitingRoom;
-	}
-
-	void BlackOut(float speed);
-
-	float GetBlackoutRate()const{
-		return _blackoutRate;
-	}
-
 private:
 	void Release();		// 解放
 
 	void Load(const std::string& filename);
-
-	KdModelWork m_sky;	// スカイスフィア
 
 	DirectX::SimpleMath::Matrix m_skyMat;	// キューブのワールド行列
 

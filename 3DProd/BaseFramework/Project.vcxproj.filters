@@ -216,14 +216,8 @@
     <ClInclude Include="Src\Application\Game\TitleObject.h">
       <Filter>Src\Application\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Application\Game\GameOver.h">
-      <Filter>Src\Application\Game\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Application\Game\Result.h">
       <Filter>Src\Application\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Application\Game\GameObject\Bullet.h">
-      <Filter>Src\Application\Game\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -356,14 +350,8 @@
     <ClCompile Include="Src\Application\Game\TitleObject.cpp">
       <Filter>Src\Application\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Application\Game\GameOver.cpp">
-      <Filter>Src\Application\Game\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Application\Game\Result.cpp">
       <Filter>Src\Application\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\Application\Game\GameObject\Bullet.cpp">
-      <Filter>Src\Application\Game\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,6 @@
 ﻿#include"Enemy.h"
 #include"Player.h"
 #include "Effect2D.h"
-#include "Bullet.h"
 #include"../GameSystem.h"
 
 Enemy::Enemy()
@@ -100,44 +99,6 @@ void Enemy::Draw2D()
 	SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), _pos.x- (60 / 2), _pos.y-20, 60 * hpcalc, 5, &barrec, &col, { 0.0,0.5 });
 }
 
-void Enemy::ImGuiUpdate()
-{
-	Character::ImGuiUpdate();
-
-	ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
-
-	ImGui::DragFloat("Angle", &m_worldRot.y, 0.1f);
-
-	ImGui::DragInt("Hp", &m_hp, 1.0f, 0, 1000);
-
-	ImGui::DragInt("MaxHp", &m_maxHp, 1.0f, 0, 1000);
-
-	ImGui::Checkbox("SuperArmor", &m_sArmor);
-
-	if (ImGui::ListBoxHeader("Action"))
-	{
-		if (ImGui::Button("Wait"))
-		{
-			ChangeAction < Enemy::ActionWait>();
-		}
-		if (ImGui::Button("Attack"))
-		{
-			ChangeAction < Enemy::ActionAttack>();
-		}
-		if (ImGui::Button("Move"))
-		{
-			ChangeAction < Enemy::ActionMove>();
-		}
-
-	}
-	ImGui::ListBoxFooter();
-
-	if (m_spActionState)
-	{
-		ImGui::LabelText("State", typeid(*m_spActionState).name());
-	}
-}
-
 void Enemy::Update()
 {
 	if (m_spActionState)
@@ -199,10 +160,6 @@ void Enemy::ScriptProc(const json11::Json& event)
 	else if (eventName == "DoAttack")
 	{
 		DoAttack();
-	}
-	else if (eventName == "DoShot")
-	{
-		DoShot();
 	}
 	else if (eventName == "Elim")
 	{
@@ -361,17 +318,6 @@ void Enemy::DoAttack()
 			}
 		}
 	}
-}
-
-void Enemy::DoShot()
-{
-	std::shared_ptr<Bullet> spBullet = std::make_shared<Bullet>();
-
-	spBullet->Init();
-
-	spBullet->SetWorldMatrix(m_mWorld);
-
-	GameInstance.AddObject(spBullet);
 }
 
 void Enemy::UpdateCollition()
