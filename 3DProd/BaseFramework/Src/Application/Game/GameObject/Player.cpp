@@ -132,6 +132,12 @@ void Player::Update()
 
 	m_input->Update();
 
+	//è¡Ç∑
+	if (GetAsyncKeyState(VK_UP))
+	{
+		GameInstance.ReserveChangeScene("Data/Save/Dungeon2");
+	}
+
 	// í èÌ
 	if (m_hitStop <= 0)
 	{
@@ -732,6 +738,6 @@ void Player::ActionExit::Update(Player& owner)
 	vec.Normalize();
 	vec*= 0.1f;
 
-	owner.m_worldPos.x -= vec.x;
-	owner.m_worldPos.z -= vec.z;
+	owner.m_worldPos.x += vec.x;
+	owner.m_worldPos.z += vec.z;
 }

@@ -10,8 +10,16 @@ public:
 
 	const std::shared_ptr<KdTexture> GetTexture(const std::string& fileName);
 
+	void Initialize(const std::string& databasePath);
+
 private:
 	void Release();
+
+	struct Node
+	{
+		std::string m_path;
+		std::shared_ptr<KdModelData> m_data;
+	};
 
 	// 文字列とモデルデータを格納
 	std::unordered_map<std::string, std::shared_ptr<KdModelData>> m_modelMap;

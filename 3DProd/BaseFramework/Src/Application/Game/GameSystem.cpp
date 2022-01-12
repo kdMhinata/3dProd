@@ -31,6 +31,7 @@ void GameSystem::GameInit()
 		Load("Data/Save/Dungeon1");
 
 		//予め呼んでおきたい重いデータ等絶対使うデータ等
+		GameResourceFactory.Load("Effect");
 		GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
 		GameResourceFactory.GetTexture("Data/Textures/Slash2.png");
 		GameResourceFactory.GetTexture("Data/Textures/Slash3.png");
@@ -178,6 +179,13 @@ void GameSystem::Update()
 	{
 		//m_editor.camera.
 	}
+
+	// 
+	if (_blackoutSpeed != 0)
+	{
+		_blackoutRate += _blackoutSpeed;
+		_blackoutRate = std::clamp(_blackoutRate, 0.0f, 1.0f);
+	}
 }
 
 void GameSystem::Draw()
@@ -238,6 +246,10 @@ void GameSystem::Draw()
 		D3D.WorkDevContext()->OMSetDepthStencilState(SHADER->m_ds_ZEnable_ZWriteEnable, 0);
 		// 裏面カリング(表面のみ描画)
 		D3D.WorkDevContext()->RSSetState(SHADER->m_rs_CullBack);
+	}
+
+	// 黒幕描画
+	{
 	}
 }
 
@@ -500,6 +512,7 @@ void GameSystem::EnterStage()
 	//FindObjectWithTag("SpawnPoint")->GetPos();
 }
 
+/*
 void GameSystem::ExitStage(Math::Matrix mat)
 {
 	std::shared_ptr<GameObject> obj = FindObjectWithTag("Player");
@@ -522,6 +535,7 @@ void GameSystem::ExitStage(Math::Matrix mat)
 	//ステージを変更する
 	//ReserveChangeScene("Data/Save/Dungeon2test");
 }
+*/
 
 std::shared_ptr<GameObject> GameSystem::FindObjectWithTag(const std::string& tag)
 {
@@ -545,20 +559,9 @@ std::vector<std::shared_ptr<GameObject>> GameSystem::FindObjectsWithTag(const st
 	return vector;
 }
 
-void GameSystem::BlackOut()
+void GameSystem::BlackOut(float speed)
 {
-	//暗転処理
-
-	DirectX::SimpleMath::Color col(1.0f, 1.0f, 1.0f, 0.0f);
-
-	D3D.WorkDevContext()->ClearRenderTargetView(D3D.WorkBackBuffer()->WorkRTView(), col); //書き込めるテクスチャをクリア
-
-	D3D.WorkDevContext()->ClearDepthStencilView(D3D.WorkZBuffer()->WorkDSView(),
-		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
-	D3D.WorkSwapChain()->Present(0, 0);
-
-	
+	_blackoutSpeed = speed;
 }
 
 void GameSystem::Release()

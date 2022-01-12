@@ -160,7 +160,11 @@ public:
 		return m_spWaitingRoom;
 	}
 
-	void BlackOut();
+	void BlackOut(float speed);
+
+	float GetBlackoutRate()const{
+		return _blackoutRate;
+	}
 
 private:
 	void Release();		// 解放
@@ -193,6 +197,9 @@ private:
 	};
 
 	EditorOnly m_editor;
+
+	float _blackoutRate = 0.0f;
+	float _blackoutSpeed = 0.0f;
 
 	// シングルトンパターン化
 public:
