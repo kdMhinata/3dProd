@@ -257,22 +257,7 @@ void Enemy::UpdateMove()
 
 void Enemy::UpdateSearch()
 {
-	for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
-	{
-		if (spObj->GetClassID() != GameObject::ePlayer) { continue; }
-
-		if (spObjと敵自身の距離が一定範囲内なら)
-		{
-			if (m_wpTarget.expired())
-			{
-				m_wpTarget = GameInstance.FindObjectWithTag("Player");
-			}
-		}
-		else
-		{
-			m_wpTarget.reset();
-		}
-	}
+	m_wpTarget = GameInstance.FindObjectWithTag("Player");
 
 	// 見ている先が解放されているか
 	if (m_wpTarget.expired()) { return; }
