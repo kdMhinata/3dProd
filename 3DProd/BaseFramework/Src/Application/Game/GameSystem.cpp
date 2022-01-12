@@ -25,27 +25,13 @@ void GameSystem::GameInit()
 {
 	bool isLoaded = false;
 
-	// 
 	auto loadProc = [this, &isLoaded]()
 	{
 		Load("Data/Save/Dungeon1");
 
-		//予め呼んでおきたい重いデータ等絶対使うデータ等
-		GameResourceFactory.Load("Effect");
-		GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
-		GameResourceFactory.GetTexture("Data/Textures/Slash2.png");
-		GameResourceFactory.GetTexture("Data/Textures/Slash3.png");
-		GameResourceFactory.GetTexture("Data/Textures/Thrust1.png");
+		// 共通エフェクト
 		GameResourceFactory.GetTexture("Data/Textures/SlashH1.png");
 		GameResourceFactory.GetTexture("Data/Textures/damagefont.png");
-		GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf");
-		GameResourceFactory.GetModelData("Data/Models/enemy/skeleton.gltf");
-		GameResourceFactory.GetModelData("Data/Models/enemy/golem.gltf");
-		GameResourceFactory.GetModelData("Data/Models/StageMap/Object/WoodBox_dest.gltf");
-		GameResourceFactory.GetModelData("Data/Models/StageMap/Object/WoodBox.gltf");
-		GameResourceFactory.GetModelData("Data/Models/StageMap/Object/Door.gltf");
-		GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon3/DungeonStage.gltf");
-		GameResourceFactory.GetModelData("Data/Models/StageMap/Dungeon/Dungeon4/DungeonStage.gltf");
 
 		isLoaded = true;
 	};
@@ -408,8 +394,6 @@ void GameSystem::ImGuiUpdate()
 				
 				if (obj)
 				{
-//					spEnemy->SetTarget(obj);
-					//spEnemy->SetTarget(FindObjectWithTag("Player"));
 					spEnemy->SetWPos(obj->GetPos());
 					spEnemy->LoadModel(m_editor.selectEnemyModelName);
 					spEnemy->SetTag("Enemy");

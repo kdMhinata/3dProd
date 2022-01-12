@@ -37,6 +37,7 @@
     "HP": 100,
     "MaxHP": 100,
     "ModelFilename": "Data/Models/enemy/slime.gltf",
+
     "Name": "slime",
     "Pos": [2.8599998950958252,-3.7601385116577148,24.16200065612793],
     "SuperArmor": false,

@@ -15,10 +15,6 @@ void Enemy::Deserialize(const json11::Json& json)
 
 	m_worldPos = m_mWorld.Translation();
 
-//		LoadModel("Data/Models/enemy/slime.gltf");
-
-	//デシリアライズ時にtagがPlayerのGameObjectをターゲットする
-
 	m_bumpSphereInfo.m_pos.y = 0.45f;
 	m_bumpSphereInfo.m_radius = 0.3f;
 
@@ -48,12 +44,7 @@ void Enemy::Deserialize(const json11::Json& json)
 	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/ebar.png");
 	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
 
-	/*
-	uuid m_uuid = json["TargetUUID"].string_value();
-	// ※Searchダメ
-
-	uuid m_uuid2 = json["TargetUUID"].string_value();
-	*/
+	
 }
 
 void Enemy::Serialize(json11::Json::object& json)
@@ -266,7 +257,22 @@ void Enemy::UpdateMove()
 
 void Enemy::UpdateSearch()
 {
-	m_wpTarget=GameInstance.FindObjectWithTag("Player");
+	for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
+	{
+		if (spObj->GetClassID() != GameObject::ePlayer) { continue; }
+
+		if (spObjと敵自身の距離が一定範囲内なら)
+		{
+			if (m_wpTarget.expired())
+			{
+				m_wpTarget = GameInstance.FindObjectWithTag("Player");
+			}
+		}
+		else
+		{
+			m_wpTarget.reset();
+		}
+	}
 
 	// 見ている先が解放されているか
 	if (m_wpTarget.expired()) { return; }

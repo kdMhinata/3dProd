@@ -22,8 +22,9 @@ public:
 		// ステートベースAI
 	}
 
+	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
 private:
-	std::weak_ptr<GameObject> m_target;
+	std::weak_ptr<const GameObject> m_wpTarget;
 };
 
 class Enemy : public Character
@@ -83,6 +84,7 @@ private:
 	KdAudioManager m_audioManager;
 
 	std::weak_ptr<const GameObject> m_wpTarget;
+	std::shared_ptr<BaseInput>		m_input;
 
 	float m_stopDist = 1.01f;
 	bool m_canAttack = true;
