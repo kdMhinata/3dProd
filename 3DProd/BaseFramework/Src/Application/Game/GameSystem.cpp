@@ -89,6 +89,7 @@ void GameSystem::Update()
 		Load(m_changeSceneFilename);
 
 		m_changeSceneFilename = "";
+		EnterStage();
 	}
 	//ゲームモードの切り替え
 	if (m_changeGameModeFlg)
@@ -236,6 +237,8 @@ void GameSystem::Draw()
 
 	// 黒幕描画
 	{
+		Math::Color color = {0,0,0,_blackoutRate};
+		SHADER->m_spriteShader.DrawBox(0, 0, 1280 / 2, 720 / 2, &color);
 	}
 }
 
@@ -488,38 +491,20 @@ void GameSystem::Load(const std::string& filename)
 
 void GameSystem::EnterStage()
 {
-	//ブラックアウトからゲームに切り替え
-		//BlackOut() 逆
-
 	//空のPlayerSpawnPointと一時的に保存しておいたプレイヤーを置き換える
-	AddObject(LoadWaitingRoom());
-	//FindObjectWithTag("SpawnPoint")->GetPos();
+	for (std::shared_ptr<GameObject>& spObject : GameInstance.LoadWaitingRoom())
+	{
+		auto player = std::dynamic_pointer_cast<Player>(spObject);
+
+		if (player == nullptr) { return; }
+
+		AddObject(player);
+
+		std::shared_ptr<GameObject>& spSpawnPoint = FindObjectWithTag("SpawnPoint"); //タグ検索でスポーンポイントを探す
+
+		player->Enter(spSpawnPoint->GetPos(),MatToAngle(spSpawnPoint->GetMatrix())); //スポーンポイントの位置にプレイヤーをセットする
+	}
 }
-
-/*
-void GameSystem::ExitStage(Math::Matrix mat)
-{
-	std::shared_ptr<GameObject> obj = FindObjectWithTag("Player");
-
-	auto player = std::dynamic_pointer_cast<Player>(obj);
-
-	if (player == nullptr) { return; }
-
-	//行列をプレイヤー用の角度に変換
-	Math::Vector3 vec = MatToAngle(mat);
-	
-	player->Exit(vec);
-
-	//プレイヤーを一時的に保存しておく
-	SaveWaitingRoom(FindObjectWithTag("Player"));
-
-	//ブラックアウトする
-	BlackOut();
-
-	//ステージを変更する
-	//ReserveChangeScene("Data/Save/Dungeon2test");
-}
-*/
 
 std::shared_ptr<GameObject> GameSystem::FindObjectWithTag(const std::string& tag)
 {

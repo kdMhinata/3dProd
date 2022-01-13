@@ -3,17 +3,17 @@
     "Angle": [0,-0,0],
     "ClassName": "StageMap",
     "ModelFilename": "Data\\Models\\StageMap\\Dungeon\\Dungeon4\\DungeonStage.gltf",
-    "Name": "GameObject",
+    "Name": "Dungeon2",
     "Pos": [0,0,0],
     "Tag": ""
   },
   {
-    "Angle": [0,-45,0],
-    "ClassName": "Player",
-    "ModelFilename": "Data/Models/robot/chara.gltf",
-    "Name": "player",
-    "Pos": [-3.2358517646789551,5.1540713310241699,-22.193588256835938],
-    "Tag": "Player"
+    "Angle": [ 0, -45, 0 ],
+    "ClassName": "GameObject",
+    "ModelFilename": "Data/Models/StageMap/Object/empty.gltf",
+    "Name": "SpawnPoint",
+    "Pos": [ -5.6965184211730957, 5.1337323188781738, -19.231143951416016 ],
+    "Tag": "SpawnPoint"
   },
   {
     "Angle": [ 176.19810485839844, -30.030820846557617, -174.39793395996094 ],

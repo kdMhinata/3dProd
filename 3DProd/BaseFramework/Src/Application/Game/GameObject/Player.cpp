@@ -732,9 +732,9 @@ void Player::ActionSkill::Update(Player& owner)
 	
 }
 
-void Player::ActionExit::Update(Player& owner)
+void Player::ActionForcedMove::Update(Player& owner)
 {
-	Math::Vector3 vec = owner.m_exitVec;
+	Math::Vector3 vec = owner.m_ForcedMoveVec;
 	vec.Normalize();
 	vec*= 0.1f;
 

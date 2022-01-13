@@ -33,8 +33,19 @@ public:
 
 	void Exit(Math::Vector3 vec) 
 	{
-		m_exitVec = vec;
-		ChangeAction<Player::ActionExit>();
+		m_ForcedMoveVec = vec;
+		ChangeAction<Player::ActionForcedMove>();
+		ChangeUseCamera();
+	}
+
+	void Enter(Math::Vector3 pos,Math::Vector3 vec)
+	{
+		//プレイヤーの移動行列を一時クリア
+		m_worldPos = pos;
+		m_worldRot = vec;
+		m_ForcedMoveVec = vec;
+		ChangeAction<Player::ActionForcedMove>();
+		ChangeUseCamera();
 	}
 
 	const std::shared_ptr<const TPSCamera> GetCamera() const { return m_spCamera; }	// 参照用
@@ -80,7 +91,7 @@ private:
 	Math::Vector3 cameraMat;		//カメラImGuiでいじる為に
 	Math::Vector3 cameraGazeMat;
 
-	Math::Vector3 m_exitVec; //exit関数で退出方向を決めるために使う角度
+	Math::Vector3 m_ForcedMoveVec; //強制的に移動させる場合に使う角度
 
 	static const float s_limitOfStepHeight;
 
@@ -199,13 +210,12 @@ private:
 		void Update(Player& owner)override;
 	};
 
-	class ActionExit : public BaseAction
+	class ActionForcedMove : public BaseAction
 	{
 	public:
 		void Entry(Player& owner) 
 		{
 			owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Run"));
-			owner.ChangeUseCamera();
 		}
 		void Update(Player& owner) override;
 	};

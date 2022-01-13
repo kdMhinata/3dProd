@@ -136,8 +136,6 @@ public:
 	}
 
 	void EnterStage();
-	
-	void ExitStage(Math::Matrix mat);
 
 	// 文字列化
 	void Save(const std::string& filename)
@@ -151,11 +149,11 @@ public:
 	//一時的にGameObjectをWaitingRoomに保存する
 	void SaveWaitingRoom(std::shared_ptr<GameObject> obj)
 	{
-		m_spWaitingRoom=obj;
+		if (obj) { m_spWaitingRoom.push_back(obj); }
 	}
 
 	//一時的に保存したGameObjectをWaitingRoomから読み込む
-	std::shared_ptr<GameObject>& LoadWaitingRoom()
+	std::list<std::shared_ptr<GameObject>>& LoadWaitingRoom()
 	{
 		return m_spWaitingRoom;
 	}
@@ -177,7 +175,7 @@ private:
 
 	std::list<std::shared_ptr<GameObject>> m_spObjects;
 
-	std::shared_ptr<GameObject> m_spWaitingRoom; //一時的にGameObjectを保存しておく
+	std::list<std::shared_ptr<GameObject>> m_spWaitingRoom; //一時的にGameObjectを保存しておく
 
 	std::shared_ptr<KdCamera> m_spCamera = nullptr;
 

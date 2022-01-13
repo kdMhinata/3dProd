@@ -11,14 +11,6 @@ public:
 	}
 };
 
-/*
-void Gimmick::Start()
-{
-	auto list = GameInstance.FindObjectsWithTag("Enemy");
-	for( )
-	m_enemies.push_back(p);
-}
-*/
 void Gimmick::Update()
 {	
 	if (!m_clearFlg)
@@ -34,8 +26,10 @@ void Gimmick::Update()
 
 		if (GameInstance.GetBlackoutRate() >= 1.0f)
 		{
-			//GameInstance.ExitStage(GetMatrix());
-			GameInstance.ReserveChangeScene("Data/Save/Dungeon2test");
+			GameInstance.ReserveChangeScene("Data/Save/Dungeon2");
+			std::shared_ptr<FadeIn> spFadeIn = std::make_shared<FadeIn>();
+			spFadeIn->Update();
+			//GameInstance.EnterStage();
 		}
 	}
 }
@@ -65,7 +59,7 @@ bool Gimmick::CheckCollisionBump(const SphereInfo& info, BumpResult& result)
 				if (m_clearFlg)
 				{
 					// 
-					std::shared_ptr<GameObject> obj = GameInstance.FindObjectWithTag("Player");
+					std::shared_ptr<GameObject>& obj = GameInstance.FindObjectWithTag("Player");
 
 					auto player = std::dynamic_pointer_cast<Player>(obj);
 
