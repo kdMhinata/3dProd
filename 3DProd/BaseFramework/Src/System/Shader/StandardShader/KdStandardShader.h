@@ -53,6 +53,11 @@ public:
 		m_cb1_Material.Write();
 	}
 
+	void SetAlpha(float alpha)
+	{
+		m_cb0.Work().Alpha = alpha;
+	}
+
 	// Object用定数バッファをそのまま返す
 	KdConstantBuffer<cbObject>& ObjectCB()
 	{
@@ -131,7 +136,10 @@ private:
 		// フォグ有効
 		int					FogEnable = 1;
 
-		float tmp[2];
+		// 透明率
+		float				Alpha = 1.0f;
+
+		float tmp[1];
 	};
 	KdConstantBuffer<cbObject>	m_cb0;
 

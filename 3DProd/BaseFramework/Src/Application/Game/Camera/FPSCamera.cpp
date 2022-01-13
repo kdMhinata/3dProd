@@ -4,7 +4,7 @@ const POINT FPSCamera::s_fixMousePos = { 640,360 };
 
 void FPSCamera::Init()
 {
-	SetCursorPos(s_fixMousePos.x, s_fixMousePos.y);
+//	SetCursorPos(s_fixMousePos.x, s_fixMousePos.y);
 }
 
 void FPSCamera::Update()
@@ -17,7 +17,7 @@ void FPSCamera::Update()
 	mouseMove.x = nowPos.x - s_fixMousePos.x;		// 目的地ー出発地
 	mouseMove.y = nowPos.y - s_fixMousePos.y;		// 目的地ー出発地
 
-	SetCursorPos(s_fixMousePos.x, s_fixMousePos.y);
+//	SetCursorPos(s_fixMousePos.x, s_fixMousePos.y);
 
 	// カメラ回転処理
 	m_degAng.x += mouseMove.y * m_rotSpd;

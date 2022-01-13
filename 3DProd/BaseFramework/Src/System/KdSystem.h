@@ -7,6 +7,7 @@
 //====================================================
 
 // 便利機能
+#include "Utility/Classinstantiater.h"
 #include "Utility/KdUtility.h"
 
 // 音関連

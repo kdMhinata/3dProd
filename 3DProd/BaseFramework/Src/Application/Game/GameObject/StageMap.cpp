@@ -2,21 +2,34 @@
 
 void StageMap::Init()
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/DungeonStage.gltf"));
+	LoadModel("Data/Models/StageMap/Dungeon/Dungeon1/DungeonStage.gltf");
+	m_name = "Stage";
+}
 
-	//m_floorModel.SetModel(GameResourceFactory.GetModelData("Data/Models/StageMap/Floor/floor.gltf"));
+void StageMap::ImGuiUpdate()
+{
+	GameObject::ImGuiUpdate();
+
+	if (ImGui::Button("Load Model"))
+	{
+		std::string path;
+		if (KdWindow::OpenFileDialog(path))
+		{
+			LoadModel(path);
+		}
+	}
 }
 
 bool StageMap::CheckCollisionBump(const SphereInfo& info, BumpResult& result)
 {
 	for (UINT i = 0; i < m_modelWork.GetDataNodes().size(); ++i)
 	{
-		const KdModelData::Node dataNode = m_modelWork.GetDataNodes()[i];
+		const KdModelData::Node& dataNode = m_modelWork.GetDataNodes()[i];
 
 		// ƒƒbƒVƒ…‚ª‚È‚¢ê‡”ò‚Î‚·
 		if (!dataNode.m_spMesh) { continue; }
 
-		const KdModelWork::Node workNode = m_modelWork.GetNodes()[i];
+		const KdModelWork::Node& workNode = m_modelWork.GetNodes()[i];
 
 		// ‰Ÿ‚µ•Ô‚³‚ê‚½À•W
 		Math::Vector3 localPushedPos;
@@ -33,7 +46,6 @@ bool StageMap::CheckCollisionBump(const SphereInfo& info, BumpResult& result)
 
 	return result.m_isHit;
 }
-
 
 void StageMap::Release()
 {

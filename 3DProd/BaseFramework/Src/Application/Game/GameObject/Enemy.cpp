@@ -1,26 +1,102 @@
 ﻿#include"Enemy.h"
 #include"Player.h"
 #include "Effect2D.h"
+#include"../GameSystem.h"
 
-void Enemy::Init()
+Enemy::Enemy()
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/enemy/slime.gltf"));
-	
+	m_name = "Enemy";
+}
+
+void Enemy::Deserialize(const json11::Json& json)
+{
+	Character::Deserialize(json);
+
+	m_worldPos = m_mWorld.Translation();
+
 	m_bumpSphereInfo.m_pos.y = 0.45f;
 	m_bumpSphereInfo.m_radius = 0.3f;
 
-	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Run"));
+	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
 
-	m_spActionState = std::make_shared<ActionMove>();
+	m_spActionState = std::make_shared<ActionWait>();
 
-	m_worldPos = { 0.0,0.0,5.0 };
+	m_worldRot.y = 180;
 
-	m_hp = 100;
+	m_hp = json["HP"].int_value();
+	SetMaxHp(json["MaxHP"].int_value());
+
+	//角度をデシリアライズ
+	Math::Vector3 rotate;
+	JsonToVec3(json["Angle"], rotate);
+	SetRotate(rotate);
+
+	m_sArmor = json["SuperArmor"].bool_value();
+
+	m_attackradius = 1.0f;
 
 	//AudioEngin初期化
 	DirectX::AUDIO_ENGINE_FLAGS eflags =
 		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
 	m_audioManager.Init();
+
+	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/ebar.png");
+	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
+
+	
+}
+
+void Enemy::Serialize(json11::Json::object& json)
+{
+	Character::Serialize(json);
+
+	json["SuperArmor"] = m_sArmor;
+	json["HP"] = m_hp;
+	json["MaxHP"] = m_maxHp;
+}
+
+void Enemy::Init()
+{
+	LoadModel("Data/Models/enemy/slime.gltf");
+	
+	m_bumpSphereInfo.m_pos.y = 0.45f;
+	m_bumpSphereInfo.m_radius = 0.3f;
+
+	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
+
+	m_spActionState = std::make_shared<ActionWait>();
+
+	m_worldPos = { 0.0,0.0,5.0 };
+
+	m_worldRot.y =180;
+
+	m_hp = 100;
+	SetMaxHp(100);
+
+	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/ebar.png");
+	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
+
+	//AudioEngin初期化
+	DirectX::AUDIO_ENGINE_FLAGS eflags =
+		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
+	m_audioManager.Init();
+}
+
+void Enemy::Draw2D()
+{
+	if (!m_hpBarTex || !m_hpFrameTex) { return; }
+	if (m_hp == GetMaxHp() || m_hp <= 0) { return; }
+
+	Math::Vector3 _pos = Math::Vector3::Zero;
+	GameInstance.GetCamera()->ConvertWorldToScreenDetail(GetPos(), _pos);
+	Math::Rectangle barrec = { 0,0,60,5 };
+	Math::Rectangle framerec = { 0,0,60,5 };
+	Math::Color col = kWhiteColor;
+	float maxhp = (float)GetMaxHp();
+	float hpcalc = (m_hp / maxhp);
+	SHADER->m_spriteShader.SetMatrix(Math::Matrix::Identity);
+	SHADER->m_spriteShader.DrawTex(m_hpFrameTex.get(), _pos.x, _pos.y-20, 60, 5, &framerec, &col, { 0.5,0.5 });
+	SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), _pos.x- (60 / 2), _pos.y-20, 60 * hpcalc, 5, &barrec, &col, { 0.0,0.5 });
 }
 
 void Enemy::Update()
@@ -29,6 +105,10 @@ void Enemy::Update()
 	{
 		m_spActionState->Update(*this);
 	}
+
+	UpdateSearch();
+
+	UpdateCollition();
 
 	// ワールド行列生成
 	Math::Matrix trans = Math::Matrix::CreateTranslation(m_worldPos);
@@ -62,9 +142,9 @@ void Enemy::NotifyDamage(DamageArg& arg)
 	m_hp -= arg.damage;
 	arg.ret_IsHit = true;
 
-	if (arg.ret_IsHit)
+	if (arg.ret_IsHit&&!m_sArmor)
 	{
-		ChangeGetHit();
+		ChangeAction < Enemy::ActionGetHit>();
 	}
 }
 
@@ -74,7 +154,7 @@ void Enemy::ScriptProc(const json11::Json& event)
 
 	if (eventName == "PlaySound")
 	{
-		const std::string& soundFile = event["SoundName"].string_value();
+ 		const std::string& soundFile = event["SoundName"].string_value();
 		m_audioManager.Play(soundFile);
 	}
 	else if (eventName == "DoAttack")
@@ -87,7 +167,7 @@ void Enemy::ScriptProc(const json11::Json& event)
 	}
 	else if (eventName == "End")
 	{
-		ChangeWait();
+		ChangeAction < Enemy::ActionWait>();
 	}
 }
 
@@ -113,7 +193,8 @@ void Enemy::UpdateMove()
 	float targetDistSqr = targetDir.LengthSquared();
 
 	//攻撃処理(仮)
-	float attackRange= 2.00f;
+	float attackRange= 1.5f;
+	attackRange += m_attackradius;
 	m_canAttackCnt--;
 	if (m_canAttackCnt <= 0) { m_canAttack = true; }
 
@@ -129,6 +210,27 @@ void Enemy::UpdateMove()
 
 	m_worldPos += moveVec;
 
+}
+
+void Enemy::UpdateSearch()
+{
+	m_wpTarget = GameInstance.FindObjectWithTag("Player");
+
+	// 見ている先が解放されているか
+	if (m_wpTarget.expired()) { return; }
+
+	std::shared_ptr<const GameObject> spTarget = m_wpTarget.lock();
+
+	// プレイヤーに向かう方向ベクトル
+	Math::Vector3 targetDir = spTarget->GetPos() - m_worldPos;
+
+	// ターゲットとの距離
+	float targetDistSqr = targetDir.LengthSquared();
+
+	//攻撃処理(仮)
+	float findRange =11.00f;
+	if (targetDistSqr < findRange * findRange) { m_findTargetFlg = true; }
+	else { m_findTargetFlg = false; }
 }
 
 void Enemy::UpdateRotate()
@@ -184,7 +286,7 @@ void Enemy::DoAttack()
 		Math::Vector3 attackPos = GetPos();
 		attackPos += (m_mWorld.Backward() * 1);
 
-		SphereInfo info(attackPos, m_bumpSphereInfo.m_radius+ 0.5f);
+		SphereInfo info(attackPos, m_bumpSphereInfo.m_radius+ m_attackradius);
 
 		BumpResult result;
 
@@ -218,21 +320,63 @@ void Enemy::DoAttack()
 	}
 }
 
+void Enemy::UpdateCollition()
+{
+	for (const std::shared_ptr<GameObject>& spStageObj : GameInstance.GetObjects())
+	{
+		if (spStageObj->GetClassID() != GameObject::eStage) { continue; }
+
+		BumpResult result;
+
+		//壁判定
+		SphereInfo sphereInfo(GetPos() + m_bumpSphereInfo.m_pos, m_bumpSphereInfo.m_radius);
+
+		if (spStageObj->CheckCollisionBump(sphereInfo, result))
+		{
+			m_worldPos += result.m_pushVec;
+
+		}
+	}
+
+	for (const std::shared_ptr<GameObject>& spObj : GameInstance.GetObjects())
+	{
+		if (spObj->GetClassID() != GameObject::eEnemy) { continue; }
+
+		SphereInfo info(GetPos() + m_bumpSphereInfo.m_pos, m_bumpSphereInfo.m_radius);
+
+		BumpResult result;
+
+		// 相手の判定関数を利用する
+		if (spObj->CheckCollisionBump(info, result))
+		{
+			m_worldPos += result.m_pushVec;
+		}
+	}
+}
+
 void Enemy::ActionWait::Update(Enemy& owner)
 {
-	owner.ChangeMove();
+	if (owner.m_findTargetFlg)
+	{
+		owner.ChangeAction<ActionMove>();
+	}
+
+	if (owner.m_hp <= 0)
+	{
+		owner.ChangeAction < Enemy::ActionElimination>();
+	}
 }
 
 void Enemy::ActionMove::Update(Enemy& owner)
 {
 	if (owner.m_attackFlg)
 	{
-		owner.ChangeAttack();
+		owner.ChangeAction < Enemy::ActionAttack>();
 	}
 
 	if (owner.m_hp <= 0)
 	{
-		owner.ChangeElimination();
+		owner.ChangeAction < Enemy::ActionElimination>();
 	}
 		// 回転の更新処理
 		owner.UpdateRotate();
@@ -243,40 +387,20 @@ void Enemy::ActionMove::Update(Enemy& owner)
 
 void Enemy::ActionAttack::Update(Enemy& owner)
 {
-
+	
 }
 
 void Enemy::ActionElimination ::Update(Enemy& owner)
 {
+	owner.m_alpha -= 0.01f;
+	if (owner.m_alpha <= 0.0f)
+	{
+		owner.m_alpha = 0;
+	}
 }
 
 void Enemy::ActionGetHit::Update(Enemy& owner)
 {
-	std::shared_ptr<const GameObject> spTarget = owner.m_wpTarget.lock();
-
-	// キャラの正面方向ベクトル：出発地
-	Math::Vector3 nowDir = owner.m_mWorld.Backward();
-
-	// ノックバック時向く方向のベクトル：攻撃座標
-	Math::Vector3 targetDir = spTarget->GetPos() - owner.m_worldPos;
-
-	nowDir.Normalize();
-	targetDir.Normalize();
-
-	// それぞれのDegree角度を求める
-	float nowAng = atan2(nowDir.x, nowDir.z);
-	nowAng = DirectX::XMConvertToDegrees(nowAng);
-
-	float targetAng = atan2(targetDir.x, targetDir.z);
-	targetAng = DirectX::XMConvertToDegrees(targetAng);
-
-	// ２つの間の角度を求める
-	float rotateAng = targetAng - nowAng;
-
-	// 回転量代入
-	rotateAng = std::clamp(rotateAng, -20.0f, 20.0f);
-	owner.m_worldRot.y += rotateAng;
-
 	Math::Vector3 knockBackVec = owner.m_mWorld.Forward();
 
 	knockBackVec.Normalize();
@@ -284,4 +408,9 @@ void Enemy::ActionGetHit::Update(Enemy& owner)
 
 	owner.m_worldPos.x += knockBackVec.x;
 	owner.m_worldPos.z += knockBackVec.z;
+
+	if (owner.m_hp <= 0)
+	{
+		owner.ChangeAction < Enemy::ActionElimination>();
+	}
 }

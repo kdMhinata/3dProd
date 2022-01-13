@@ -58,6 +58,9 @@
     <Filter Include="Library\json11">
       <UniqueIdentifier>{40c9ac60-1a69-4e3f-984a-462a10cec834}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\Imgui">
+      <UniqueIdentifier>{0be8aef5-66a3-4b9b-9bd4-00ec92b0c297}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -174,6 +177,48 @@
     <ClInclude Include="Src\Application\Game\GameObject\Effect2D.h">
       <Filter>Src\Application\Game\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Library\imgui\imgui_impl_dx11.h">
+      <Filter>Library\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imgui_impl_win32.h">
+      <Filter>Library\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imgui_internal.h">
+      <Filter>Library\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imgui_stdlib.h">
+      <Filter>Library\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imstb_rectpack.h">
+      <Filter>Library\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imstb_textedit.h">
+      <Filter>Library\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imstb_truetype.h">
+      <Filter>Library\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imconfig.h">
+      <Filter>Library\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imgui.h">
+      <Filter>Library\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\System\Utility\Classinstantiater.h">
+      <Filter>Src\System\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Utility\SceneChanger.h">
+      <Filter>Src\Application\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Game\GameObject\Gimmick.h">
+      <Filter>Src\Application\Game\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Game\TitleObject.h">
+      <Filter>Src\Application\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Game\Result.h">
+      <Filter>Src\Application\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -268,6 +313,45 @@
     </ClCompile>
     <ClCompile Include="Src\Application\Game\GameObject\Effect2D.cpp">
       <Filter>Src\Application\Game\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_impl_win32.cpp">
+      <Filter>Library\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_stdlib.cpp">
+      <Filter>Library\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_tables.cpp">
+      <Filter>Library\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_widgets.cpp">
+      <Filter>Library\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui.cpp">
+      <Filter>Library\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_demo.cpp">
+      <Filter>Library\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_draw.cpp">
+      <Filter>Library\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_impl_dx11.cpp">
+      <Filter>Library\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Utility\Classinstantiater.cpp">
+      <Filter>Src\System\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Utility\SceneChanger.cpp">
+      <Filter>Src\Application\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Game\GameObject\Gimmick.cpp">
+      <Filter>Src\Application\Game\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Game\TitleObject.cpp">
+      <Filter>Src\Application\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Game\Result.cpp">
+      <Filter>Src\Application\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

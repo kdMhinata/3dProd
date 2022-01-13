@@ -141,6 +141,15 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Library\imgui\imconfig.h" />
+    <ClInclude Include="..\Library\imgui\imgui.h" />
+    <ClInclude Include="..\Library\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="..\Library\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="..\Library\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Library\imgui\imgui_stdlib.h" />
+    <ClInclude Include="..\Library\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Library\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Library\imgui\imstb_truetype.h" />
     <ClInclude Include="..\Library\json11KdCustom\json11.hpp" />
     <ClInclude Include="..\Library\strconv.h" />
     <ClInclude Include="..\Library\tinygltf\json.hpp" />
@@ -154,11 +163,15 @@
     <ClInclude Include="Src\Application\Game\GameObject\Effect2D.h" />
     <ClInclude Include="Src\Application\Game\GameObject\Enemy.h" />
     <ClInclude Include="Src\Application\Game\GameObject\GameObject.h" />
+    <ClInclude Include="Src\Application\Game\GameObject\Gimmick.h" />
     <ClInclude Include="Src\Application\Game\GameObject\Player.h" />
     <ClInclude Include="Src\Application\Game\GameObject\StageMap.h" />
     <ClInclude Include="Src\Application\Game\GameSystem.h" />
+    <ClInclude Include="Src\Application\Game\Result.h" />
+    <ClInclude Include="Src\Application\Game\TitleObject.h" />
     <ClInclude Include="Src\Application\main.h" />
     <ClInclude Include="Src\Application\Utility\ResourceFactory.h" />
+    <ClInclude Include="Src\Application\Utility\SceneChanger.h" />
     <ClInclude Include="Src\System\Audio\KdAudio.h" />
     <ClInclude Include="Src\System\Direct3D\KdCamera.h" />
     <ClInclude Include="src\System\Direct3D\KdDirect3D.h" />
@@ -177,10 +190,19 @@
     <ClInclude Include="Src\System\Shader\SpriteShader\KdSpriteShader.h" />
     <ClInclude Include="Src\System\Shader\StandardShader\KdStandardShader.h" />
     <ClInclude Include="src\System\KdSystem.h" />
+    <ClInclude Include="Src\System\Utility\Classinstantiater.h" />
     <ClInclude Include="src\System\Utility\KdUtility.h" />
     <ClInclude Include="src\System\Window\KdWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Library\imgui\imgui.cpp" />
+    <ClCompile Include="..\Library\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Library\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Library\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\Library\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\Library\imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="..\Library\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\Library\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Library\json11KdCustom\json11.cpp" />
     <ClCompile Include="Src\Application\Game\Camera\FPSCamera.cpp" />
     <ClCompile Include="Src\Application\Game\Camera\TPSCamera.cpp" />
@@ -188,11 +210,15 @@
     <ClCompile Include="Src\Application\Game\GameObject\Effect2D.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Enemy.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\GameObject.cpp" />
+    <ClCompile Include="Src\Application\Game\GameObject\Gimmick.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\Player.cpp" />
     <ClCompile Include="Src\Application\Game\GameObject\StageMap.cpp" />
     <ClCompile Include="Src\Application\Game\GameSystem.cpp" />
+    <ClCompile Include="Src\Application\Game\Result.cpp" />
+    <ClCompile Include="Src\Application\Game\TitleObject.cpp" />
     <ClCompile Include="Src\Application\main.cpp" />
     <ClCompile Include="Src\Application\Utility\ResourceFactory.cpp" />
+    <ClCompile Include="Src\Application\Utility\SceneChanger.cpp" />
     <ClCompile Include="Src\System\Audio\KdAudio.cpp" />
     <ClCompile Include="Src\System\Direct3D\KdCamera.cpp" />
     <ClCompile Include="src\System\Direct3D\KdDirect3D.cpp" />
@@ -213,6 +239,7 @@
     <ClCompile Include="Src\System\Shader\KdShaderManager.cpp" />
     <ClCompile Include="Src\System\Shader\SpriteShader\KdSpriteShader.cpp" />
     <ClCompile Include="Src\System\Shader\StandardShader\KdStandardShader.cpp" />
+    <ClCompile Include="Src\System\Utility\Classinstantiater.cpp" />
     <ClCompile Include="Src\System\Utility\KdUtility.cpp" />
     <ClCompile Include="src\System\Window\KdWindow.cpp" />
   </ItemGroup>

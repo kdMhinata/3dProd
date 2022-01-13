@@ -2,52 +2,123 @@
 #include"GameObject/StageMap.h"
 #include"GameObject/Player.h"
 #include"GameObject/Enemy.h"
+#include"GameObject/Gimmick.h"
+
+#include"TitleObject.h"
+#include"Result.h"
 
 #include"Camera/TPSCamera.h"
 
 #include"../main.h";
 
+void GameSystem::TitleInit()
+{
+	//背景のスプライト描画用GameObject
+	//ゲームシーンに推移するためのボタンObject
+	std::shared_ptr<GameObject> spTitle = std::make_shared<TitleObject>();
+	spTitle->Init();
+	AddObject(spTitle);
+
+}
+
+void GameSystem::GameInit()
+{
+	bool isLoaded = false;
+
+	auto loadProc = [this, &isLoaded]()
+	{
+		Load("Data/Save/Dungeon1");
+
+		// 共通エフェクト
+		GameResourceFactory.GetTexture("Data/Textures/SlashH1.png");
+		GameResourceFactory.GetTexture("Data/Textures/damagefont.png");
+
+		isLoaded = true;
+	};
+
+	std::thread loadThread(loadProc);
+
+	while (isLoaded == false)
+	{
+		APP.m_window.ProcessMessage();
+
+		DirectX::SimpleMath::Color col(1.0f, 0.0f, 0.0f, 1.0f);
+
+		D3D.WorkDevContext()->ClearRenderTargetView(D3D.WorkBackBuffer()->WorkRTView(), col); //書き込めるテクスチャをクリア
+
+		D3D.WorkDevContext()->ClearDepthStencilView(D3D.WorkZBuffer()->WorkDSView(),
+			D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+		D3D.WorkSwapChain()->Present(0, 0);
+
+		Sleep(100);
+	}
+
+	// 
+	loadThread.join();	// スレッドの終了を待つ
+}
+
+void GameSystem::ResultInit()
+{
+	//背景のスプライト描画用GameObject
+	//タイトルに推移するためのボタンObject
+	std::shared_ptr<GameObject> spResult = std::make_shared<ResultObject>();
+	spResult->Init();
+	AddObject(spResult);
+}
+
 void GameSystem::Init()
 {
-//	m_sky.SetModel(m_resourceFactory.GetModelData("Data/Models/Sky/Sky.gltf"));
+	CLASS_REGISTER(TitleObject);
+	CLASS_REGISTER(GameObject);
+	CLASS_REGISTER(ResultObject);
+	CLASS_REGISTER(Player);
+	CLASS_REGISTER(Enemy);
+	CLASS_REGISTER(StageMap);
+	CLASS_REGISTER(Gimmick);
+	CLASS_REGISTER(DestuctibleBox);
 
-	// スカイスフィア拡大行列
-	m_skyMat = m_skyMat.CreateScale(50.0f);
-
-	
-	std::shared_ptr<StageMap> spStage = std::make_shared<StageMap>(); // stageMapのインスタンス化
-	spStage->Init();
-	AddObject(spStage);
-
-	std::shared_ptr<Player> spPlayer = std::make_shared<Player>();	// プレイヤーのインスタンス化
-	spPlayer->Init();
-	spPlayer->SetInput(std::make_shared<PlayerInput>());
-	AddObject(spPlayer);
-
-	Math::Vector3 pos = {0.0,0.0,5.0};
-	EnemyInstance(spPlayer,pos);
-	Math::Vector3 pos2 = { 0.0,0.0,8.0 };
-	EnemyInstance(spPlayer, pos2);
-	Math::Vector3 pos3 = { 0.0,0.0,9.0 };
-	EnemyInstance(spPlayer, pos3);
-	Math::Vector3 pos4 = { 0.0,0.0,4.0 };
-	EnemyInstance(spPlayer, pos4);
-
-	//予め呼んでおきたい重いデータ等絶対使うデータ等
-	GameResourceFactory.GetTexture("Data/Textures/Slash1.png");
-	GameResourceFactory.GetTexture("Data/Textures/Slash2.png");
-	GameResourceFactory.GetTexture("Data/Textures/SlashH1.png");
-	GameResourceFactory.GetModelData("Data/Models/robot/chara.gltf");
-	GameResourceFactory.GetModelData("Data/Models/StageMap/DungeonStage.gltf");
-
+	TitleInit();
 }
 
 void GameSystem::Update()
 {
+	// シーンの切り替え
+	if (m_changeSceneFilename.empty() == false)
+	{
+		Load(m_changeSceneFilename);
+
+		m_changeSceneFilename = "";
+	}
+	//ゲームモードの切り替え
+	if (m_changeGameModeFlg)
+	{
+		m_spObjects.clear();
+
+		switch (m_changeGameModeName)
+		{
+		case GameSystem::Title:
+			TitleInit();
+			break;
+		case GameSystem::Game:
+			GameInit();
+			break;
+		case GameSystem::Result:
+			ResultInit();
+			break;
+		case GameSystem::GameOver:
+			break;
+		default:
+			break;
+		}
+
+		m_changeGameModeFlg = false;
+	}
+ 
 	if (GetAsyncKeyState(VK_ESCAPE))
 	{
 		if (MessageBoxA(APP.m_window.GetWndHandle(), "本当にゲームを終了しますか？",
-			"確認", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES) 
+			"確認", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
 		{
 			APP.End();
 		}
@@ -77,25 +148,43 @@ void GameSystem::Update()
 	{
 		if (!(*objectItr)->IsAlive())
 		{
-			objectItr->reset(/*引数にポインタを入れて新しくこっちを見さす*/);
-			
+			objectItr->reset(/*引数にポインタを入れて新しくこっちを見させる*/);
+
 			// 消したイテレータを受け取る
 			objectItr = m_spObjects.erase(objectItr);
 
 			continue;
 		}
-		
+
 		++objectItr;
 	}
-	
+
+	if (m_editor.editFlg)
+	{
+		//m_editor.camera.
+	}
+
+	// 
+	if (_blackoutSpeed != 0)
+	{
+		_blackoutRate += _blackoutSpeed;
+		_blackoutRate = std::clamp(_blackoutRate, 0.0f, 1.0f);
+	}
 }
 
 void GameSystem::Draw()
 {
-	// カメラの情報をシェーダーに渡す
-	if (m_spCamera)
+	if (!m_editor.editFlg)
 	{
-		m_spCamera->SetToShader();
+		// カメラの情報をシェーダーに渡す
+		if (m_spCamera)
+		{
+			m_spCamera->SetToShader();
+		}
+	}
+	else
+	{
+		m_editor.camera.SetToShader();
 	}
 
 	// ①不透明物の描画から
@@ -112,14 +201,13 @@ void GameSystem::Draw()
 	SHADER->m_effectShader.SetToDevice();
 
 	// 拡大行列を適用する
-	SHADER->m_effectShader.DrawModel(m_sky, m_skyMat);
 	{
 		D3D.WorkDevContext()->OMSetDepthStencilState(SHADER->m_ds_ZEnable_ZWriteDisable, 0);
 
 		// カリングなし(両面描画)
 		D3D.WorkDevContext()->RSSetState(SHADER->m_rs_CullNone);
-		
-	
+
+
 		// ゲームオブジェクト(透明物)の描画
 		for (std::shared_ptr<GameObject>& spObject : m_spObjects)
 		{
@@ -142,6 +230,7 @@ void GameSystem::Draw()
 		// 裏面カリング(表面のみ描画)
 		D3D.WorkDevContext()->RSSetState(SHADER->m_rs_CullBack);
 	}
+
 }
 
 const std::shared_ptr<KdCamera> GameSystem::GetCamera() const
@@ -149,13 +238,55 @@ const std::shared_ptr<KdCamera> GameSystem::GetCamera() const
 	return m_spCamera;
 }
 
-void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target,Math::Vector3& pos)
+void GameSystem::EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos, std::string& modelname)
 {
 	std::shared_ptr<Enemy> spEnemy = std::make_shared<Enemy>();
 	spEnemy->Init();
 	AddObject(spEnemy);
-	spEnemy->SetPos(pos);
+	spEnemy->SetWPos(pos);
+	spEnemy->LoadModel(modelname);
 	spEnemy->SetTarget(target);
+}
+
+void GameSystem::Load(const std::string& filename)
+{		//・Objectのロード
+	json11::Json json = KdLoadJSONFile(filename);
+
+	m_spObjects.clear();
+
+	json11::Json::array objArray = json.array_items();
+
+	for (auto&& obj : objArray)
+	{
+		const auto& className = obj["ClassName"].string_value();
+		std::shared_ptr<GameObject> newObj = CLASS_INST.Instantiate<GameObject>(className);
+
+		newObj->Deserialize(obj);
+
+		m_spObjects.push_back(newObj);
+	}
+}
+
+std::shared_ptr<GameObject> GameSystem::FindObjectWithTag(const std::string& tag)
+{
+	//タグ検索
+	for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
+	{
+		if (tag == spObj->GetTag()) { return spObj; }
+
+	}
+	return nullptr;
+}
+
+std::vector<std::shared_ptr<GameObject>> GameSystem::FindObjectsWithTag(const std::string& tag)
+{
+	std::vector<std::shared_ptr<GameObject>> vector;
+	//タグ検索
+	for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
+	{
+		if (tag == spObj->GetTag()) { vector.push_back(spObj); }
+	}
+	return vector;
 }
 
 void GameSystem::Release()

@@ -32,7 +32,7 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	// ウィンドウ作成
 	//===================================================================
-	if (m_window.Create(w, h, "3D GameProgramming", "Window") == false) {
+	if (m_window.Create(w, h, "Ekard", "Window") == false) {
 		MessageBoxA(nullptr, "ウィンドウ作成に失敗", "エラー", MB_OK);
 		return false;
 	}
@@ -71,6 +71,15 @@ bool Application::Init(int w, int h)
 	// オーディオ初期化
 	//===================================================================
 
+	//imgui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+
+	ImGui::StyleColorsClassic();
+
+	ImGui_ImplWin32_Init(m_window.GetWndHandle());
+	ImGui_ImplDX11_Init(D3D.WorkDev(), D3D.WorkDevContext());
+
 	return true;
 }
 
@@ -82,6 +91,11 @@ void Application::Release()
 
 	// ウィンドウ削除
 	m_window.Release();
+
+	//imgui
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
 }
 
 // アプリケーション実行
@@ -145,6 +159,14 @@ void Application::Execute()
 		//
 		//=========================================
 
+		//imgui開始
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+		//imguiDemoウィンドウ表示
+	//	ImGui::ShowDemoWindow(nullptr);
+
+
 		GameSystem::GetInstance().Update();
 
 		DirectX::SimpleMath::Color col(0.0f, 0.0f, 0.0f, 0.0f);
@@ -156,7 +178,13 @@ void Application::Execute()
 
 		GameSystem::GetInstance().Draw();	// クリア後スワップチェイン前
 
+		//gui描画実行
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
 		D3D.WorkSwapChain()->Present(0, 0);
+
+		//ShowCursor(FALSE);
 
 
 		//=========================================

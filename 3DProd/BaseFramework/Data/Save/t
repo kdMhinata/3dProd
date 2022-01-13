@@ -1,0 +1,111 @@
+[
+  {
+    "Angle": [0,-0,0],
+    "ClassName": "StageMap",
+    "ModelFilename": "Data\\Models\\StageMap\\Dungeon\\Dungeon4\\DungeonStage.gltf",
+    "Name": "GameObject",
+    "Pos": [0,0,0],
+    "Tag": ""
+  },
+  {
+    "Angle": [180,89.999992370605469,180],
+    "ClassName": "Player",
+    "ModelFilename": "Data/Models/robot/chara.gltf",
+    "Name": "player",
+    "Pos": [-3.1258878707885742,5.1341567039489746,-20.311653137207031],
+    "Tag": "Player"
+  },
+  {
+    "Angle": [180,-1.3660382137459237e-05,180],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-10.069999694824219,5.0275516510009766,-2.6150000095367432],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [180,-1.3660382137459237e-05,180],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-17.690000534057617,5.0229535102844238,-2.815000057220459],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [180,-1.3660382137459237e-05,180],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-19.486701965332031,5.0880975723266602,-7.915989875793457],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [180,29.750694274902344,180],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-7.3412270545959473,4.9903945922851563,-12.936535835266113],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [180,57.172004699707031,180],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-8.8564023971557617,5.0888686180114746,-16.614625930786133],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [180,-1.3660382137459237e-05,180],
+    "ClassName": "Enemy",
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-13.875,5.1279997825622559,-4.3990001678466797],
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [0,-0,0],
+    "ClassName": "DestuctibleBox",
+    "Hp": 10,
+    "ModelFilename": "Data/Models/StageMap/Object/WoodBox.gltf",
+    "Name": "GameObject",
+    "Pos": [-15,5,0],
+    "Tag": ""
+  },
+  {
+    "Angle": [0,-0,0],
+    "ClassName": "DestuctibleBox",
+    "Hp": 10,
+    "ModelFilename": "Data/Models/StageMap/Object/WoodBox.gltf",
+    "Name": "GameObject",
+    "Pos": [-12.590000152587891,5,0],
+    "Tag": ""
+  },
+  {
+    "Active": false,
+    "Angle": [0,-0,0],
+    "ClassName": "Gimmick",
+    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
+    "Name": "GameObject",
+    "Pos": [-24.920000076293945,5.2399997711181641,-0.25999999046325684],
+    "Tag": ""
+  },
+  {
+    "Active": false,
+    "Angle": [0,-0,0],
+    "ClassName": "Gimmick",
+    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
+    "Name": "GameObject",
+    "Pos": [-2.309999942779541,5,-0.20999999344348907],
+    "Tag": ""
+  },
+  {
+    "Active": false,
+    "Angle": [0,-0,0],
+    "ClassName": "Gimmick",
+    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
+    "Name": "GameObject",
+    "Pos": [-22.149999618530273,5,-14.079999923706055],
+    "Tag": ""
+  }
+]

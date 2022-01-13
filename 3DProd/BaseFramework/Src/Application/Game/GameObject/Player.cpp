@@ -1,19 +1,23 @@
 #include"Player.h"
-//#include"../Camera/FPSCamera.h"
 #include"../Camera/TPSCamera.h"
 #include"../GameSystem.h"
 #include "Enemy.h"
+#include "StageMap.h"
 #include "Effect2D.h"
+#include "System/Utility/KdUtility.h"
 
 Player::Player()
 {
+	m_name = "Player";
 }
 
 const float Player::s_limitOfStepHeight = 0.1f;
 
-void Player::Init()
+void Player::Deserialize(const json11::Json& json)
 {
-	m_modelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Robot/chara.gltf"));
+	Character::Deserialize(json);
+
+	m_worldPos = m_mWorld.Translation();
 
 	m_spCamera = std::make_shared<TPSCamera>();
 
@@ -24,26 +28,31 @@ void Player::Init()
 	m_spCamera->SetProjectionMatrix(60.0f, 3000.0f);	// 視野角の設定（左右に60度＝120度）,最大描画距離(短いほど判定が正確になる)
 
 	// カメラの注視点から5m離れる
-	m_spCamera->SetLocalPos(Math::Vector3(0.0f, 0.0f, -10.0f));
+	cameraMat = Math::Vector3(0.0f, 0.0f, -10.0f);
+	m_spCamera->SetLocalPos(cameraMat);
 
 	// キャラクターから注視点へのローカル座標を上に3m上げる
-	m_spCamera->SetLocalGazePos(Math::Vector3(0.0f, 3.0f, 0.0f));
+	cameraGazeMat = Math::Vector3(0.0f, 3.0f, 0.0f);
+	m_spCamera->SetLocalGazePos(cameraGazeMat);
 
 	// カメラの制限角度
-	m_spCamera->SetClampAngle(-75.0f,90.0f);
+	m_spCamera->SetClampAngle(-75.0f, 90.0f);
 
 	// カメラの移動スピード
 	m_spCamera->SetRotationSpeed(0.25);
 
-	m_bumpSphereInfo.m_pos.y =0.65f;
+	m_bumpSphereInfo.m_pos.y = 0.65f;
 	m_bumpSphereInfo.m_radius = 0.4f;
 
-	m_worldPos.y = 3.00f;
+	m_hp = 400;
+	SetMaxHp(400);
 
-	m_hp = 200;
+	//角度をデシリアライズ
+	Math::Vector3 rotate;
+	JsonToVec3(json["Angle"], rotate);
+	SetRotate(rotate);
 
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
-
 
 	m_spActionState = std::make_shared<ActionWait>();
 
@@ -55,21 +64,35 @@ void Player::Init()
 	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/bar.png");
 	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
 
+	m_damageFont = GameResourceFactory.GetTexture("Data/Textures/damagefont.png");
+
 	m_spShadow = std::make_shared<Effect2D>();
 	m_spShadow->Init();
 	m_spShadow->SetPos(GetPos());
 	m_spShadow->SetTexture(GameResourceFactory.GetTexture("Data/Textures/shadow.png"));
+
+	m_swordmodelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Weapon/sword.gltf"));
+
+	m_input = std::make_shared<PlayerInput>();
+}
+
+void Player::Init()
+{
 }
 
 // 更新処理
 void Player::Update()
 {
-//	UpdateInput();
-
-	m_gravity += 0.02f;
+	m_force.y -= 0.02f;
 	m_prevPos = GetPos();
 
 	m_input->Update();
+
+	//消す
+	if (GetAsyncKeyState(VK_UP))
+	{
+		GameInstance.ReserveChangeScene("Data/Save/Dungeon2");
+	}
 
 	// 通常
 	if (m_hitStop <= 0)
@@ -98,23 +121,20 @@ void Player::Update()
 	UpdateMatrix();
 
 	// カメラを構成する行列の合成結果をセット
-	if (m_spCamera)
-	{
-		m_spCamera->Update();
+		if (m_spCamera&&m_useCamera)
+		{
+			m_spCamera->Update();
 
-		Math::Matrix trans = Math::Matrix::CreateTranslation(m_worldPos);
+			Math::Matrix trans = Math::Matrix::CreateTranslation(m_worldPos);
 
-		// プレイヤーの絶対行列のセット
-		m_spCamera->SetCameraMatrix(trans);
-	}
+			// プレイヤーの絶対行列のセット
+			m_spCamera->SetCameraMatrix(trans);
+		}
 
-	/*
-	// ラムダ式
-	auto onEvent = [this](const json11::Json& event)
-	{
-	};
-	*/
-	m_worldPos.y -= m_gravity;
+	m_worldPos += m_force;
+
+	// 摩擦
+	m_force *= 0.87f;
 
 	m_modelWork.CalcNodeMatrices();
 
@@ -128,33 +148,40 @@ void Player::Update()
 		}
 		m_audioManager.Update(listenerMat.Translation(), listenerMat.Backward());
 	}
+
+	if (m_hp <= 0)
+	{
+		m_isAlive = false;
+		GameInstance.ReserveChangeMode(GameSystem::Result);
+	}
 }
 
 void Player::Draw()
 {
 	Character::Draw();
-	/*
-	auto node = m_modelWork.FindNode("Bip001 Head");
+	
+	auto node = m_modelWork.FindNode("W_R");
 	if (node)
 	{
 		auto w = node->m_worldTransform * m_mWorld;
 		SHADER->m_standardShader.DrawModel(m_swordmodelWork, w);
-	}*/
+	}
 }
 
 void Player::Draw2D()
 {
 	if (!m_hpBarTex||!m_hpFrameTex) { return; }
 	Math::Vector3 _pos = Math::Vector3::Zero;
-	m_spCamera->ConvertWorldToScreenDetail(GetPos(), _pos);
-		Math::Rectangle barrec = { 0,0,454,38 };
-		Math::Rectangle framerec = { 0,0,703,187 };
+	// hpの描画処理
+	GameInstance.GetCamera()->ConvertWorldToScreenDetail(GetPos(), _pos);
+		Math::Rectangle barrec = { 0,0,500,20 };
+		Math::Rectangle framerec = { 0,0,500,20 };
 		Math::Color col= kWhiteColor;
-		float hpmax = 200;
-		float hpcalc = (m_hp / hpmax);
+		float maxhp = (float)GetMaxHp();
+		float hpcalc = (m_hp / maxhp);
 		SHADER->m_spriteShader.SetMatrix(Math::Matrix::Identity);
-		SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), -432, 253 , 454*hpcalc, 38,&barrec, &col, { 0.0,0.5 });
-		SHADER->m_spriteShader.DrawTex(m_hpFrameTex.get(), -270, 250, 703, 187, &framerec, &col,{0.5,0.5});
+		SHADER->m_spriteShader.DrawTex(m_hpFrameTex.get(), -302, -290, 500, 20, &framerec, &col, { 0.5,0.5 });
+		SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), -552, -290 , 500*hpcalc, 20,&barrec, &col, { 0.0,0.5 });
 }
 
 void Player::DrawEffect()
@@ -175,14 +202,23 @@ void Player::DrawEffect()
 
 void Player::NotifyDamage(DamageArg& arg)
 {
-	if (!invincibleFlg)
-	{
+	//無敵状態ならヒットしていない事にする
+	if (invincibleFlg){arg.ret_IsHit = false; return;}
+
 		m_hp -= arg.damage;
+		DamageDisplay(arg.damage);
 		arg.ret_IsHit = true;
-	}
-	else
+}
+
+void Player::DamageDisplay(int damage)
+{
+	if (!m_damageFont) { return; }
 	{
-		arg.ret_IsHit = false;
+		Math::Vector3 _pos = Math::Vector3::Zero;
+		// hpの描画処理
+		GameInstance.GetCamera()->ConvertWorldToScreenDetail(GetPos(), _pos);
+		Math::Rectangle font = { 110,0,110,150 };
+		SHADER->m_spriteShader.DrawTex(m_damageFont.get(), _pos.x, _pos.y, 22, 30, &font, &kWhiteColor, { 0.5,0.5 });
 	}
 }
 
@@ -197,12 +233,11 @@ void Player::ScriptProc(const json11::Json& event)
 	}
 	else if (eventName == "DoAttack")
 	{
-		DoAttack();
+		int damage = event["Damage"].int_value();
+		DoAttack(damage);
 	}
-	else if (eventName == "ConToAtk2")
+	else if (eventName == "ConToAtk")
 	{
-//		m_atkComboFlg = false;
-
 		if (m_atkComboFlg)
 		{
 			m_atkCancelAnimName = event["AnimName"].string_value();
@@ -210,27 +245,49 @@ void Player::ScriptProc(const json11::Json& event)
 	}
 	else if (eventName == "End")
 	{
-		ChangeWait();
+		ChangeAction < Player::ActionWait>();
 	}
 	else if (eventName == "AttackEffect")
 	{
 		const std::string& EffectFile = event["EffectName"].string_value();
-		//爆発
+		float	Size = (float)event["Size"].number_value();
+		if (event["Size2"].is_number())
+		{
+			float	Size2 = (float)event["Size2"].number_value();
+			Size = Size + (Size2 - Size) * m_effectValue;
+		}
+		float Speed = event["Speed"].int_value();
+		int SpX = event["SpX"].int_value();
+		int SpY = event["SpY"].int_value();
+
+		Math::Vector3 Angle;
+		JsonToVec3(event["Angle"], Angle);
+
+		Math::Vector3 Pos;
+		JsonToVec3(event["Pos"], Pos);
+
+		bool localMode = false;
+		JsonToBool(event["LocalMode"], localMode);
+		
 		std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
-		Math::Vector3 effectPos = GetPos();
-		effectPos += (m_mWorld.Up() * 1);
-
-		Math::Matrix m = m_mWorld;
-		m.Translation(m.Translation() + m.Up() * 1);
-
-		m = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(-90)) * m;
-
+	
 		spEffect->Init();
-		spEffect->SetAnimation(4, 3,1.0f);
-//		spEffect->SetPos(effectPos);
-		spEffect->SetMatrix(m);
+		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile), Size, Size);
+		
+		if (localMode)
+		{
+			Math::Matrix m = m_mWorld;
+
+			m = Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(Angle.x))*
+				Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(Angle.y))*
+				Math::Matrix::CreateRotationX(DirectX::XMConvertToRadians(Angle.z))*
+				Math::Matrix::CreateTranslation(Pos);
+
+			spEffect->SetMatrix(m);
+		}
 		spEffect->SetLifeSpan(1000);
-		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile),4,4);
+		spEffect->SetAnimation(SpX, SpY, 1.0f);
+		spEffect->SetLocalMode(localMode);
 
 		auto p = shared_from_this();
 
@@ -329,18 +386,18 @@ void Player::UpdateMatrix()
 	m_mWorld =rotation * trans;
 }
 
-void Player::DoAttack()
+void Player::DoAttack(int damage)
 {	
 		for (const std::shared_ptr<GameObject>& spObj : GameSystem::GetInstance().GetObjects())
 		{
-			if (spObj->GetClassID() != GameObject::eEnemy) { continue; }
+ 			if (spObj->GetClassID() != GameObject::eEnemy&& spObj->GetClassID()!=GameObject::eDestuctible) { continue; }
 
-			Math::Vector3 attackPos = GetPos();
+    			Math::Vector3 attackPos = GetPos();
 			attackPos += (m_mWorld.Backward() * 0.5);
 
-			SphereInfo info(attackPos,m_bumpSphereInfo.m_radius+1.0f);
+			SphereInfo info(attackPos,m_bumpSphereInfo.m_radius+2.0f);
 
-			BumpResult result;
+ 			BumpResult result;
 
 			// 相手の判定関数を利用する
 			if (spObj->CheckCollisionBump(info, result))
@@ -349,10 +406,12 @@ void Player::DoAttack()
 
 				if (chara==nullptr) { continue; }
 				if (chara->GetHp()<=0) { continue; }
+
+
 				DamageArg arg;
-				arg.damage = 10;
+				arg.damage = damage;
 				arg.attackPos = attackPos;
-				chara->NotifyDamage(arg);
+   				chara->NotifyDamage(arg);
 
 				if (arg.ret_IsHit)
 				{
@@ -365,10 +424,10 @@ void Player::DoAttack()
 					Math::Vector3 effectPos = (attackPos += (m_mWorld.Up() * 0.5)+=(m_mWorld.Backward()*0.5));
 
 					spEffect->Init();
-					spEffect->SetAnimation(4, 5,3.0f);
+					spEffect->SetAnimation(4, 5, 3.0f);
 					spEffect->SetPos(effectPos);
 					spEffect->SetLifeSpan(1000);
-					spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/SlashH1.png"),5,5);
+					spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/SlashH1.png"),15,15);
 					GameInstance.AddObject(spEffect);
 				}
 			}
@@ -395,7 +454,7 @@ void Player::UpdateCollition()
 
 	for (const std::shared_ptr<GameObject>& spStageObj : GameSystem::GetInstance().GetObjects())
 	{
-		if (spStageObj->GetClassID() != GameObject::eStage) { continue; }
+		if (spStageObj->GetClassID() != GameObject::eStage&& spStageObj->GetClassID() != GameObject::eDestuctible && spStageObj->GetClassID() != GameObject::eGimmick) { continue; }
 
 		BumpResult result;
 
@@ -413,14 +472,14 @@ void Player::UpdateCollition()
 		//　歩いて移動できる地面の限界の段差
 		rayPos.y += s_limitOfStepHeight;
 
-		RayInfo rayInfo(rayPos, Math::Vector3(0.0f, -1.0f, 0.0f),m_gravity+s_limitOfStepHeight);
+		RayInfo rayInfo(rayPos, Math::Vector3(0.0f, -1.0f, 0.0f),s_limitOfStepHeight);
 
 		spStageObj->CheckCollisionBump(rayInfo, result);
 
 		if (result.m_isHit)
 		{
 			m_worldPos += result.m_pushVec;
-			m_gravity = 0.0f;
+			m_force.y = 0.0f;
 		}
 	}
 
@@ -430,19 +489,27 @@ void Player::ActionWait::Update(Player& owner)
 {
 	if (!owner.CheckWait())
 	{
-		owner.ChangeMove();
+		owner.ChangeAction < Player::ActionMove>();
 	}
 
 	if (owner.m_input->IsPressButton(0, false))
 	{
-//		owner.ChangeAttack();
 		owner.ChangeAction<Player::ActionAttack>();
 		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("Attack1"), false);
 	}
 
 	if (owner.m_input->IsPressButton(1, false))
 	{
-		owner.ChangeDodge();
+		owner.ChangeAction<Player::ActionDodge>();
+	}
+
+	if (owner.m_input->IsPressButton(2, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
+	}
+	if (owner.m_input->IsPressButton(3, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
 	}
 }
 
@@ -461,7 +528,16 @@ void Player::ActionMove::Update(Player& owner)
 
 	if (owner.m_input->IsPressButton(1, false))
 	{
-		owner.ChangeDodge();
+		owner.ChangeAction < Player::ActionDodge>();
+	}
+
+	if (owner.m_input->IsPressButton(2, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
+	}
+	if (owner.m_input->IsPressButton(3, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
 	}
 
 	Math::Vector3 vMove;
@@ -485,38 +561,66 @@ void Player::ActionAttack::Update(Player& owner)
 
 	if (owner.m_atkCancelAnimName.size() > 0)
 	{
-		owner.ChangeAttack();
+		owner.ChangeAction < Player::ActionAttack>();
 		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation(owner.m_atkCancelAnimName), false);
 		owner.m_atkCancelAnimName = "";
 	}
 	if (owner.m_input->IsPressButton(1, false))
 	{
-		owner.ChangeDodge();
+		owner.ChangeAction < Player::ActionDodge>();
+	}
+
+	if (owner.m_input->IsPressButton(2, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
+	}
+	if (owner.m_input->IsPressButton(3, false))
+	{
+		owner.ChangeAction<Player::ActionSkill>();
+	}
+
+	if (owner.m_input->GetAxisL().y != 0 || owner.m_input->GetAxisL().x != 0)
+	{
+		Math::Vector3 attackVec = owner.m_mWorld.Backward();
+
+		attackVec.Normalize();
+		attackVec *= 0.05f;
+
+		owner.m_worldPos.x += attackVec.x;
+		owner.m_worldPos.z += attackVec.z;
+	}
+	else
+	{
+		Math::Vector3 attackVec = owner.m_mWorld.Backward();
+
+		attackVec.Normalize();
+		attackVec *= 0.025f;
+
+		owner.m_worldPos.x += attackVec.x;
+		owner.m_worldPos.z += attackVec.z;
 	}
 }
 
 void Player::ActionDodge::Update(Player& owner)
 {
-	//ここ向いてる方向に回避したい処理書きたい
-	Math::Vector3 dodgeVec = owner.m_mWorld.Backward();
-
-	dodgeVec.Normalize();
-	dodgeVec *= 0.3f;
-
-	owner.m_worldPos.x += dodgeVec.x;
-	owner.m_worldPos.z += dodgeVec.z;
 }
 
 void Player::UpdateInput()
 {
-	/*
-	m_axisL = Math::Vector2::Zero;
 
-	if (GetAsyncKeyState('W')) { m_axisL.y += 1.0f; }	// 前移動
-	if (GetAsyncKeyState('S')) { m_axisL.y -= 1.0f; }	// 後ろ移動
-	if (GetAsyncKeyState('A')) { m_axisL.x -= 1.0f; }	// 左移動
-	if (GetAsyncKeyState('D')) { m_axisL.x += 1.0f; }	// 右移動
-	*/
 }
 
+void Player::ActionSkill::Update(Player& owner)
+{
+	
+}
 
+void Player::ActionExit::Update(Player& owner)
+{
+	Math::Vector3 vec = owner.m_exitVec;
+	vec.Normalize();
+	vec*= 0.1f;
+
+	owner.m_worldPos.x += vec.x;
+	owner.m_worldPos.z += vec.z;
+}

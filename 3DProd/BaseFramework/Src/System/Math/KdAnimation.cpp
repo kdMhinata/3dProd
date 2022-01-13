@@ -177,7 +177,7 @@ void KdAnimator::AdvanceTime(std::vector<KdModelWork::Node>& rNodes, float speed
 	m_prevTime = m_time;
 	m_time += speed;
 
-	// スクリプチェック
+	// スクリプトチェック
 	if (m_spAnimation->m_script.is_null() == false)
 	{
 		for (auto&& event : m_spAnimation->m_script.array_items())

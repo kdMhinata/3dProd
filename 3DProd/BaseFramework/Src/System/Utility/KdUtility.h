@@ -90,6 +90,47 @@ inline json11::Json KdLoadJSONFile(const std::string& filename)
 	return jsonObj;
 }
 
+inline json11::Json::array Vec3ToJson(const Math::Vector3& v)
+{
+	return json11::Json::array({ v.x, v.y, v.z });
+}
+
+inline void JsonToVec3(json11::Json json, Math::Vector3& vec3)
+{
+	if (!json.is_array())return;
+	if (json.array_items().size() != 3)return;
+	vec3.x = (float)json.array_items()[0].number_value();
+	vec3.y = (float)json.array_items()[1].number_value();
+	vec3.z = (float)json.array_items()[2].number_value();
+}
+
+inline void JsonToBool(json11::Json json, bool& ret)
+{
+	if (!json.is_bool())return;
+	ret = json.bool_value();
+}
+
+inline Math::Vector3 MatToAngle(const Math::Matrix& mat)
+{
+	Math::Matrix m = mat;
+	Math::Vector3 v = m.Right(); //vxにmatのX軸を取得
+	v.Normalize(); //vxを正規化
+	m.Right(v); //正規化したvxをmatのX軸に設定
+
+	v = m.Up();
+	v.Normalize();
+	m.Up(v);
+
+	v = m.Backward();
+	v.Normalize();
+	m.Backward(v);
+
+	Math::Vector3 angles;
+	angles.x = DirectX::XMConvertToDegrees(atan2f(m.m[1][2], m.m[2][2]));
+	angles.y = DirectX::XMConvertToDegrees(atan2f(-m.m[0][2], sqrtf(m.m[1][2] * m.m[1][2] + m.m[2][2] * m.m[2][2])));
+	angles.z = DirectX::XMConvertToDegrees(atan2f(m.m[0][1], m.m[0][0]));
+	return angles;
+}
 
 //===========================================
 //

@@ -46,6 +46,16 @@ bool KdModelData::Load(const std::string& filename)
 			if (found != m_spAnimations.end())
 			{
 				(*found)->m_script = anim["Data"];
+
+				// 必要なエフェクトを読み込む
+				for (auto&& res : (*found)->m_script.array_items())
+				{
+					std::string resName = res["EffectName"].string_value();
+					if (!resName.empty())
+					{
+						GameResourceFactory.GetTexture(resName);
+					}
+				}
 			}
 		}
 	}

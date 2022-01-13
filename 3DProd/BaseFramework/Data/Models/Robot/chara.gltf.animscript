@@ -5,12 +5,12 @@
 			"Data": [
 				{
 					"EventName": "PlaySound",
-					"Time": 5,
+					"Time": 8,
 					"SoundName": "Data/Audio/SE/Walk2.wav"
 				},
 				{
 					"EventName": "PlaySound",
-					"Time": 20,
+					"Time": 30,
 					"SoundName": "Data/Audio/SE/Walk1.wav"
 				}
 
@@ -21,27 +21,35 @@
 			"Data": [
 				{
 					"EventName": "PlaySound",
-					"Time": 4,
+					"Time": 6,
 					"SoundName": "Data/Audio/SE/Slash1.wav"
 				},
 				{
 					"EventName": "AttackEffect",
-					"Time": 1,
-					"EffectName": "Data/Textures/Slash1.png"
+					"Time": 6,
+					"EffectName": "Data/Textures/Slash1.png",
+					"Size": 4,
+					"SpX": 4,
+					"SpY": 3,
+					"Speed": 1.0,
+					"Pos": [ 0, 1, 0 ],
+					"Angle": [ 0, -90, 0 ],
+					"LocalMode": true
 				},
 				{
 
 					"EventName": "DoAttack",
-					"Time": 5
+					"Damage": 10,
+					"Time": 6
 				},
 				{
-					"EventName": "ConToAtk2",
+					"EventName": "ConToAtk",
 					"Time": 17,
 					"AnimName": "Attack2"
 				},
 				{
 					"EventName": "End",
-					"Time": 25
+					"Time": 26
 				}
 			]
 		},
@@ -51,22 +59,100 @@
 			"Data": [
 				{
 					"EventName": "PlaySound",
-					"Time": 4,
+					"Time": 6,
 					"SoundName": "Data/Audio/SE/Slash2.wav"
 				},
 				{
 					"EventName": "AttackEffect",
-					"Time": 4,
-					"EffectName": "Data/Textures/Slash2.png"
+					"Time": 6,
+					"EffectName": "Data/Textures/Slash2.png",
+					"Size": 4,
+					"SpX": 4,
+					"SpY": 3,
+					"Speed": 1.0,
+					"Angle": [ 0, -90, 0 ],
+					"Pos": [ 0, 1, 0 ],
+					"LocalMode": true
 				},
 				{
 
 					"EventName": "DoAttack",
-					"Time": 5
+					"Damage": 10,
+					"Time": 6
+				},
+				{
+					"EventName": "ConToAtk",
+					"Time": 12,
+					"AnimName": "Attack3"
 				},
 				{
 					"EventName": "End",
-					"Time": 13
+					"Time": 18
+				}
+			]
+		},
+		{
+			"AnimName": "Attack3",
+			"Data": [
+				{
+					"EventName": "PlaySound",
+					"Time": 6,
+					"SoundName": "Data/Audio/SE/Slash1.wav"
+				},
+				{
+					"EventName": "AttackEffect",
+					"Time": 6,
+					"EffectName": "Data/Textures/Slash3.png",
+					"Size": 4,
+					"SpX": 4,
+					"SpY": 4,
+					"Speed": 1.0,
+					"Angle": [ 0, -90, 0 ],
+					"Pos": [ 0, 1, 0 ],
+					"LocalMode": true
+				},
+				{
+
+					"EventName": "DoAttack",
+					"Damage": 20,
+					"Time": 6
+				},
+				{
+					"EventName": "End",
+					"Time": 26
+				}
+			]
+		},
+		{
+			"AnimName": "Thrust",
+			"Data": [
+				{
+					"EventName": "PlaySound",
+					"Time": 6,
+					"SoundName": "Data/Audio/SE/Slash1.wav"
+				},
+				{
+					"EventName": "AttackEffect",
+					"Time": 6,
+					"EffectName": "Data/Textures/Thrust1.png",
+					"SpX": 4,
+					"Size": 6,
+					"Size2": 10,
+					"SpY": 5,
+					"Speed": 1.0,
+					"Angle": [ 0, -90, 0 ],
+					"Pos": [ 0, 1, 0 ],
+					"LocalMode": true
+				},
+				{
+
+					"EventName": "DoAttack",
+					"Damage": 30,
+					"Time": 12
+				},
+				{
+					"EventName": "End",
+					"Time": 36
 				}
 			]
 		},
@@ -75,17 +161,17 @@
 			"Data": [
 				{
 					"EventName": "PlaySound",
-					"Time": 1,
+					"Time": 8,
 					"SoundName": "Data/Audio/SE/Dodge.wav"
 				},
 				{
 
 					"EventName": "Invincible",
-					"Time": 1
+					"Time": 8
 				},
 				{
 					"EventName": "End",
-					"Time": 13
+					"Time": 26
 				}
 			]
 		}

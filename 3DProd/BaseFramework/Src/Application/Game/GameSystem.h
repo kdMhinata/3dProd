@@ -9,8 +9,10 @@ public:
 
 	BaseInput()
 	{
-		m_buttons.fill(0);
-		m_buttons.fill(1);
+		m_buttons.fill(0); //Space
+		m_buttons.fill(1); //Shift
+		m_buttons.fill(2); //Q
+		m_buttons.fill(3); //E
 	}
 
 	// キー情報を更新
@@ -37,13 +39,12 @@ public:
 	virtual void Update() override
 	{
 		m_axisL = Math::Vector2::Zero;
-//		m_buttons.fill(0);
 
 		if (GetAsyncKeyState('W') & 0x8000) { m_axisL.y += 1.0f; }	// 前移動
 		if (GetAsyncKeyState('S') & 0x8000) { m_axisL.y -= 1.0f; }	// 後ろ移動
 		if (GetAsyncKeyState('A') & 0x8000) { m_axisL.x -= 1.0f; }	// 左移動
 		if (GetAsyncKeyState('D') & 0x8000) { m_axisL.x += 1.0f; }	// 右移動
-
+		
 		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 		{
 			m_buttons[0]++;
@@ -60,6 +61,24 @@ public:
 		{
 			m_buttons[1] = 0;
 		}
+
+		if (GetAsyncKeyState('Q') & 0x8000)
+		{
+			m_buttons[2]++;
+		}
+		else
+		{
+			m_buttons[2] = 0;
+		}
+		if (GetAsyncKeyState('E') & 0x8000)
+		{
+			m_buttons[3]++;
+		}
+		else
+		{
+			m_buttons[3] = 0;
+		}
+
 	}
 
 };
@@ -71,6 +90,13 @@ public:
 	void Init();
 	void Update();
 	void Draw();
+
+	//タイトル
+	void TitleInit();
+
+	void GameInit();
+
+	void ResultInit();
 
 	void AddObject(std::shared_ptr<GameObject> spObject)
 	{
@@ -86,20 +112,68 @@ public:
 
 	const std::shared_ptr<KdCamera> GetCamera() const;
 
-	void EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos);
+	void EnemyInstance(std::shared_ptr<GameObject> target, Math::Vector3& pos, std::string& modelname);
+
+	void ReserveChangeScene(const std::string& filename)
+	{
+		m_changeSceneFilename = filename;
+	}
+
+	enum gameMode
+	{
+		Title,  //0
+		Game,   //1
+		Result, //2
+		GameOver//3
+	};
+
+	void ReserveChangeMode(enum gameMode mode)
+	{
+		m_changeGameModeFlg = true;
+		m_changeGameModeName = mode;
+	}
+
+	// 文字列化
+	void Save(const std::string& filename)
+	{
+
+	}
+
+	std::shared_ptr<GameObject> FindObjectWithTag(const std::string& tag);
+	std::vector<std::shared_ptr<GameObject>> FindObjectsWithTag(const std::string& tag);
 
 private:
 	void Release();		// 解放
 
-	KdModelWork m_sky;	// スカイスフィア
+	void Load(const std::string& filename);
 
 	DirectX::SimpleMath::Matrix m_skyMat;	// キューブのワールド行列
 
 	std::list<std::shared_ptr<GameObject>> m_spObjects;
 
+	std::shared_ptr<GameObject> m_spWaitingRoom; //一時的にGameObjectを保存しておく
+
 	std::shared_ptr<KdCamera> m_spCamera = nullptr;
 
 	ResourceFactory m_resourceFactory;
+
+	std::string m_changeSceneFilename = "";
+	gameMode m_changeGameModeName;
+	bool m_changeGameModeFlg = false;
+	// 
+	struct EditorOnly
+	{
+		std::weak_ptr<GameObject> m_selectObject;
+	KdCamera camera;
+		bool editFlg;
+		std::string setEnemyName;
+		std::string selectEnemyModelName;
+	};
+
+	EditorOnly m_editor;
+
+	float _blackoutRate = 0.0f;
+	float _blackoutSpeed = 0.0f;
 
 	// シングルトンパターン化
 public:

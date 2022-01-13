@@ -1,0 +1,222 @@
+[
+  {
+    "Angle": [0,-0,0],
+    "ClassName": "StageMap",
+    "ModelFilename": "Data\\Models\\StageMap\\Dungeon\\Dungeon3\\DungeonStage.gltf",
+    "Name": "GameObject",
+    "Pos": [0,0,0],
+    "Tag": ""
+  },
+  {
+    "Angle": [0,45.000007629394531,0],
+    "ClassName": "Player",
+    "ModelFilename": "Data/Models/robot/chara.gltf",
+    "Name": "player",
+    "Pos": [-11.903289794921875,-3.7339339256286621,-14.157435417175293],
+    "Tag": "Player"
+  },
+  {
+    "Angle": [0,45,0],
+    "ClassName": "Gimmick",
+    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
+    "Name": "GameObject",
+    "Pos": [0.039999999105930328,-4.4699997901916504,41.290000915527344],
+    "Tag": ""
+  },
+  {
+    "Angle": [180,45.000003814697266,180],
+    "ClassName": "Gimmick",
+    "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
+    "Name": "GameObject",
+    "Pos": [14.220000267028809,-4.5100002288818359,41.439998626708984],
+    "Tag": ""
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+
+    "Name": "slime",
+    "Pos": [2.8599998950958252,-3.7601385116577148,24.16200065612793],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [6.8319997787475586,-3.7344987392425537,24.058000564575195],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [3.7030000686645508,-3.8838846683502197,19.847000122070313],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 300,
+    "MaxHP": 300,
+    "ModelFilename": "Data/Models/enemy/golem.gltf",
+    "Name": "Golem",
+    "Pos": [6.8210000991821289,-3.6382052898406982,33.758998870849609],
+    "SuperArmor": true,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [3.8810000419616699,-3.6488220691680908,36.770000457763672],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [9.8950004577636719,-3.6488220691680908,30.955999374389648],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-7.1669998168945313,-3.7587413787841797,19.690999984741211],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-4.2820000648498535,-3.6820893287658691,22.414058685302734],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [-1.3070000410079956,-3.7587413787841797,16.320999145507813],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [8.6478204727172852,-3.7340612411499023,4.2885880470275879],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [10.901383399963379,-3.734443187713623,5.5421414375305176],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,1.3660359400091693e-05,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [14.151000022888184,-3.733973503112793,2.0230000019073486],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99993896484375,12.300002098083496,179.99995422363281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [-3.7162070274353027,-3.7338781356811523,1.7061252593994141],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99995422363281,45.600006103515625,179.99989318847656],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/skeleton.gltf",
+    "Name": "Enemy",
+    "Pos": [3.0837910175323486,-3.7340960502624512,1.7061252593994141],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99971008300781,70.400009155273438,179.99946594238281],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [2.7817091941833496,-3.7562036514282227,-4.5959587097167969],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99998474121094,43.400001525878906,179.99990844726563],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [-0.64440393447875977,-3.7338786125183105,-1.4673361778259277],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  },
+  {
+    "Angle": [179.99989318847656,65.700019836425781,179.99974060058594],
+    "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
+    "ModelFilename": "Data/Models/enemy/slime.gltf",
+    "Name": "Enemy",
+    "Pos": [0.12888683378696442,-3.7543439865112305,-9.1923789978027344],
+    "SuperArmor": false,
+    "Tag": "Enemy"
+  }
+]

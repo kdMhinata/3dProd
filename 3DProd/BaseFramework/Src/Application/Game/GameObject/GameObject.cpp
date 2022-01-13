@@ -2,7 +2,39 @@
 
 void GameObject::Draw()
 {
+	SHADER->m_standardShader.SetAlpha(m_alpha);
+
 	SHADER->m_standardShader.DrawModel(m_modelWork, m_mWorld);
+
+	SHADER->m_standardShader.SetAlpha(1.0f);
+}
+
+void GameObject::ImGuiUpdate()
+{
+	if (ImGui::Button("SaveToFile"))
+	{
+		std::string path;
+		if (KdWindow::SaveFileDialog(path))
+		{
+			// Jsonオブジェクト化
+			json11::Json::object obj;
+			Serialize(obj);
+			// 文字列化
+			json11::Json json(obj);
+			std::string strJson = json.dump(true);
+
+			std::ofstream ofs(path);
+			if(ofs)
+			{
+				ofs.write(strJson.c_str(), strJson.size());
+			}
+		}
+	}
+	ImGui::InputText("Name", &m_name);
+	ImGui::InputText("Tag", &m_tag);
+
+	// 座標
+	ImGui::DragFloat3("Pos", &m_mWorld._41, 0.01f);
 }
 
 bool GameObject::CheckCollisionBump(const SphereInfo& info, BumpResult& result)
@@ -40,11 +72,11 @@ bool GameObject::CheckCollisionBump(const RayInfo& info, BumpResult& result)
 
 	for (UINT i = 0; i < m_modelWork.GetDataNodes().size(); ++i)
 	{
-		const KdModelData::Node dataNode = m_modelWork.GetDataNodes()[i];
+		const KdModelData::Node& dataNode = m_modelWork.GetDataNodes()[i];
 
 		if (!dataNode.m_spMesh) { continue; }
 
-		const KdModelWork::Node workNode = m_modelWork.GetNodes()[i];
+		const KdModelWork::Node& workNode = m_modelWork.GetNodes()[i];
 
 		KdRayResult localResult;
 
