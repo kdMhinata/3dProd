@@ -36,35 +36,48 @@ const std::shared_ptr<KdModelData> ResourceFactory::GetModelData(const std::stri
 	return nullptr;
 }
 
-const std::shared_ptr<KdTexture> ResourceFactory::GetTexture(const std::string& fileName)
+const std::shared_ptr<KdTexture> ResourceFactory::GetTexture(const std::string& key)
 {
 	// リスト内のキーで検索
 	//std::unordered_map<std::string,std::shared_ptr<KdModelData>>::iterator
 		//foundItr = m_modelMap.find(fileName);
-	auto foundItr = m_textureMap.find(fileName);
-	// もしリストの中にある
-	if (foundItr != m_textureMap.end())
+	auto foundItr = m_textureMap.find(key);
+	// リストの中にない
+	if (foundItr == m_textureMap.end())
 	{
+		return nullptr;
 		// 見つけたデータを返す
-		return (*foundItr).second;	// second…2つ目の要素(モデルデータ)を返す
+//		return (*foundItr).second.m_data;	// second…2つ目の要素(モデルデータ)を返す
+	}
+
+	if ((*foundItr).second.m_data != nullptr)
+	{
+		return (*foundItr).second.m_data;
 	}
 
 	// もしリスト内にない場合
 	std::shared_ptr<KdTexture> newTexture = std::make_shared<KdTexture>();
 
 	// モデルを新規で読み込む
-	if (newTexture->Load(fileName))
+	if (newTexture->Load((*foundItr).second.m_path))
 	{
-		m_textureMap[fileName] = newTexture;
+		(*foundItr).second.m_data = newTexture;
+//		m_textureMap[key].m_data = newTexture;
 		return newTexture;
 	}
 
 	// 読み込みが失敗
-	std::string errorMsg = "ResourceFactory::GetTexture()  Failed" + fileName;
+	std::string errorMsg = "ResourceFactory::GetTexture()  Failed" + (*foundItr).second.m_path;
 
 	assert(0 && errorMsg.c_str());
 
 	return nullptr;
+}
+
+void ResourceFactory::Initialize(const std::string& databasePath)
+{
+	m_textureMap["EffectTex_Slash1"] = { "Data/Textures/Slash1.png" , nullptr};
+	// ・・・・・
 }
 
 void ResourceFactory::Release()

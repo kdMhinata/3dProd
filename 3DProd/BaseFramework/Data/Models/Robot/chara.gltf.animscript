@@ -27,7 +27,7 @@
 				{
 					"EventName": "AttackEffect",
 					"Time": 6,
-					"EffectName": "Data/Textures/Slash1.png",
+					"EffectName": "EffectTex_Slash1",
 					"Size": 4,
 					"SpX": 4,
 					"SpY": 3,

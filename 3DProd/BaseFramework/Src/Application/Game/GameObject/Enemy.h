@@ -3,30 +3,6 @@
 #include"GameObject.h"
 #include"Character.h"
 
-class EnemyAIInput : public BaseInput
-{
-public:
-	virtual void Update() override
-	{
-		if (1)
-		{
-			m_axisL.x = 1;
-		}
-
-		// 周囲を判定
-		if (1)
-		{
-//			m_target = player;
-		}
-
-		// ステートベースAI
-	}
-
-	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
-private:
-	std::weak_ptr<const GameObject> m_wpTarget;
-};
-
 class Enemy : public Character
 {
 public: 
@@ -162,5 +138,56 @@ private:
 	};
 
 	std::shared_ptr<BaseAction> m_spActionState = nullptr;
+
+
+	//class EnemyAIInput : public BaseInput
+	//{
+	//public:
+	//	virtual void Update() override
+	//	{
+	//		if (1)
+	//		{
+	//			m_axisL.x = 1;
+	//		}
+
+	//		// 周囲を判定
+	//		if (1)
+	//		{
+	//			//m_target = player;
+	//		}
+
+	//		// ステートベースAI
+	//	}
+
+	//	void PressButton(int index)
+	//	{
+	//		m_buttons[index] = 1;
+	//	}
+
+	//	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
+	//private:
+	//	std::weak_ptr<const GameObject> m_wpTarget;
+
+	//	SphereInfo viewSphere;
+
+	//	Enemy* m_owner = nullptr;
+
+	//	class AIState_Base
+	//	{
+	//	public:
+	//		virtual void Update(EnemyAIInput& input) = 0;
+	//	};
+	//	class AIState_Idle : public AIState_Base
+	//	{
+	//	public:
+	//		virtual void Update(EnemyAIInput& input)
+	//		{
+	//			if ( )
+	//			{
+	//				input.PressButton(0);
+	//			}
+	//		}
+	//	};
+	//};
 
 };

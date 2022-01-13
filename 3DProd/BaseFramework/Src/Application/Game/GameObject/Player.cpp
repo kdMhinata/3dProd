@@ -435,12 +435,6 @@ void Player::UpdateMove(Math::Vector3& dstMove)
 	moveVec.Normalize();
 	moveVec *= moveSpd;
 
-	if (m_spCamera)
-	{
-		// 進行方向をカメラ回転を加味して修正する
-	//	moveVec = moveVec.TransformNormal(moveVec, m_spCamera->GetRotationYMatrix()); //カメラ回転無くすために消し
-	}
-
 	// 座標確定
 	m_worldPos.x += moveVec.x;
 	m_worldPos.z += moveVec.z;
@@ -711,7 +705,7 @@ void Player::ActionAttack::Update(Player& owner)
 		Math::Vector3 attackVec = owner.m_mWorld.Backward();
 
 		attackVec.Normalize();
-		attackVec *= 0.025f;
+		attackVec *= 0.01f;
 
 		owner.m_worldPos.x += attackVec.x;
 		owner.m_worldPos.z += attackVec.z;
