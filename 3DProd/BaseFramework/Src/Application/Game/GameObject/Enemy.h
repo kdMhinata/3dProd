@@ -140,54 +140,62 @@ private:
 	std::shared_ptr<BaseAction> m_spActionState = nullptr;
 
 
-	//class EnemyAIInput : public BaseInput
-	//{
-	//public:
-	//	virtual void Update() override
-	//	{
-	//		if (1)
-	//		{
-	//			m_axisL.x = 1;
-	//		}
+	class EnemyAIInput : public BaseInput
+	{
+	public:
+		virtual void Update() override{}
 
-	//		// 周囲を判定
-	//		if (1)
-	//		{
-	//			//m_target = player;
-	//		}
+		void PressButton(int index)
+		{
+			m_buttons[index] = 1;
+		}
 
-	//		// ステートベースAI
-	//	}
+		void UpdateSearch()
+		{
+			// 周囲を判定し　視界内にプレイヤーがいるとターゲットする
+				for (const std::shared_ptr<GameObject>& spObj : GameInstance.GetObjects())
+				{
+					if (spObj->GetTag()=="Player") { continue; }
 
-	//	void PressButton(int index)
-	//	{
-	//		m_buttons[index] = 1;
-	//	}
+					BumpResult result;
 
-	//	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
-	//private:
-	//	std::weak_ptr<const GameObject> m_wpTarget;
+					//視界判定
+					SphereInfo sphereInfo(m_owner->GetPos() + viewSphere.m_pos, viewSphere.m_radius);
 
-	//	SphereInfo viewSphere;
+					if (spObj->CheckCollisionBump(sphereInfo, result))
+					{
+						SetTarget(spObj);
+					}
+					else
+					{
+						m_wpTarget.reset();
+					}
+				}
+		}
 
-	//	Enemy* m_owner = nullptr;
+		void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
+	private:
+		std::weak_ptr<const GameObject> m_wpTarget;
 
-	//	class AIState_Base
-	//	{
-	//	public:
-	//		virtual void Update(EnemyAIInput& input) = 0;
-	//	};
-	//	class AIState_Idle : public AIState_Base
-	//	{
-	//	public:
-	//		virtual void Update(EnemyAIInput& input)
-	//		{
-	//			if ( )
-	//			{
-	//				input.PressButton(0);
-	//			}
-	//		}
-	//	};
-	//};
+		SphereInfo viewSphere;
+
+		Enemy* m_owner = nullptr;
+
+		class AIState_Base
+		{
+		public:
+			virtual void Update(EnemyAIInput& input) = 0;
+		};
+		class AIState_Idle : public AIState_Base
+		{
+		public:
+			virtual void Update(EnemyAIInput& input){}
+		};
+		class AIState_Tracking :public AIState_Base
+		{
+		public:
+			virtual void Update(EnemyAIInput& input) {};
+		};
+	};
 
 };

@@ -19,7 +19,7 @@ private:
 	{
 		std::string m_path;	// ファイルへのパス
 		std::shared_ptr<KdTexture> m_data;// Data
-
+		std::vector<std::string> m_groups;
 	};
 
 	// 文字列とモデルデータを格納

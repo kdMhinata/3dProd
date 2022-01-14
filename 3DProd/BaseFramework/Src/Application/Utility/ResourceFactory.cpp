@@ -74,22 +74,96 @@ const std::shared_ptr<KdTexture> ResourceFactory::GetTexture(const std::string& 
 	return nullptr;
 }
 
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+
+class CSVLoader
+{
+public:
+
+	const std::vector<std::vector<std::string>>& GetResult() const { return m_data; }
+
+	bool Load(const std::string& filename)
+	{
+		std::ifstream ifs(filename);
+		if (!ifs)return false;
+
+		char bom[3];
+		ifs.read(bom, 3);
+
+		// UTF-8 BOM 0xEF 0xBB 0xBF
+		if (!(bom[0] == (char)0xEF && bom[1] == (char)0xBB && bom[2] == (char)0xBF))
+		{
+			ifs.seekg(0, std::ios_base::beg);
+		}
+
+		std::string lineBuf;
+
+		m_data.clear();
+		bool  isTitleLine = true;
+		// getline関数で1行ずつ読み込む(読み込んだ内容はstr_bufに格納)
+		while (std::getline(ifs, lineBuf))
+		{
+			if (isTitleLine)
+			{
+				std::istringstream i_stream(lineBuf);
+				std::string colBuf;
+				while (std::getline(i_stream, colBuf, ','))
+				{
+					m_title.push_back(colBuf);
+				}
+				isTitleLine = false;
+				continue;
+			}
+
+			// 「,」区切りごとにデータを読み込むためにistringstream型にする
+			std::istringstream i_stream(lineBuf);
+
+			m_data.push_back(std::vector<std::string>());
+			m_data.back().resize(m_title.size());
+
+			// 「,」区切りごとにデータを読み込む
+			std::string colBuf;
+			int rowIndex = 0;
+			while (std::getline(i_stream, colBuf, ','))
+			{
+				if (rowIndex >= m_title.size())break;
+				m_data.back()[rowIndex] = colBuf;
+				rowIndex++;
+			}
+		}
+
+		return true;
+	}
+private:
+	std::vector<std::string> m_title;
+	std::vector<std::vector<std::string>> m_data;
+};
+
 void ResourceFactory::Initialize(const std::string& databasePath)
 {
-	//csvのデータをデータベースに登録する
+	CSVLoader csvLoader;
+	if (csvLoader.Load(databasePath))
+	{
+		auto& result = csvLoader.GetResult();
+		for (size_t iRow = 0; iRow < result.size(); iRow++)
+		{
+			auto& row = result[iRow];
+
+			std::vector<std::string> groups;
+			std::istringstream i_stream(row[2]);
+			std::string colBuf;
+			while (std::getline(i_stream, colBuf, '/'))
+			{
+				groups.push_back(colBuf);
+			}
+			m_textureMap[row[0]] = { row[1], nullptr, groups };
+		}
+	}	
 	
-	//for
-	//if csvの１列目があったら
-	//1列目をキーとして登録
-	//2列目をパスとして登録
-	//次の行を読み込む
-
-	//FILE* fp; //ファイルの情報を格納する構造体
-
-	////ファイル読み込み
-	//fp = fopen("Data/DataBase/Textures.csv", "r");
-	//fclose(fp);
-
+	/*
 	const char* DELIMS = " ,"; //スペース,カンマ
 	const int MAX_LINE_LENGTH = 1014;
 
@@ -107,6 +181,7 @@ void ResourceFactory::Initialize(const std::string& databasePath)
 	}
 
 	file.close();
+	*/
 }
 
 void ResourceFactory::Release()
