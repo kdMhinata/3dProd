@@ -2,7 +2,7 @@
 
 void ResultObject::Init()
 {
-	m_spResultTex = GameResourceFactory.GetTexture("Data/Textures/gameover.png");
+	m_spResultTex = GameResourceFactory.GetTexture("SpriteTex_GameOver");
 	m_input = std::make_shared<PlayerInput>();
 }
 

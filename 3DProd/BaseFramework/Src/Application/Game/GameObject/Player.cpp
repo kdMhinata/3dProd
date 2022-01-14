@@ -105,15 +105,15 @@ void Player::Deserialize(const json11::Json& json)
 		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
 	m_audioManager.Init();
 
-	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/bar.png");
-	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
+	m_hpBarTex = GameResourceFactory.GetTexture("SpriteTex_HpBar");
+	m_hpFrameTex = GameResourceFactory.GetTexture("SpriteTex_HpBarFrame");
 
-	m_damageFont = GameResourceFactory.GetTexture("Data/Textures/damagefont.png");
+	m_damageFont = GameResourceFactory.GetTexture("SpriteTex_DamageFont");
 
 	m_spShadow = std::make_shared<Effect2D>();
 	m_spShadow->Init();
 	m_spShadow->SetPos(GetPos());
-	m_spShadow->SetTexture(GameResourceFactory.GetTexture("Data/Textures/shadow.png"));
+	m_spShadow->SetTexture(GameResourceFactory.GetTexture("EffectTex_CircleShadow"));
 
 	m_swordmodelWork.SetModel(GameResourceFactory.GetModelData("Data/Models/Weapon/sword.gltf"));
 
@@ -366,7 +366,7 @@ void Player::ScriptProc(const json11::Json& event)
 	}
 	else if (eventName == "AttackEffect")
 	{
-		const std::string& EffectFile = event["EffectName"].string_value();
+		const std::string& EffectName = event["EffectName"].string_value();
 		float	Size = (float)event["Size"].number_value();
 		if (event["Size2"].is_number())
 		{
@@ -389,7 +389,7 @@ void Player::ScriptProc(const json11::Json& event)
 		std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
 	
 		spEffect->Init();
-		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectFile), Size, Size);
+  		spEffect->SetTexture(GameResourceFactory.GetTexture(EffectName), Size, Size);
 		
 		if (localMode)
 		{
@@ -538,7 +538,7 @@ void Player::DoAttack(int damage)
 					spEffect->SetAnimation(4, 5, 3.0f);
 					spEffect->SetPos(effectPos);
 					spEffect->SetLifeSpan(1000);
-					spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/SlashH1.png"),15,15);
+					spEffect->SetTexture(GameResourceFactory.GetTexture("EffectTex_HitSlash"),15,15);
 					GameInstance.AddObject(spEffect);
 				}
 			}

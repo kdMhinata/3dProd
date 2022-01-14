@@ -65,7 +65,7 @@
 				{
 					"EventName": "AttackEffect",
 					"Time": 6,
-					"EffectName": "Data/Textures/Slash2.png",
+					"EffectName": "EffectTex_Slash2",
 					"Size": 4,
 					"SpX": 4,
 					"SpY": 3,
@@ -102,7 +102,7 @@
 				{
 					"EventName": "AttackEffect",
 					"Time": 6,
-					"EffectName": "Data/Textures/Slash3.png",
+					"EffectName": "EffectTex_Slash3",
 					"Size": 4,
 					"SpX": 4,
 					"SpY": 4,
@@ -134,7 +134,7 @@
 				{
 					"EventName": "AttackEffect",
 					"Time": 6,
-					"EffectName": "Data/Textures/Thrust1.png",
+					"EffectName": "EffectTex_Thrust1",
 					"SpX": 4,
 					"Size": 6,
 					"Size2": 10,

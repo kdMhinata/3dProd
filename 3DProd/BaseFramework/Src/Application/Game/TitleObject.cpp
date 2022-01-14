@@ -2,7 +2,7 @@
 
 void TitleObject::Init()
 {
-	m_spTitleTex = GameResourceFactory.GetTexture("Data/Textures/title.png");
+	m_spTitleTex = GameResourceFactory.GetTexture("SpriteTex_TItle");
 	m_input=std::make_shared<PlayerInput>();
 }
 

@@ -41,8 +41,8 @@ void Enemy::Deserialize(const json11::Json& json)
 		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
 	m_audioManager.Init();
 
-	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/ebar.png");
-	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
+	m_hpBarTex = GameResourceFactory.GetTexture("SpriteTex_EnemyHpBar");
+	m_hpFrameTex = GameResourceFactory.GetTexture("SpriteTex_HpBarFrame");
 
 	
 }
@@ -74,8 +74,8 @@ void Enemy::Init()
 	m_hp = 100;
 	SetMaxHp(100);
 
-	m_hpBarTex = GameResourceFactory.GetTexture("Data/Textures/ebar.png");
-	m_hpFrameTex = GameResourceFactory.GetTexture("Data/Textures/frame.png");
+	m_hpBarTex = GameResourceFactory.GetTexture("SpriteTex_EnemyHpBar.png");
+	m_hpFrameTex = GameResourceFactory.GetTexture("SpriteTex_HpBarFrame.png");
 
 	//AudioEngin初期化
 	DirectX::AUDIO_ENGINE_FLAGS eflags =
@@ -355,7 +355,7 @@ void Enemy::DoAttack()
 				spEffect->Init();
 				spEffect->SetAnimation(5, 5);
 				spEffect->SetPos(effectPos);
-				spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/Explosion.png"));
+			//	spEffect->SetTexture(GameResourceFactory.GetTexture("Data/Textures/Explosion.png"));
 
 				GameInstance.AddObject(spEffect);
 			}

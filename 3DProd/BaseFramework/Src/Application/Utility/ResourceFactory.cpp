@@ -76,8 +76,37 @@ const std::shared_ptr<KdTexture> ResourceFactory::GetTexture(const std::string& 
 
 void ResourceFactory::Initialize(const std::string& databasePath)
 {
-	m_textureMap["EffectTex_Slash1"] = { "Data/Textures/Slash1.png" , nullptr};
-	// ・・・・・
+	//csvのデータをデータベースに登録する
+	
+	//for
+	//if csvの１列目があったら
+	//1列目をキーとして登録
+	//2列目をパスとして登録
+	//次の行を読み込む
+
+	//FILE* fp; //ファイルの情報を格納する構造体
+
+	////ファイル読み込み
+	//fp = fopen("Data/DataBase/Textures.csv", "r");
+	//fclose(fp);
+
+	const char* DELIMS = " ,"; //スペース,カンマ
+	const int MAX_LINE_LENGTH = 1014;
+
+	std::fstream file(databasePath);
+
+	//行を読み込むためのバッファを用意する
+	char buffer[MAX_LINE_LENGTH] = {};
+
+	while (file.getline(buffer, MAX_LINE_LENGTH))
+	{
+		const char* row = strtok(buffer, DELIMS);
+		const char* col = strtok(NULL, DELIMS);
+
+		m_textureMap[std::string(row)] = { std::string(col),nullptr };
+	}
+
+	file.close();
 }
 
 void ResourceFactory::Release()

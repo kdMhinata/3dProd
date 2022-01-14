@@ -30,8 +30,8 @@ void GameSystem::GameInit()
 		Load("Data/Save/Dungeon1");
 
 		// 共通エフェクト
-		GameResourceFactory.GetTexture("Data/Textures/SlashH1.png");
-		GameResourceFactory.GetTexture("Data/Textures/damagefont.png");
+		GameResourceFactory.GetTexture("EffectTex_HitSlash");
+		GameResourceFactory.GetTexture("SpriteTex_DamageFont");
 
 		isLoaded = true;
 	};

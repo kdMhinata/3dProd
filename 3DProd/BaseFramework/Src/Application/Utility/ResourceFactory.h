@@ -3,7 +3,7 @@
 class ResourceFactory
 {
 public:
-	ResourceFactory() {}
+	ResourceFactory() { Initialize("Data/DataBase/Textures.csv"); }
 	~ResourceFactory() { Release(); }
 
 	const std::shared_ptr<KdModelData> GetModelData(const std::string& fileName);
