@@ -492,7 +492,7 @@ void GameSystem::Load(const std::string& filename)
 void GameSystem::EnterStage()
 {
 	//空のPlayerSpawnPointと一時的に保存しておいたプレイヤーを置き換える
-	for (std::shared_ptr<GameObject>& spObject : GameInstance.LoadWaitingRoom())
+	for (auto&& spObject : GameInstance.LoadWaitingRoom())
 	{
 		auto player = std::dynamic_pointer_cast<Player>(spObject);
 
@@ -504,6 +504,8 @@ void GameSystem::EnterStage()
 
 		player->Enter(spSpawnPoint->GetPos(),MatToAngle(spSpawnPoint->GetMatrix())); //スポーンポイントの位置にプレイヤーをセットする
 	}
+
+	GameInstance.ClearWatingRoom();
 }
 
 std::shared_ptr<GameObject> GameSystem::FindObjectWithTag(const std::string& tag)

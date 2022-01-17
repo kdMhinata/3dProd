@@ -3,6 +3,7 @@
 #include"GameObject.h"
 #include"Character.h"
 
+
 class Enemy : public Character
 {
 public: 
@@ -39,6 +40,8 @@ public:
 	virtual void Serialize(json11::Json::object& json);
 
 private:
+
+	std::string m_aiType;
 
 	void ScriptProc(const json11::Json& event)override;
 
@@ -91,7 +94,7 @@ private:
 
 		m_spActionState->Entry(*this);
 	}
-	
+
 	class BaseAction
 	{
 	public:
@@ -142,63 +145,67 @@ private:
 
 	std::shared_ptr<BaseAction> m_spActionState = nullptr;
 
+//	std::shared_ptr <AIState_Base>m_spAIState = nullptr;
+};
 
-	class EnemyAIInput : public BaseInput
+class AIState_Base;
+
+class EnemyAIInput : public BaseInput
+{
+public:
+	virtual void Update() override;
+
+	void PressButton(int index)
+	{
+		m_buttons[index] = 1;
+	}
+
+	void UpdateSearch();
+
+	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
+
+	std::weak_ptr<const GameObject>GetTarget() { return m_wpTarget; };
+
+	Enemy* GetOwner() { return m_owner; };
+
+	template<class Type>
+	void ChangeAIState()
+	{
+		m_pState = std::make_shared<Type>();
+	}
+
+
+private:
+	std::weak_ptr<const GameObject> m_wpTarget;
+
+	SphereInfo viewSphere;
+
+	Enemy* m_owner = nullptr;
+
+	std::shared_ptr<AIState_Base> m_pState;
+};
+
+class AIState_Base
+{
+public:
+	virtual void Update(EnemyAIInput& input) = 0;
+};
+
+namespace Melee
+{
+	class AIState_Idle : public AIState_Base
 	{
 	public:
-		virtual void Update() override{}
-
-		void PressButton(int index)
-		{
-			m_buttons[index] = 1;
-		}
-
-		void UpdateSearch()
-		{
-			// 周囲を判定し　視界内にプレイヤーがいるとターゲットする
-				for (const std::shared_ptr<GameObject>& spObj : GameInstance.GetObjects())
-				{
-					if (spObj->GetTag()=="Player") { continue; }
-
-					BumpResult result;
-
-					//視界判定
-					SphereInfo sphereInfo(m_owner->GetPos() + viewSphere.m_pos, viewSphere.m_radius);
-
-					if (spObj->CheckCollisionBump(sphereInfo, result))
-					{
-						SetTarget(spObj);
-					}
-					else
-					{
-						m_wpTarget.reset();
-					}
-				}
-		}
-
-		void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
-	private:
-		std::weak_ptr<const GameObject> m_wpTarget;
-
-		SphereInfo viewSphere;
-
-		Enemy* m_owner = nullptr;
-
-		class AIState_Base
-		{
-		public:
-			virtual void Update(EnemyAIInput& input) = 0;
-		};
-		class AIState_Idle : public AIState_Base
-		{
-		public:
-			virtual void Update(EnemyAIInput& input){}
-		};
-		class AIState_Tracking :public AIState_Base
-		{
-		public:
-			virtual void Update(EnemyAIInput& input) {};
-		};
+		virtual void Update(EnemyAIInput& input)override;
 	};
-
-};
+	class AIState_Tracking :public AIState_Base
+	{
+	public:
+		virtual void Update(EnemyAIInput& input)override;
+	};
+	class AIState_Attack :public AIState_Base
+	{
+	public:
+		virtual void Update(EnemyAIInput& input)override;
+	};
+}

@@ -21,6 +21,7 @@ void Enemy::Deserialize(const json11::Json& json)
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
 
 	m_spActionState = std::make_shared<ActionWait>();
+//	m_spAIState = std::make_shared<AIState_Idle>();
 
 	m_worldRot.y = 180;
 
@@ -44,13 +45,35 @@ void Enemy::Deserialize(const json11::Json& json)
 	m_hpBarTex = GameResourceFactory.GetTexture("SpriteTex_EnemyHpBar");
 	m_hpFrameTex = GameResourceFactory.GetTexture("SpriteTex_HpBarFrame");
 
-	
+	// 
+	m_aiType = json["AIType"].string_value();
+	if (m_aiType == "Player")
+	{
+		m_input = std::make_shared<PlayerInput>();
+	}
+	else if (m_aiType == "MeleeAI")
+	{
+		auto input = std::make_shared<EnemyAIInput>();
+		input->ChangeAIState<Melee::AIState_Idle>();
+		m_input = input;
+	}
+	else if (m_aiType == "RangeAI")
+	{
+		auto input = std::make_shared<EnemyAIInput>();
+		input->ChangeAIState<Melee::AIState_Idle>();
+		m_input = input;
+	}
+	else
+	{
+		m_input = std::make_shared<BaseInput>();
+	}
 }
 
 void Enemy::Serialize(json11::Json::object& json)
 {
 	Character::Serialize(json);
 
+	json["AIType"] = m_aiType;
 	json["SuperArmor"] = m_sArmor;
 	json["HP"] = m_hp;
 	json["MaxHP"] = m_maxHp;
@@ -81,6 +104,8 @@ void Enemy::Init()
 	DirectX::AUDIO_ENGINE_FLAGS eflags =
 		DirectX::AudioEngine_EnvironmentalReverb | DirectX::AudioEngine_ReverbUseFilters;
 	m_audioManager.Init();
+
+	m_input = std::make_shared<EnemyAIInput>();
 }
 
 void Enemy::Draw2D()
@@ -103,6 +128,8 @@ void Enemy::Draw2D()
 void Enemy::ImGuiUpdate()
 {
 	Character::ImGuiUpdate();
+
+	ImGui::InputText("AIType", &m_aiType);
 
 	ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
 
@@ -144,6 +171,8 @@ void Enemy::Update()
 	{
 		m_spActionState->Update(*this);
 	}
+
+	m_input->Update();
 
 	UpdateSearch();
 
@@ -424,9 +453,9 @@ void Enemy::ActionWait::Update(Enemy& owner)
 
 void Enemy::ActionMove::Update(Enemy& owner)
 {
-	if (owner.m_attackFlg)
+	if (owner.m_input->IsPressButton(0, false))
 	{
-		owner.ChangeAction < Enemy::ActionAttack>();
+		owner.ChangeAction<Enemy::ActionAttack>();
 	}
 
 	if (owner.m_hp <= 0)
@@ -454,6 +483,8 @@ void Enemy::ActionElimination ::Update(Enemy& owner)
 	}
 }
 
+
+
 void Enemy::ActionGetHit::Update(Enemy& owner)
 {
 	Math::Vector3 knockBackVec = owner.m_mWorld.Forward();
@@ -464,3 +495,56 @@ void Enemy::ActionGetHit::Update(Enemy& owner)
 	owner.m_worldPos.x += knockBackVec.x;
 	owner.m_worldPos.z += knockBackVec.z;
 }
+
+void EnemyAIInput::Update()
+{
+	if(m_pState)m_pState->Update(*this);
+}
+
+void EnemyAIInput::UpdateSearch()
+{
+	// 周囲を判定し　視界内にプレイヤーがいるとターゲットする
+	for (const std::shared_ptr<GameObject>& spObj : GameInstance.GetObjects())
+	{
+		if (spObj->GetTag() == "Player") { continue; }
+
+		BumpResult result;
+
+		//視界判定
+		SphereInfo sphereInfo(m_owner->GetPos() + viewSphere.m_pos, viewSphere.m_radius);
+
+		if (spObj->CheckCollisionBump(sphereInfo, result))
+		{
+			SetTarget(spObj);
+		}
+		else
+		{
+			m_wpTarget.reset();
+		}
+	}
+}
+
+void Melee::AIState_Idle::Update(EnemyAIInput& input)
+{
+	//ターゲットする対象を視界内から探す
+	input.UpdateSearch();
+
+	//ターゲットが見つからなければその場で待機
+	if (input.GetTarget().expired()) { return; }
+
+	//追跡しようと考える
+	input.ChangeAIState<AIState_Tracking>();
+}
+
+void Melee::AIState_Tracking::Update(EnemyAIInput& input)
+{
+	//ターゲットの場所を取ってきて
+	//そこに向かって移動するキーを押す
+}
+
+void Melee::AIState_Attack::Update(EnemyAIInput& input)
+{
+	//攻撃キーを押す
+	input.PressButton(1);
+}
+
