@@ -336,10 +336,7 @@ void Player::ScriptProc(const json11::Json& event)
 	}
 	else if (eventName == "ConToAtk")
 	{
-		if (m_atkComboFlg)
-		{
 			m_atkCancelAnimName = event["AnimName"].string_value();
-		}
 	}
 	else if (eventName == "End")
 	{
@@ -646,17 +643,12 @@ void Player::ActionMove::Update(Player& owner)
 void Player::ActionAttack::Update(Player& owner)
 {
 
-	if (owner.m_input->IsPressButton(0, false))
+	if (owner.m_input->IsPressButton(0, false)&&owner.m_atkCancelAnimName.size()>0)
 	{
-		owner.m_atkComboFlg = true;
-	}
-
-	if (owner.m_atkCancelAnimName.size() > 0)
-	{
-		owner.ChangeAction < Player::ActionAttack>();
 		owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation(owner.m_atkCancelAnimName), false);
 		owner.m_atkCancelAnimName = "";
 	}
+
 	if (owner.m_input->IsPressButton(1, false))
 	{
 		owner.ChangeAction < Player::ActionDodge>();

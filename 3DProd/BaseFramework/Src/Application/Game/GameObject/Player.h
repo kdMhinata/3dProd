@@ -167,6 +167,10 @@ private:
 			owner.m_atkComboFlg = false;
 		}
 		void Update(Player& owner) override;
+		void Exit(Player& owner)override
+		{
+			owner.m_atkCancelAnimName = "";
+		}
 	};
 
 	class ActionDodge : public BaseAction

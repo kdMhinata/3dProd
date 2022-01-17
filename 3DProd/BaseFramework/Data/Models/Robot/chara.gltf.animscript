@@ -20,6 +20,12 @@
 			"AnimName": "Attack1",
 			"Data": [
 				{
+					"EventName": "ConToAtk",
+					"Time": 0,
+					"AnimName": "Attack2",
+					"TransitionTime" : 17
+				},
+				{
 					"EventName": "PlaySound",
 					"Time": 6,
 					"SoundName": "Data/Audio/SE/Slash1.wav"
@@ -41,11 +47,6 @@
 					"EventName": "DoAttack",
 					"Damage": 10,
 					"Time": 6
-				},
-				{
-					"EventName": "ConToAtk",
-					"Time": 17,
-					"AnimName": "Attack2"
 				},
 				{
 					"EventName": "End",
