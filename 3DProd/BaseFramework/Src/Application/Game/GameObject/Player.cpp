@@ -132,12 +132,6 @@ void Player::Update()
 
 	m_input->Update();
 
-	//消す
-	if (GetAsyncKeyState(VK_UP))
-	{
-		GameInstance.ReserveChangeScene("Data/Save/Dungeon2");
-	}
-
 	// 通常
 	if (m_hitStop <= 0)
 	{
@@ -178,14 +172,6 @@ void Player::Update()
 	m_worldPos += m_force;
 
 	// 摩擦
-/*	if (空中)
-	{
-		m_force *= 0.99f;
-	}
-	else
-	{
-		m_force *= 0.9f;
-	}*/
 	m_force *= 0.87f;
 
 	m_modelWork.CalcNodeMatrices();
@@ -228,12 +214,11 @@ void Player::Draw2D()
 	GameInstance.GetCamera()->ConvertWorldToScreenDetail(GetPos(), _pos);
 		Math::Rectangle barrec = { 0,0,500,20 };
 		Math::Rectangle framerec = { 0,0,500,20 };
-		Math::Color col= kWhiteColor;
 		float maxhp = (float)GetMaxHp();
 		float hpcalc = (m_hp / maxhp);
 		SHADER->m_spriteShader.SetMatrix(Math::Matrix::Identity);
-		SHADER->m_spriteShader.DrawTex(m_hpFrameTex.get(), -302, -290, 500, 20, &framerec, &col, { 0.5,0.5 });
-		SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), -552, -290 , 500*hpcalc, 20,&barrec, &col, { 0.0,0.5 });
+		SHADER->m_spriteShader.DrawTex(m_hpFrameTex.get(), -302, -290, 500, 20, &framerec, &kWhiteColor, { 0.5,0.5 });
+		SHADER->m_spriteShader.DrawTex(m_hpBarTex.get(), -552, -290 , 500*hpcalc, 20,&barrec, &kWhiteColor, { 0.0,0.5 });
 }
 
 void Player::DrawEffect()
@@ -334,10 +319,6 @@ void Player::DamageDisplay(int damage)
 		SHADER->m_spriteShader.DrawTex(m_damageFont.get(), _pos.x, _pos.y, 22, 30, &font, &kWhiteColor, { 0.5,0.5 });
 	}
 }
-
-
-// 
-
 
 void Player::ScriptProc(const json11::Json& event)
 {
@@ -503,6 +484,7 @@ void Player::DoAttack(int damage)
 		{
  			if (spObj->GetClassID() != GameObject::eEnemy&& spObj->GetClassID()!=GameObject::eDestuctible) { continue; }
 
+			//プレイヤーの少し前に攻撃座標の原点を置く
     			Math::Vector3 attackPos = GetPos();
 			attackPos += (m_mWorld.Backward() * 0.5);
 
@@ -529,17 +511,6 @@ void Player::DoAttack(int damage)
 					m_hitStop = 3;
 
 					//ヒット時行う処理
-					//爆発
-					std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
-
-					Math::Vector3 effectPos = (attackPos += (m_mWorld.Up() * 0.5)+=(m_mWorld.Backward()*0.5));
-
-					spEffect->Init();
-					spEffect->SetAnimation(4, 5, 3.0f);
-					spEffect->SetPos(effectPos);
-					spEffect->SetLifeSpan(1000);
-					spEffect->SetTexture(GameResourceFactory.GetTexture("EffectTex_HitSlash"),15,15);
-					GameInstance.AddObject(spEffect);
 				}
 			}
 		}
