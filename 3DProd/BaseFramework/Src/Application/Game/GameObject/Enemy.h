@@ -134,7 +134,10 @@ private:
 	public:
 		void Entry(Enemy& owner) { owner.m_animator.SetAnimation(owner.m_modelWork.GetData()->GetAnimation("GetHit"), false);}
 		void Update(Enemy& owner) override;
-		void Exit(Enemy& owner) { owner.m_canAttackCnt = 50; owner.m_attackFlg = false; }
+		void Exit(Enemy& owner) 
+		{
+			owner.m_canAttackCnt = 50; owner.m_attackFlg = false;
+		}
 	};
 
 	std::shared_ptr<BaseAction> m_spActionState = nullptr;

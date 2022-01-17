@@ -178,6 +178,7 @@ void Enemy::Update()
 
 void Enemy::NotifyDamage(DamageArg& arg)
 {
+	if (m_hp <= 0) { return; }
 	m_hp -= arg.damage;
 	arg.ret_IsHit = true;
 
@@ -462,9 +463,4 @@ void Enemy::ActionGetHit::Update(Enemy& owner)
 
 	owner.m_worldPos.x += knockBackVec.x;
 	owner.m_worldPos.z += knockBackVec.z;
-
-	if (owner.m_hp <= 0)
-	{
-		owner.ChangeAction < Enemy::ActionElimination>();
-	}
 }

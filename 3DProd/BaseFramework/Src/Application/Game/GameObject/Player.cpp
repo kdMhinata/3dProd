@@ -511,6 +511,16 @@ void Player::DoAttack(int damage)
 					m_hitStop = 3;
 
 					//ƒqƒbƒgs‚¤ˆ—
+					std::shared_ptr<Effect2D> spEffect = std::make_shared<Effect2D>();
+
+					Math::Vector3 effectPos = (attackPos += (m_mWorld.Up() * 0.5) += (m_mWorld.Backward() * 0.5));
+
+					spEffect->Init();
+					spEffect->SetAnimation(4, 5, 3.0f);
+					spEffect->SetPos(effectPos);
+					spEffect->SetLifeSpan(1000);
+					spEffect->SetTexture(GameResourceFactory.GetTexture("EffectTex_HitSlash"), 15, 15);
+					GameInstance.AddObject(spEffect);
 				}
 			}
 		}
