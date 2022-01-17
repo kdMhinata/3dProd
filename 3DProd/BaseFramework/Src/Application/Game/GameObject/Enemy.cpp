@@ -21,7 +21,7 @@ void Enemy::Deserialize(const json11::Json& json)
 	m_animator.SetAnimation(m_modelWork.GetData()->GetAnimation("Idle"));
 
 	m_spActionState = std::make_shared<ActionWait>();
-	m_spAIState = std::make_shared<AIState_Idle>();
+//	m_spAIState = std::make_shared<AIState_Idle>();
 
 	m_worldRot.y = 180;
 
@@ -45,13 +45,35 @@ void Enemy::Deserialize(const json11::Json& json)
 	m_hpBarTex = GameResourceFactory.GetTexture("SpriteTex_EnemyHpBar");
 	m_hpFrameTex = GameResourceFactory.GetTexture("SpriteTex_HpBarFrame");
 
-	m_input=std::make_shared<EnemyAIInput>();
+	// 
+	m_aiType = json["AIType"].string_value();
+	if (m_aiType == "Player")
+	{
+		m_input = std::make_shared<PlayerInput>();
+	}
+	else if (m_aiType == "MeleeAI")
+	{
+		auto input = std::make_shared<EnemyAIInput>();
+		input->ChangeAIState<Melee::AIState_Idle>();
+		m_input = input;
+	}
+	else if (m_aiType == "RangeAI")
+	{
+		auto input = std::make_shared<EnemyAIInput>();
+		input->ChangeAIState<Melee::AIState_Idle>();
+		m_input = input;
+	}
+	else
+	{
+		m_input = std::make_shared<BaseInput>();
+	}
 }
 
 void Enemy::Serialize(json11::Json::object& json)
 {
 	Character::Serialize(json);
 
+	json["AIType"] = m_aiType;
 	json["SuperArmor"] = m_sArmor;
 	json["HP"] = m_hp;
 	json["MaxHP"] = m_maxHp;
@@ -106,6 +128,8 @@ void Enemy::Draw2D()
 void Enemy::ImGuiUpdate()
 {
 	Character::ImGuiUpdate();
+
+	ImGui::InputText("AIType", &m_aiType);
 
 	ImGui::DragFloat3("Pos", &m_worldPos.x, 0.01f);
 
@@ -476,7 +500,12 @@ void Enemy::ActionGetHit::Update(Enemy& owner)
 	}
 }
 
-void Enemy::EnemyAIInput::UpdateSearch()
+void EnemyAIInput::Update()
+{
+	if(m_pState)m_pState->Update(*this);
+}
+
+void EnemyAIInput::UpdateSearch()
 {
 	// 周囲を判定し　視界内にプレイヤーがいるとターゲットする
 	for (const std::shared_ptr<GameObject>& spObj : GameInstance.GetObjects())
@@ -499,7 +528,7 @@ void Enemy::EnemyAIInput::UpdateSearch()
 	}
 }
 
-void Enemy::AIState_Idle::Update(EnemyAIInput& input)
+void Melee::AIState_Idle::Update(EnemyAIInput& input)
 {
 	//ターゲットする対象を視界内から探す
 	input.UpdateSearch();
@@ -508,16 +537,16 @@ void Enemy::AIState_Idle::Update(EnemyAIInput& input)
 	if (input.GetTarget().expired()) { return; }
 
 	//追跡しようと考える
-	input.GetOwner()->ChangeAIState<AIState_Tracking>();
+	input.ChangeAIState<AIState_Tracking>();
 }
 
-void Enemy::AIState_Tracking::Update(EnemyAIInput& input)
+void Melee::AIState_Tracking::Update(EnemyAIInput& input)
 {
 	//ターゲットの場所を取ってきて
 	//そこに向かって移動するキーを押す
 }
 
-void Enemy::AIState_Attack::Update(EnemyAIInput& input)
+void Melee::AIState_Attack::Update(EnemyAIInput& input)
 {
 	//攻撃キーを押す
 	input.PressButton(1);

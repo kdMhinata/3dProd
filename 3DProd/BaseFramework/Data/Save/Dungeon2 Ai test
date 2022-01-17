@@ -8,53 +8,60 @@
     "Tag": ""
   },
   {
-    "Angle": [ 0, -45, 0 ],
+    "Angle": [0,-45,0],
     "ClassName": "GameObject",
     "ModelFilename": "Data/Models/StageMap/Object/empty.gltf",
     "Name": "SpawnPoint",
-    "Pos": [ -5.6965184211730957, 5.1337323188781738, -19.231143951416016 ],
+    "Pos": [-5.6965184211730957,5.1337323188781738,-19.231143951416016],
     "Tag": "SpawnPoint"
   },
   {
-    "Angle": [ 176.19810485839844, -30.030820846557617, -174.39793395996094 ],
+    "AIType": "Player",
+    "Angle": [-179.4510498046875,30.24372673034668,173.52610778808594],
     "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
-    "AIType":  "Player",
-    "Pos": [ -10.069999694824219, 5.0275516510009766, -2.4749999046325684 ],
-    "Tag": "Enemy",
-    "HP": 100,
-    "MaxHP": 100
+    "Pos": [-10.069999694824219,5.0275516510009766,-2.4749999046325684],
+    "SuperArmor": false,
+    "Tag": "Enemy"
   },
   {
-    "Angle": [ 176.88356018066406, 11.706645965576172, -176.61248779296875 ],
+    "AIType": "",
+    "Angle": [-176.18899536132813,-11.501924514770508,176.548095703125],
     "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
-    "Pos": [ -17.690000534057617, 5.0229535102844238, -2.815000057220459 ],
-    "Tag": "Enemy",
-    "HP": 100,
-    "MaxHP": 100
+    "Pos": [-17.690000534057617,5.0229535102844238,-2.815000057220459],
+    "SuperArmor": false,
+    "Tag": "Enemy"
   },
   {
-    "Angle": [ 178.23178100585938, 36.380039215087891, -172.67250061035156 ],
+    "AIType": "",
+    "Angle": [-172.89607238769531,-35.811897277832031,170.95559692382813],
     "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
-    "Pos": [ -8.0729999542236328, 5.2140002250671387, -8.0869998931884766 ],
-    "Tag": "Enemy",
-    "HP": 100,
-    "MaxHP": 100
+    "Pos": [-8.0729999542236328,5.2140002250671387,-8.0869998931884766],
+    "SuperArmor": false,
+    "Tag": "Enemy"
   },
   {
-    "Angle": [ 177.38755798339844, 28.648738861083984, -174.78297424316406 ],
+    "AIType": "",
+    "Angle": [-174.56373596191406,-28.282245635986328,174.07955932617188],
     "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
     "ModelFilename": "Data/Models/enemy/slime.gltf",
     "Name": "Enemy",
-    "Pos": [ -13.896049499511719, 5.0888686180114746, -12.746000289916992 ],
-    "Tag": "Enemy",
-    "HP": 100,
-    "MaxHP": 100
+    "Pos": [-13.896049499511719,5.0888686180114746,-12.746000289916992],
+    "SuperArmor": false,
+    "Tag": "Enemy"
   },
   {
     "Angle": [0,-0,0],
@@ -75,7 +82,6 @@
     "Tag": ""
   },
   {
-    "Active": false,
     "Angle": [0,45.000003814697266,0],
     "ClassName": "Gimmick",
     "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
@@ -84,7 +90,6 @@
     "Tag": ""
   },
   {
-    "Active": false,
     "Angle": [180,45,180],
     "ClassName": "Gimmick",
     "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
@@ -93,7 +98,6 @@
     "Tag": ""
   },
   {
-    "Active": false,
     "Angle": [180,45,180],
     "ClassName": "Gimmick",
     "ModelFilename": "Data/Models/StageMap/Object/Door.gltf",
@@ -102,23 +106,27 @@
     "Tag": ""
   },
   {
-    "Angle": [ 180, -1.3660382137459237e-05, 180 ],
+    "AIType": "",
+    "Angle": [179.99998474121094,1.3660383956448641e-05,179.99998474121094],
     "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
     "ModelFilename": "Data/Models/enemy/skeleton.gltf",
     "Name": "Enemy",
-    "Pos": [ -13.689000129699707, 5.4019999504089355, -4.5994439125061035 ],
-    "Tag": "Enemy",
-    "HP": 100,
-    "MaxHP": 100
+    "Pos": [-13.689000129699707,5.4019999504089355,-4.5994439125061035],
+    "SuperArmor": false,
+    "Tag": "Enemy"
   },
   {
-    "Angle": [ 180, -1.3660382137459237e-05, 180 ],
+    "AIType": "",
+    "Angle": [179.99998474121094,1.3660383956448641e-05,179.99998474121094],
     "ClassName": "Enemy",
+    "HP": 100,
+    "MaxHP": 100,
     "ModelFilename": "Data/Models/enemy/skeleton.gltf",
     "Name": "Enemy",
-    "Pos": [ -18.311000823974609, 5.2275605201721191, -7.8979997634887695 ],
-    "Tag": "Enemy",
-    "HP": 100,
-    "MaxHP": 100
+    "Pos": [-18.311000823974609,5.2275605201721191,-7.8979997634887695],
+    "SuperArmor": false,
+    "Tag": "Enemy"
   }
 ]

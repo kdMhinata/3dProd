@@ -3,6 +3,7 @@
 #include"GameObject.h"
 #include"Character.h"
 
+
 class Enemy : public Character
 {
 public: 
@@ -39,6 +40,8 @@ public:
 	virtual void Serialize(json11::Json::object& json);
 
 private:
+
+	std::string m_aiType;
 
 	void ScriptProc(const json11::Json& event)override;
 
@@ -92,12 +95,6 @@ private:
 		m_spActionState->Entry(*this);
 	}
 
-	template<class Type>
-	void ChangeAIState()
-	{
-		m_spAIState = std::make_shared<Type>();
-	}
-	
 	class BaseAction
 	{
 	public:
@@ -145,36 +142,54 @@ private:
 
 	std::shared_ptr<BaseAction> m_spActionState = nullptr;
 
-	class EnemyAIInput : public BaseInput
+//	std::shared_ptr <AIState_Base>m_spAIState = nullptr;
+};
+
+class AIState_Base;
+
+class EnemyAIInput : public BaseInput
+{
+public:
+	virtual void Update() override;
+
+	void PressButton(int index)
 	{
-	public:
-		virtual void Update() override { m_owner->m_spAIState->Update(*this); };
+		m_buttons[index] = 1;
+	}
 
-		void PressButton(int index)
-		{
-			m_buttons[index] = 1;
-		}
+	void UpdateSearch();
 
-		void UpdateSearch();
+	void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
 
-		void SetTarget(std::shared_ptr<const GameObject> spTarget) { m_wpTarget = spTarget; }
+	std::weak_ptr<const GameObject>GetTarget() { return m_wpTarget; };
 
-		std::weak_ptr<const GameObject>GetTarget() { return m_wpTarget; };
+	Enemy* GetOwner() { return m_owner; };
 
-		Enemy* GetOwner() { return m_owner; };
-	private:
-		std::weak_ptr<const GameObject> m_wpTarget;
-
-		SphereInfo viewSphere;
-
-		Enemy* m_owner = nullptr;
-	};
-
-	class AIState_Base
+	template<class Type>
+	void ChangeAIState()
 	{
-	public:
-		virtual void Update(EnemyAIInput& input) = 0;
-	};
+		m_pState = std::make_shared<Type>();
+	}
+
+
+private:
+	std::weak_ptr<const GameObject> m_wpTarget;
+
+	SphereInfo viewSphere;
+
+	Enemy* m_owner = nullptr;
+
+	std::shared_ptr<AIState_Base> m_pState;
+};
+
+class AIState_Base
+{
+public:
+	virtual void Update(EnemyAIInput& input) = 0;
+};
+
+namespace Melee
+{
 	class AIState_Idle : public AIState_Base
 	{
 	public:
@@ -190,6 +205,4 @@ private:
 	public:
 		virtual void Update(EnemyAIInput& input)override;
 	};
-
-	std::shared_ptr <AIState_Base>m_spAIState = nullptr;
-};
+}

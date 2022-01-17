@@ -149,13 +149,22 @@ public:
 	//一時的にGameObjectをWaitingRoomに保存する
 	void SaveWaitingRoom(std::shared_ptr<GameObject> obj)
 	{
-		if (obj) { m_spWaitingRoom.push_back(obj); }
+		if (obj)
+		{
+		//	m_spWaitingRoom.push_back(obj);
+			m_spWaitingRoom.insert(obj);
+		}
 	}
 
 	//一時的に保存したGameObjectをWaitingRoomから読み込む
-	std::list<std::shared_ptr<GameObject>>& LoadWaitingRoom()
+	std::unordered_set<std::shared_ptr<GameObject>>& LoadWaitingRoom()
 	{
 		return m_spWaitingRoom;
+	}
+
+	void ClearWatingRoom()
+	{
+		m_spWaitingRoom.clear();
 	}
 
 	void BlackOut(float speed);
@@ -175,7 +184,9 @@ private:
 
 	std::list<std::shared_ptr<GameObject>> m_spObjects;
 
-	std::list<std::shared_ptr<GameObject>> m_spWaitingRoom; //一時的にGameObjectを保存しておく
+//	std::list<std::shared_ptr<GameObject>> m_spWaitingRoom; //一時的にGameObjectを保存しておく
+
+	std::unordered_set<std::shared_ptr<GameObject>> m_spWaitingRoom;
 
 	std::shared_ptr<KdCamera> m_spCamera = nullptr;
 
